@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "227082875324",
+    "project_id": "easy-hris",
+    "storage_bucket": "easy-hris.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:227082875324:android:b67f7354202aa14262bbb9",
+        "android_client_info": {
+          "package_name": "com.hilapp.easy_hris"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2uBdX5s4Xv8CNXlU50p1q4J3BYZhpHRA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
