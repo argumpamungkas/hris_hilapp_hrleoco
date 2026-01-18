@@ -6,9 +6,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'constant/routes.dart';
 import 'data/helpers/notification_helper.dart';
@@ -24,6 +26,14 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+  await dotenv.load(fileName: '.env');
+
+  /// GET URL
+  String projectUrl = dotenv.env['PROJECT_URL'] ?? "";
+  String publishUrl = dotenv.env['PUBLISH_API_KEY'] ?? "";
+
+  await Supabase.initialize(url: projectUrl, anonKey: publishUrl);
 
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
@@ -50,7 +60,13 @@ class MyApp extends StatelessWidget {
           providers: Providers.providers,
           child: Consumer<PreferencesProvider>(
             builder: (context, prov, _) {
-              return MaterialApp(title: "Easy HRIS", theme: prov.themeData, initialRoute: Routes.splashScreen, routes: Routes.routesPage);
+              return MaterialApp(
+                debugShowCheckedModeBanner: false,
+                title: "Easy HRIS",
+                theme: prov.themeData,
+                initialRoute: Routes.splashScreen,
+                routes: Routes.routesPage,
+              );
             },
           ),
         );

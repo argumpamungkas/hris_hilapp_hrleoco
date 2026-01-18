@@ -2,45 +2,57 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:easy_hris/data/models/api_response.dart';
+import 'package:easy_hris/data/models/response/api_response.dart';
+import 'package:easy_hris/data/models/response/config_model.dart';
+import 'package:easy_hris/data/services/url_services.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../constant/constant.dart';
 
-class ApiAuth {
-  Future<dynamic> fetchConfig() async {
-    Uri url = Uri.parse("${Constant.baseUrl}/api/auth/config");
+class ApiAuth extends UrlServices {
+  Future<ApiResponse<ConfigModel>> fetchConfig() async {
+    final baseUrl = await getUrlModel();
+
+    Uri url = Uri.parse("${baseUrl!.link}/api/auth/config");
+
+    print("URL =>> $url");
 
     try {
       var response = await http.get(url);
 
-      // print("response ${response.body}");
+      print("response config ${response.body}");
 
       Map<String, dynamic> result = jsonDecode(response.body);
-      if (response.statusCode == 200) {
-        var status = result["theme"];
 
-        if (status == "success") {
-          return result;
-        } else {
-          return result;
-        }
-      } else {
-        return result;
-      }
+      return ApiResponse.fromJson(result, onDataSerialized: (_) => null, onDataDeserialized: (json) => ConfigModel.fromJson(json));
+
+      // if (response.statusCode == 200) {
+      //   var status = result["theme"];
+      //
+      //   if (status == "success") {
+      //     return result;
+      //   } else {
+      //     return result;
+      //   }
+      // } else {
+      //   return result;
+      // }
     } on TimeoutException catch (_) {
       throw Exception(ConstantMessage.errMsgTimeOut);
     } on SocketException catch (_) {
       throw Exception(ConstantMessage.errMsgNoInternet);
-    } catch (e) {
+    } catch (e, trace) {
+      print("TRACE $trace");
       throw Exception("${ConstantMessage.errMsg} $e");
     }
   }
 
   Future<dynamic> loginUser(String username, String pwd) async {
-    Uri url = Uri.parse("${Constant.baseUrl}/api/auth/login");
+    final baseUrl = await getUrlModel();
+
+    Uri url = Uri.parse("${baseUrl!.link}/api/auth/login");
 
     try {
       var response = await http.post(url, body: {"username": username, "password": pwd});
@@ -96,7 +108,9 @@ class ApiAuth {
   }
 
   Future<Map<String, dynamic>> registerUser(String employeeId, String username, String pwd) async {
-    Uri url = Uri.parse("${Constant.baseUrl}/api/auth/register");
+    final baseUrl = await getUrlModel();
+
+    Uri url = Uri.parse("${baseUrl!.link}/api/auth/register");
 
     try {
       var response = await http.post(url, body: {"number": employeeId, "username": username, "password": pwd});
@@ -125,7 +139,9 @@ class ApiAuth {
   }
 
   Future<Map<String, dynamic>> forgotPassword(String email) async {
-    Uri url = Uri.parse("${Constant.baseUrl}/api/auth/forgotPassword");
+    final baseUrl = await getUrlModel();
+
+    Uri url = Uri.parse("${baseUrl!.link}/api/auth/forgotPassword");
 
     try {
       var response = await http.post(url, body: {"email": email});
@@ -152,7 +168,9 @@ class ApiAuth {
   }
 
   Future<ApiResponse> changePassword(String username, String password) async {
-    Uri url = Uri.parse("${Constant.baseUrl}/api/auth/changePassword");
+    final baseUrl = await getUrlModel();
+
+    Uri url = Uri.parse("${baseUrl!.link}/api/auth/changePassword");
 
     try {
       var response = await http.post(url, body: {"username": username, "password": password});

@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constant/constant.dart';
 import '../../data/models/profile.dart';
-import '../../data/models/user_model.dart';
+import '../../data/models/response/user_model.dart';
 import '../../data/network/api/api_auth.dart';
 import '../../data/network/api/api_dashboard.dart';
 import '../../ui/util/utils.dart';

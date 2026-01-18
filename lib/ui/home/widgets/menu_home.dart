@@ -1,18 +1,12 @@
-import 'package:easy_hris/data/models/employee_model.dart';
-import 'package:easy_hris/ui/home/widgets/user_widget.dart';
 import 'package:easy_hris/ui/util/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import '../../../constant/constant.dart';
 import '../../../constant/exports.dart';
 import '../../../constant/routes.dart';
 import '../../../providers/auth/profile_provider.dart';
 import '../../../providers/preferences_provider.dart';
-import '../../attendance/attendance_screen.dart';
-import '../../change_day/change_day_screen.dart';
-import '../../pay_slip_page/pay_slip/pay_slip_screen.dart';
 
 class MenuHome extends StatelessWidget {
   const MenuHome({super.key});

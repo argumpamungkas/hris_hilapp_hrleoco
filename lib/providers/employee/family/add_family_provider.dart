@@ -1,6 +1,6 @@
 import 'package:easy_hris/constant/constant.dart';
 import 'package:easy_hris/constant/exports.dart';
-import 'package:easy_hris/data/models/id_name_model.dart';
+import 'package:easy_hris/data/models/response/id_name_model.dart';
 import 'package:easy_hris/data/models/request/family_request.dart';
 import 'package:easy_hris/data/network/api/api_employee.dart';
 import 'package:flutter/widgets.dart';

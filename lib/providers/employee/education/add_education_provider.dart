@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
 import '../../../constant/constant.dart';
-import '../../../data/models/id_name_model.dart';
+import '../../../data/models/response/id_name_model.dart';
 import '../../../data/network/api/api_employee.dart';
 
 class AddEducationProvider extends ChangeNotifier {

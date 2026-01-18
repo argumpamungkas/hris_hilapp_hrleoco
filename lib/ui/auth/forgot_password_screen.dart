@@ -31,7 +31,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              ImageNetworkCustom(url: "${Constant.baseUrl}/${Constant.urlILogo}/${prov.configModel!.result.logo}"),
+                              ImageNetworkCustom(url: "${prov.baseUrl}/${Constant.urlILogo}/${prov.configModel!.logo}"),
                               SizedBox(height: 18.h),
                               Text(
                                 "Forgot Password",

@@ -2,21 +2,24 @@ import 'dart:io';
 
 import 'package:easy_hris/constant/constant.dart';
 import 'package:easy_hris/constant/exports.dart';
-import 'package:easy_hris/data/models/employee_model.dart';
 import 'package:easy_hris/data/network/api/api_employee.dart';
+import 'package:easy_hris/data/services/url_services.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../data/models/id_name_model.dart';
-import '../data/models/marital_model.dart';
-import '../data/models/religion_model.dart';
+import '../data/models/response/employee_model.dart';
+import '../data/models/response/id_name_model.dart';
+import '../data/models/response/marital_model.dart';
+import '../data/models/response/religion_model.dart';
 
 class PersonalDataProvider extends ChangeNotifier {
   final ApiEmployee _api = ApiEmployee();
+  final UrlServices _urlServices = UrlServices();
 
   ResultStatus _resultStatus = ResultStatus.init;
   Employee? _employee;
   String _message = "";
+  String _baseUrl = '';
 
   List<IdNameModel> _listGender = [];
   List<IdNameModel> _listBlood = [];
@@ -35,6 +38,7 @@ class PersonalDataProvider extends ChangeNotifier {
   ReligionModel? _selectedReligion;
   MaritalModel? _selectedMarital;
 
+  String get baseUrl => _baseUrl;
   Employee? get employee => _employee;
   ResultStatus get resultStatus => _resultStatus;
   String get message => _message;
@@ -53,6 +57,12 @@ class PersonalDataProvider extends ChangeNotifier {
     fetchPersonalData();
   }
 
+  Future<void> getUrl() async {
+    final urlModel = await _urlServices.getUrlModel();
+    _baseUrl = urlModel!.link!;
+    return;
+  }
+
   Future<void> fetchPersonalData() async {
     _resultStatus = ResultStatus.loading;
     notifyListeners();
@@ -64,6 +74,8 @@ class PersonalDataProvider extends ChangeNotifier {
 
       if (result.theme == "success") {
         _employee = result.result?.employee;
+        await getUrl();
+        await assign(_employee!);
 
         _resultStatus = ResultStatus.hasData;
       } else {
@@ -82,31 +94,30 @@ class PersonalDataProvider extends ChangeNotifier {
     final now = DateTime.now();
     final format = DateFormat('yyyy_MM_dd').format(now);
 
+    print("assign");
+
     /// image
     if (employee.imageId != null && employee.imageId != "" && employee.imageId != '-') {
       _fileNationalId = await _api.urlToFile(
-        "${Constant.baseUrl}/${Constant.urlProfileKtp}/${_employee?.imageId}",
+        "$_baseUrl/${Constant.urlProfileKtp}/${_employee?.imageId}",
         fileName: "ktp_${format}_${_employee?.imageId}",
       );
     }
 
     if (employee.imageKk != null && employee.imageKk != "" && employee.imageKk != '-') {
-      _fileFamilyCard = await _api.urlToFile(
-        "${Constant.baseUrl}/${Constant.urlProfileKk}/${employee.imageKk}",
-        fileName: "kk_${format}_${employee.imageKk}",
-      );
+      _fileFamilyCard = await _api.urlToFile("$_baseUrl/${Constant.urlProfileKk}/${employee.imageKk}", fileName: "kk_${format}_${employee.imageKk}");
     }
 
     if (employee.imageNpwp != null && employee.imageNpwp != "" && employee.imageNpwp != '-') {
       _fileTaxNoNPWP = await _api.urlToFile(
-        "${Constant.baseUrl}/${Constant.urlProfileNpwp}/${employee.imageNpwp}",
+        "$_baseUrl/${Constant.urlProfileNpwp}/${employee.imageNpwp}",
         fileName: "taxno_${format}_${employee.imageNpwp}",
       );
     }
 
     if (employee.imageProfile != null && employee.imageProfile != "" && employee.imageProfile != '-') {
       _fileImageProfile = await _api.urlToFile(
-        "${Constant.baseUrl}/${Constant.urlProfileImage}/${employee.imageProfile}",
+        "$_baseUrl/${Constant.urlProfileImage}/${employee.imageProfile}",
         fileName: "profile_${format}_${employee.imageProfile}",
       );
     }

@@ -1,24 +1,24 @@
 import 'dart:convert';
 
-ConfigModel configModelFromJson(String str) => ConfigModel.fromJson(json.decode(str));
+// ConfigModel configModelFromJson(String str) => ConfigModel.fromJson(json.decode(str));
+//
+// String configModelToJson(ConfigModel data) => json.encode(data.toJson());
 
-String configModelToJson(ConfigModel data) => json.encode(data.toJson());
+// class ConfigModel {
+//   String title;
+//   String message;
+//   Result result;
+//   String theme;
+//
+//   ConfigModel({required this.title, required this.message, required this.result, required this.theme});
+//
+//   factory ConfigModel.fromJson(Map<String, dynamic> json) =>
+//       ConfigModel(title: json["title"], message: json["message"], result: Result.fromJson(json["result"]), theme: json["theme"]);
+//
+//   Map<String, dynamic> toJson() => {"title": title, "message": message, "result": result.toJson(), "theme": theme};
+// }
 
 class ConfigModel {
-  String title;
-  String message;
-  Result result;
-  String theme;
-
-  ConfigModel({required this.title, required this.message, required this.result, required this.theme});
-
-  factory ConfigModel.fromJson(Map<String, dynamic> json) =>
-      ConfigModel(title: json["title"], message: json["message"], result: Result.fromJson(json["result"]), theme: json["theme"]);
-
-  Map<String, dynamic> toJson() => {"title": title, "message": message, "result": result.toJson(), "theme": theme};
-}
-
-class Result {
   String? id;
   String? createdBy;
   String? createdDate;
@@ -43,7 +43,7 @@ class Result {
   String? empDateEnd;
   String? status;
 
-  Result({
+  ConfigModel({
     required this.id,
     required this.createdBy,
     required this.createdDate,
@@ -69,7 +69,7 @@ class Result {
     required this.status,
   });
 
-  factory Result.fromJson(Map<String, dynamic> json) => Result(
+  factory ConfigModel.fromJson(Map<String, dynamic> json) => ConfigModel(
     id: json["id"] ?? "",
     createdBy: json["created_by"] ?? "",
     createdDate: json["created_date"] ?? "",

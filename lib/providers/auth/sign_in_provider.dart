@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:easy_hris/constant/exports.dart';
-import 'package:easy_hris/data/models/user_model.dart';
+import 'package:easy_hris/data/models/response/user_model.dart';
 import 'package:flutter/material.dart';
 
 import '../../constant/constant.dart';
@@ -47,13 +47,13 @@ class SignInProvider with ChangeNotifier {
     final user = UserModel(
       departementId: "IT",
       number: "2360-020525",
-      name: "ACHMAD FAUZI",
+      name: "ARGUMELAR PAMUNGKAS",
       description: "TEST",
       username: "argum",
       // password: "123",
       email: "arg",
       phone: "081",
-      position: "Finance",
+      position: "Mobile Developer",
       avatar: "",
       roles: "Lead",
     );

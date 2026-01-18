@@ -2,27 +2,31 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:easy_hris/data/models/api_response.dart';
-import 'package:easy_hris/data/models/employee_model.dart';
-import 'package:easy_hris/data/models/employee_response_model.dart';
-import 'package:easy_hris/data/models/id_name_model.dart';
-import 'package:easy_hris/data/models/marital_model.dart';
-import 'package:easy_hris/data/models/religion_model.dart';
+import 'package:easy_hris/data/models/response/api_response.dart';
+import 'package:easy_hris/data/models/response/employee_response_model.dart';
+import 'package:easy_hris/data/models/response/id_name_model.dart';
+import 'package:easy_hris/data/models/response/marital_model.dart';
+import 'package:easy_hris/data/models/response/religion_model.dart';
 import 'package:easy_hris/data/models/request/career_request.dart';
 import 'package:easy_hris/data/models/request/education_request.dart';
 import 'package:easy_hris/data/models/request/experience_request.dart';
 import 'package:easy_hris/data/models/request/family_request.dart';
 import 'package:easy_hris/data/models/request/personal_data_update_request.dart';
 import 'package:easy_hris/data/models/request/training_request.dart';
+import 'package:easy_hris/data/services/url_services.dart';
 import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 
 import '../../../constant/constant.dart';
 import 'package:http/http.dart' as http;
 
-class ApiEmployee {
+import '../../models/response/employee_model.dart';
+
+class ApiEmployee extends UrlServices {
   Future<ApiResponse<List<IdNameModel>>> fetchMaster(String source) async {
-    Uri url = Uri.parse("${Constant.baseUrl}/api/master/reads?source=$source");
+    final baseUrl = await getUrlModel();
+
+    Uri url = Uri.parse("${baseUrl!.link}/api/master/reads?source=$source");
 
     try {
       var response = await http.get(url);
@@ -43,7 +47,9 @@ class ApiEmployee {
   }
 
   Future<ApiResponse<List<ReligionModel>>> fetchReligion(String source) async {
-    Uri url = Uri.parse("${Constant.baseUrl}/api/master/reads?source=$source");
+    final baseUrl = await getUrlModel();
+
+    Uri url = Uri.parse("${baseUrl!.link}/api/master/reads?source=$source");
 
     try {
       var response = await http.get(url);
@@ -64,7 +70,9 @@ class ApiEmployee {
   }
 
   Future<ApiResponse<List<MaritalModel>>> fetchMarital(String source) async {
-    Uri url = Uri.parse("${Constant.baseUrl}/api/master/reads?source=$source");
+    final baseUrl = await getUrlModel();
+
+    Uri url = Uri.parse("${baseUrl!.link}/api/master/reads?source=$source");
 
     try {
       var response = await http.get(url);
@@ -85,7 +93,9 @@ class ApiEmployee {
   }
 
   Future<ApiResponse<EmployeeModel>> fetchEmployee(String numberUser) async {
-    Uri url = Uri.parse("${Constant.baseUrl}/api/employees/reads?number=$numberUser");
+    final baseUrl = await getUrlModel();
+
+    Uri url = Uri.parse("${baseUrl!.link}/api/employees/reads?number=$numberUser");
 
     try {
       var response = await http.get(url);
@@ -106,8 +116,10 @@ class ApiEmployee {
   }
 
   Future<ApiResponse<EmployeeResponseModel>> fetchEmployeeUser(String numberUser) async {
-    print("call");
-    Uri url = Uri.parse("${Constant.baseUrl}/api/employees/reads?number=$numberUser");
+    // print("call");
+    final baseUrl = await getUrlModel();
+
+    Uri url = Uri.parse("${baseUrl!.link}/api/employees/reads?number=$numberUser");
 
     try {
       var response = await http.get(url);
@@ -134,8 +146,9 @@ class ApiEmployee {
     required File fileTax,
     required File fileImageProfile,
   }) async {
-    print("call");
-    Uri url = Uri.parse("${Constant.baseUrl}/api/employees/updateData");
+    final baseUrl = await getUrlModel();
+
+    Uri url = Uri.parse("${baseUrl!.link}/api/employees/updateData");
 
     try {
       final request = http.MultipartRequest("POST", url);
@@ -189,8 +202,9 @@ class ApiEmployee {
   }
 
   Future<ApiResponse> addFamily(FamilyRequest request) async {
-    print("call");
-    Uri url = Uri.parse("${Constant.baseUrl}/api/employees/createFamily");
+    final baseUrl = await getUrlModel();
+
+    Uri url = Uri.parse("${baseUrl!.link}/api/employees/createFamily");
 
     try {
       var response = await http.post(url, body: request.toJson());
@@ -212,8 +226,9 @@ class ApiEmployee {
   }
 
   Future<ApiResponse> deleteEmployee(String id, String number, String enpoint) async {
-    print("call");
-    Uri url = Uri.parse("${Constant.baseUrl}/api/employees/$enpoint");
+    final baseUrl = await getUrlModel();
+
+    Uri url = Uri.parse("${baseUrl!.link}/api/employees/$enpoint");
 
     try {
       var response = await http.post(url, body: {"id": id, "number": number});
@@ -235,8 +250,9 @@ class ApiEmployee {
   }
 
   Future<ApiResponse> addEducation(EducationRequest request) async {
-    print("call");
-    Uri url = Uri.parse("${Constant.baseUrl}/api/employees/createEducation");
+    final baseUrl = await getUrlModel();
+
+    Uri url = Uri.parse("${baseUrl!.link}/api/employees/createEducation");
 
     try {
       var response = await http.post(url, body: request.toJson());
@@ -258,8 +274,9 @@ class ApiEmployee {
   }
 
   Future<ApiResponse> addExperience(ExperienceRequest request) async {
-    print("call");
-    Uri url = Uri.parse("${Constant.baseUrl}/api/employees/createExperience");
+    final baseUrl = await getUrlModel();
+
+    Uri url = Uri.parse("${baseUrl!.link}/api/employees/createExperience");
 
     try {
       var response = await http.post(url, body: request.toJson());
@@ -281,8 +298,9 @@ class ApiEmployee {
   }
 
   Future<ApiResponse> addTraining(TrainingRequest request) async {
-    print("call");
-    Uri url = Uri.parse("${Constant.baseUrl}/api/employees/createTraining");
+    final baseUrl = await getUrlModel();
+
+    Uri url = Uri.parse("${baseUrl!.link}/api/employees/createTraining");
 
     try {
       var response = await http.post(url, body: request.toJson());
@@ -304,8 +322,9 @@ class ApiEmployee {
   }
 
   Future<ApiResponse> addCareer(CareerRequest request) async {
-    print("call");
-    Uri url = Uri.parse("${Constant.baseUrl}/api/employees/createCarrer");
+    final baseUrl = await getUrlModel();
+
+    Uri url = Uri.parse("${baseUrl!.link}/api/employees/createCarrer");
 
     try {
       var response = await http.post(url, body: request.toJson());
@@ -329,21 +348,27 @@ class ApiEmployee {
     }
   }
 
-  Future<File> urlToFile(String imageUrl, {String? fileName}) async {
-    // print("IMAGE URL => $imageUrl");
-    final response = await http.get(Uri.parse(imageUrl));
+  Future<File?> urlToFile(String imageUrl, {String? fileName}) async {
+    print("IMAGE URL => $imageUrl");
 
-    if (response.statusCode != 200) {
-      throw Exception('Gagal download gambar');
+    try {
+      final response = await http.get(Uri.parse(imageUrl));
+
+      if (response.statusCode != 200) {
+        throw Exception('Gagal download gambar');
+      }
+
+      Uint8List bytes = response.bodyBytes;
+
+      final dir = await getTemporaryDirectory();
+      final file = File('${dir.path}/${fileName ?? 'image_$fileName.png'}');
+
+      await file.writeAsBytes(bytes);
+
+      return file;
+    } catch (e) {
+      print("error get foto $e");
+      return null;
     }
-
-    Uint8List bytes = response.bodyBytes;
-
-    final dir = await getTemporaryDirectory();
-    final file = File('${dir.path}/${fileName ?? 'image_$fileName.png'}');
-
-    await file.writeAsBytes(bytes);
-
-    return file;
   }
 }

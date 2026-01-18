@@ -1,4 +1,4 @@
-import 'package:easy_hris/data/models/employee_response_model.dart';
+import 'package:easy_hris/data/models/response/employee_response_model.dart';
 import 'package:easy_hris/ui/util/widgets/card_custom_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

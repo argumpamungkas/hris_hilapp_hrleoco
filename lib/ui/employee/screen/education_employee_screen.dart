@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../../constant/constant.dart';
 import '../../../constant/routes.dart';
-import '../../../data/models/employee_response_model.dart';
+import '../../../data/models/response/employee_response_model.dart';
 import '../../util/utils.dart';
 import '../../util/widgets/dialog_helpers.dart';
 import '../widgets/header_employee_action.dart';

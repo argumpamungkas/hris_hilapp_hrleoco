@@ -1,13 +1,17 @@
+import 'package:easy_hris/data/services/url_services.dart';
 import 'package:flutter/material.dart';
 
 import '../constant/constant.dart';
 import '../constant/styles.dart';
 import '../data/helpers/preferences_helper.dart';
-import '../data/models/config_models.dart';
+import '../data/models/response/config_model.dart';
 import '../data/network/api/api_auth.dart';
 
 class PreferencesProvider extends ChangeNotifier {
   final ApiAuth _api = ApiAuth();
+
+  final UrlServices _urlServices = UrlServices();
+
   PreferencesHelper preferencesHelper;
   ThemeData get themeData => _isDarkTheme ? darkTheme : lightTheme;
 
@@ -15,37 +19,52 @@ class PreferencesProvider extends ChangeNotifier {
 
   ConfigModel? _configModel;
 
-  String _message = '';
+  String _baseUrl = '';
 
-  PreferencesProvider({required this.preferencesHelper}) {
-    fetchInit();
-    _getDarkTheme();
-  }
+  String _title = '';
+  String _message = '';
 
   bool _isDarkTheme = false;
   bool get isDarkTheme => _isDarkTheme;
 
   ConfigModel? get configModel => _configModel;
   ResultStatus get resultStatus => _resultStatus;
+  String get baseUrl => _baseUrl;
+  String get title => _title;
   String get message => _message;
 
-  Future<dynamic> fetchInit() async {
+  PreferencesProvider({required this.preferencesHelper}) {
+    // fetchInit();
+    _getDarkTheme();
+  }
+
+  Future<void> getUrl() async {
+    final urlModel = await _urlServices.getUrlModel();
+    _baseUrl = urlModel!.link!;
+    return;
+  }
+
+  Future<void> fetchInit() async {
     _resultStatus = ResultStatus.loading;
     notifyListeners();
 
     try {
-      Map<String, dynamic> result = await _api.fetchConfig();
+      final result = await _api.fetchConfig();
 
-      if (result["theme"] == "success") {
-        _configModel = ConfigModel.fromJson(result);
+      if (result.theme == 'success') {
+        _configModel = result.result;
         _resultStatus = ResultStatus.hasData;
+        await getUrl();
         notifyListeners();
       } else {
-        _message = result['message'];
+        _title = result.title!;
+        _message = result.message!;
         _resultStatus = ResultStatus.noData;
+        await getUrl();
         notifyListeners();
       }
-    } catch (e) {
+    } catch (e, trace) {
+      _title = 'Failed';
       _message = e.toString();
       _resultStatus = ResultStatus.error;
       notifyListeners();

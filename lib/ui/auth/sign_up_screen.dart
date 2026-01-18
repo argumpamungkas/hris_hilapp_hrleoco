@@ -34,13 +34,13 @@ class SignUpScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              ImageNetworkCustom(url: "${Constant.baseUrl}/${Constant.urlILogo}/${prov.configModel!.result.logo}"),
+                              ImageNetworkCustom(url: "${prov.baseUrl}/${Constant.urlILogo}/${prov.configModel!.logo}"),
                               Text(
                                 "REGISTER ACCOUNT",
                                 style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
                               ),
                               Text(
-                                prov.configModel!.result.name!.toUpperCase(),
+                                prov.configModel!.name!.toUpperCase(),
                                 style: TextStyle(fontSize: 20.sp, fontWeight: FontWeight.bold),
                               ),
                               SizedBox(height: 8.h),

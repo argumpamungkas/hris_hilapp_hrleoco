@@ -25,13 +25,13 @@ class ProfileScreen extends StatelessWidget {
               child: Container(
                 padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 16.h),
                 child: Center(
-                  child: Consumer2<ProfileProvider, DashboardProvider>(
-                    builder: (context, prov, provDashboard, child) {
+                  child: Consumer3<ProfileProvider, DashboardProvider, PreferencesProvider>(
+                    builder: (context, prov, provDashboard, provPref, _) {
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           IdentityUser(
-                            imageUrl: prov.userModel?.avatar == "" ? "${Constant.baseUrl}/${Constant.urlDefaultImage}" : "",
+                            imageUrl: prov.userModel?.avatar == "" ? "${provPref.baseUrl}/${Constant.urlDefaultImage}" : "",
                             name: prov.userModel?.name?.toUpperCase() ?? "",
                             position: prov.userModel?.position?.toUpperCase() ?? "",
                           ),

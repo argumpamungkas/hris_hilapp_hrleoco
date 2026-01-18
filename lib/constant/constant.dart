@@ -20,7 +20,7 @@ class Constant {
 
   static const String appVersion = "v1.1.0";
 
-  static const String baseUrl = "https://hrleoco.hris-server.com";
+  // static const String baseUrl = "https://hrleoco.hris-server.com";
   static const String urlILogo = "assets/image/config/logo";
   static const String urlDefaultImage = "assets/image/users/default.png";
   static const String urlProfileImage = "assets/image/employee/profile";
@@ -35,6 +35,8 @@ class ConstantSharedPref {
   static const isLogin = 'isLogin';
   static const apiKey = 'apiKey';
   static const linkServer = 'linkServer';
+  static const baseUrl = 'baseUrl';
+  static const baseUrlDate = 'baseUrlDate';
 }
 
 class ConstantMessage {

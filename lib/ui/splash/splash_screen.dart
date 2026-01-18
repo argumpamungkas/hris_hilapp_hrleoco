@@ -44,6 +44,8 @@ class _SplashScreenState extends State<SplashScreen> {
               splashIconSize: 0.2.sw,
               splashTransition: SplashTransition.scaleTransition,
               screenRouteFunction: () async {
+                await Provider.of<PreferencesProvider>(context, listen: false).fetchInit();
+
                 final route = await splashProv.autoLogin();
                 switch (route) {
                   case 'dashboard':

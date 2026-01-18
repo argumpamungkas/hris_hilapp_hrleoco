@@ -1,20 +1,20 @@
 import 'dart:convert';
 
-import 'package:easy_hris/data/models/contract_model.dart';
-import 'package:easy_hris/data/models/department_model.dart';
-import 'package:easy_hris/data/models/department_sub_model.dart';
-import 'package:easy_hris/data/models/division_model.dart';
-import 'package:easy_hris/data/models/employee_agreement_model.dart';
-import 'package:easy_hris/data/models/employee_career_model.dart';
-import 'package:easy_hris/data/models/employee_education_model.dart';
-import 'package:easy_hris/data/models/employee_experience_model.dart';
-import 'package:easy_hris/data/models/employee_families_model.dart';
-import 'package:easy_hris/data/models/employee_model.dart';
-import 'package:easy_hris/data/models/employee_training_model.dart';
-import 'package:easy_hris/data/models/group_model.dart';
-import 'package:easy_hris/data/models/marital_model.dart';
-import 'package:easy_hris/data/models/position_model.dart';
-import 'package:easy_hris/data/models/religion_model.dart';
+import 'package:easy_hris/data/models/response/contract_model.dart';
+import 'package:easy_hris/data/models/response/department_model.dart';
+import 'package:easy_hris/data/models/response/department_sub_model.dart';
+import 'package:easy_hris/data/models/response/division_model.dart';
+import 'package:easy_hris/data/models/response/employee_agreement_model.dart';
+import 'package:easy_hris/data/models/response/employee_career_model.dart';
+import 'package:easy_hris/data/models/response/employee_education_model.dart';
+import 'package:easy_hris/data/models/response/employee_experience_model.dart';
+import 'package:easy_hris/data/models/response/employee_families_model.dart';
+import 'package:easy_hris/data/models/response/employee_model.dart';
+import 'package:easy_hris/data/models/response/employee_training_model.dart';
+import 'package:easy_hris/data/models/response/group_model.dart';
+import 'package:easy_hris/data/models/response/marital_model.dart';
+import 'package:easy_hris/data/models/response/position_model.dart';
+import 'package:easy_hris/data/models/response/religion_model.dart';
 import 'package:easy_hris/data/models/temporary_model.dart';
 
 EmployeeResponseModel employeeResponseModelFromJson(String str) => EmployeeResponseModel.fromJson(json.decode(str));

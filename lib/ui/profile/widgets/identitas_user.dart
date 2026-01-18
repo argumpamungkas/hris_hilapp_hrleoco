@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../../constant/constant.dart';
 import '../../../providers/preferences_provider.dart';
+import '../../util/widgets/image_network_custom.dart';
 
 class IdentityUser extends StatelessWidget {
   const IdentityUser({super.key, required this.imageUrl, required this.name, required this.position});
@@ -19,13 +20,10 @@ class IdentityUser extends StatelessWidget {
           alignment: Alignment.center,
           child: Column(
             children: [
-              Container(
+              SizedBox(
                 height: 80.h,
                 width: 80.w,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(image: NetworkImage(imageUrl), fit: BoxFit.cover, filterQuality: FilterQuality.medium),
-                ),
+                child: ImageNetworkCustom(url: imageUrl),
               ),
               SizedBox(height: 8.h),
               Text(
@@ -37,14 +35,6 @@ class IdentityUser extends StatelessWidget {
                 style: TextStyle(color: prov.isDarkTheme ? Colors.white : Colors.grey.shade700, fontWeight: FontWeight.bold, fontSize: 12.sp),
               ),
               SizedBox(height: 4.h),
-              // Container(
-              //   padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-              //   decoration: BoxDecoration(color: colorPurpleAccent, borderRadius: BorderRadius.circular(50)),
-              //   child: Text(
-              //     service,
-              //     style: TextStyle(fontSize: 7.sp, fontWeight: FontWeight.bold, color: Colors.white),
-              //   ),
-              // ),
             ],
           ),
         );

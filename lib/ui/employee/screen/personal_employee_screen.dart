@@ -1,7 +1,7 @@
 import 'package:easy_hris/constant/constant.dart';
 import 'package:easy_hris/constant/exports.dart';
 import 'package:easy_hris/constant/routes.dart';
-import 'package:easy_hris/data/models/employee_response_model.dart';
+import 'package:easy_hris/data/models/response/employee_response_model.dart';
 import 'package:easy_hris/providers/employee/employee_provider.dart';
 import 'package:easy_hris/providers/employee/personal_provider.dart';
 import 'package:easy_hris/ui/util/utils.dart';
@@ -271,17 +271,6 @@ class PersonalScreen extends StatelessWidget {
                                                 },
                                                 child: Icon(Icons.visibility, size: 16.sp),
                                               )
-                                            : prov.imageKTPFromDataExist.isNotEmpty
-                                            ? InkWell(
-                                                onTap: () {
-                                                  Navigator.pushNamed(
-                                                    context,
-                                                    Routes.viewImageNetworkScreen,
-                                                    arguments: "${Constant.baseUrl}/${Constant.urlProfileKtp}/${prov.imageKTPFromDataExist}",
-                                                  );
-                                                },
-                                                child: Icon(Icons.visibility, size: 16.sp),
-                                              )
                                             : null,
                                         onTap: () {
                                           BottomSheetHelper.showUploadOptions(context, (file, base64) async {
@@ -326,17 +315,6 @@ class PersonalScreen extends StatelessWidget {
                                             ? InkWell(
                                                 onTap: () {
                                                   Navigator.pushNamed(context, Routes.viewImageScreen, arguments: prov.fileFamilyCard);
-                                                },
-                                                child: Icon(Icons.visibility, size: 16.sp),
-                                              )
-                                            : prov.imageKKFromDataExist.isNotEmpty
-                                            ? InkWell(
-                                                onTap: () {
-                                                  Navigator.pushNamed(
-                                                    context,
-                                                    Routes.viewImageNetworkScreen,
-                                                    arguments: "${Constant.baseUrl}/${Constant.urlProfileKk}/${prov.imageKKFromDataExist}",
-                                                  );
                                                 },
                                                 child: Icon(Icons.visibility, size: 16.sp),
                                               )
@@ -405,17 +383,6 @@ class PersonalScreen extends StatelessWidget {
                                           ? InkWell(
                                               onTap: () {
                                                 Navigator.pushNamed(context, Routes.viewImageScreen, arguments: prov.fileTaxNoNPWP);
-                                              },
-                                              child: Icon(Icons.visibility, size: 16.sp),
-                                            )
-                                          : prov.imageNPWPFromDataExist.isNotEmpty
-                                          ? InkWell(
-                                              onTap: () {
-                                                Navigator.pushNamed(
-                                                  context,
-                                                  Routes.viewImageNetworkScreen,
-                                                  arguments: "${Constant.baseUrl}/${Constant.urlProfileNpwp}/${prov.imageNPWPFromDataExist}",
-                                                );
                                               },
                                               child: Icon(Icons.visibility, size: 16.sp),
                                             )
@@ -637,17 +604,6 @@ class PersonalScreen extends StatelessWidget {
                                     ? InkWell(
                                         onTap: () {
                                           Navigator.pushNamed(context, Routes.viewImageScreen, arguments: prov.filePhotoProfile);
-                                        },
-                                        child: Icon(Icons.visibility, size: 16.sp),
-                                      )
-                                    : prov.imageProfileDataExist.isNotEmpty
-                                    ? InkWell(
-                                        onTap: () {
-                                          Navigator.pushNamed(
-                                            context,
-                                            Routes.viewImageNetworkScreen,
-                                            arguments: "${Constant.baseUrl}/${Constant.urlProfileImage}/${prov.imageProfileDataExist}",
-                                          );
                                         },
                                         child: Icon(Icons.visibility, size: 16.sp),
                                       )

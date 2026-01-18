@@ -2,18 +2,21 @@ import 'dart:io';
 
 import 'package:easy_hris/constant/constant.dart';
 import 'package:easy_hris/constant/exports.dart';
-import 'package:easy_hris/data/models/id_name_model.dart';
-import 'package:easy_hris/data/models/marital_model.dart';
-import 'package:easy_hris/data/models/religion_model.dart';
+import 'package:easy_hris/data/models/response/id_name_model.dart';
+import 'package:easy_hris/data/models/response/marital_model.dart';
+import 'package:easy_hris/data/models/response/religion_model.dart';
 import 'package:easy_hris/data/models/request/personal_data_update_request.dart';
 import 'package:easy_hris/data/network/api/api_employee.dart';
+import 'package:easy_hris/data/services/url_services.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../../data/models/employee_response_model.dart';
+import '../../data/models/response/employee_response_model.dart';
 
 class PersonalEmployeeProvider extends ChangeNotifier {
   final ApiEmployee _api = ApiEmployee();
+  final UrlServices _urlServices = UrlServices();
+
   ResultStatus _resultStatus = ResultStatus.init;
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
 
@@ -81,6 +84,7 @@ class PersonalEmployeeProvider extends ChangeNotifier {
   ///
   String _title = '';
   String _message = '';
+  String _baseUrl = '';
 
   ResultStatus get resultStatus => _resultStatus;
   GlobalKey<FormState> get key => _key;
@@ -141,11 +145,18 @@ class PersonalEmployeeProvider extends ChangeNotifier {
 
   String get title => _title;
   String get message => _message;
+  String get baseUrl => _baseUrl;
 
   String _number = '';
 
   PersonalEmployeeProvider(EmployeeResponseModel employee) {
     init(employee);
+  }
+
+  Future<void> getUrl() async {
+    final urlModel = await _urlServices.getUrlModel();
+    _baseUrl = urlModel!.link!;
+    return;
   }
 
   void onChangeGender(IdNameModel value) {
@@ -227,6 +238,9 @@ class PersonalEmployeeProvider extends ChangeNotifier {
     _resultStatus = ResultStatus.loading;
     notifyListeners();
     try {
+      /// GET URL
+      await getUrl();
+
       final prefs = await SharedPreferences.getInstance();
       _number = prefs.getString(ConstantSharedPref.numberUser)!;
 
@@ -274,7 +288,7 @@ class PersonalEmployeeProvider extends ChangeNotifier {
       _fileNationalIdName.text = employee.employee?.imageId ?? "";
       if (_imageKTPFromDataExist.isNotEmpty) {
         _fileNationalId = await _api.urlToFile(
-          "${Constant.baseUrl}/${Constant.urlProfileKtp}/${_imageKTPFromDataExist}",
+          "$_baseUrl/${Constant.urlProfileKtp}/$_imageKTPFromDataExist",
           fileName: "ktp_${format}_${_fileNationalIdName.text}",
         );
       }
@@ -285,7 +299,7 @@ class PersonalEmployeeProvider extends ChangeNotifier {
       _fileFamilyCardName.text = employee.employee?.imageKk ?? "";
       if (_imageKKFromDataExist.isNotEmpty) {
         _fileFamilyCard = await _api.urlToFile(
-          "${Constant.baseUrl}/${Constant.urlProfileKk}/${_imageKKFromDataExist}",
+          "$_baseUrl/${Constant.urlProfileKk}/$_imageKKFromDataExist",
           fileName: "kk_${format}_${_fileFamilyCardName.text}",
         );
       }
@@ -296,7 +310,7 @@ class PersonalEmployeeProvider extends ChangeNotifier {
       _fileTaxNoNPWPName.text = employee.employee?.imageNpwp ?? "";
       if (_imageNPWPFromDataExist.isNotEmpty) {
         _fileTaxNoNPWP = await _api.urlToFile(
-          "${Constant.baseUrl}/${Constant.urlProfileNpwp}/${_imageNPWPFromDataExist}",
+          "$_baseUrl/${Constant.urlProfileNpwp}/$_imageNPWPFromDataExist",
           fileName: "taxno_${format}_${_fileTaxNoNPWPName.text}",
         );
       }
@@ -307,7 +321,7 @@ class PersonalEmployeeProvider extends ChangeNotifier {
       _filePhotoProfileName.text = employee.employee?.imageProfile ?? "";
       if (_imageProfileFromDataExist.isNotEmpty) {
         _fileImageProfile = await _api.urlToFile(
-          "${Constant.baseUrl}/${Constant.urlProfileImage}/${_imageProfileFromDataExist}",
+          "$_baseUrl/${Constant.urlProfileImage}/$_imageProfileFromDataExist",
           fileName: "profile_${format}_${_filePhotoProfileName.text}",
         );
       }

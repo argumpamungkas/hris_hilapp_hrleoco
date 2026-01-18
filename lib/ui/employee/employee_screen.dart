@@ -1,6 +1,6 @@
 import 'package:easy_hris/constant/constant.dart';
 import 'package:easy_hris/constant/exports.dart';
-import 'package:easy_hris/data/models/employee_response_model.dart';
+import 'package:easy_hris/data/models/response/employee_response_model.dart';
 import 'package:easy_hris/providers/employee/employee_provider.dart';
 import 'package:easy_hris/ui/employee/screen/career_employee_screen.dart';
 import 'package:easy_hris/ui/employee/screen/company_employee_screen.dart';

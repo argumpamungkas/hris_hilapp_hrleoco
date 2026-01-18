@@ -22,7 +22,7 @@ class UserWidget extends StatelessWidget {
             children: [
               Flexible(
                 flex: 1,
-                child: SizedBox(height: 42, width: 42, child: ImageNetworkCustom(url: "${Constant.baseUrl}/${Constant.urlDefaultImage}")),
+                child: SizedBox(height: 42, width: 42, child: ImageNetworkCustom(url: "${provPref.baseUrl}/${Constant.urlDefaultImage}")),
               ),
               Flexible(
                 flex: 3,
