@@ -76,7 +76,7 @@ class ProfileProvider extends ChangeNotifier {
       // debugPrint("USERR => ${user.results.toJson()}");
       _userProfile = user.results;
       // print(user.results.status);
-      if (_userProfile?.status == "1") {
+      if (_userProfile.status == "1") {
         _resultStatus = ResultStatus.noData;
         _message = "You account deactivate. You haven't access this application";
         notifyListeners();

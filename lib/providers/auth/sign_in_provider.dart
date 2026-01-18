@@ -9,7 +9,6 @@ import '../../constant/constant.dart';
 import '../../data/models/profile.dart';
 import '../../data/network/api/api_auth.dart';
 import '../../data/network/api/api_dashboard.dart';
-import '../../data/network/api/firebase_api.dart';
 
 class SignInProvider with ChangeNotifier {
   final ApiAuth _api = ApiAuth();

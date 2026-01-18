@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constant/constant.dart';
-import '../../constant/routes.dart';
 import '../../data/models/profile.dart';
 import '../../data/network/api/api_auth.dart';
-import '../../ui/util/utils.dart';
 
 class ProfileChangePasswordProvider extends ChangeNotifier {
   final ApiAuth _api = ApiAuth();

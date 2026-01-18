@@ -1,9 +1,3 @@
-// To parse this JSON data, do
-//
-//     final employeeCareerModel = employeeCareerModelFromJson(jsonString);
-
-import 'dart:convert';
-
 class EmployeeCareerModel {
   String? id;
   String? start;

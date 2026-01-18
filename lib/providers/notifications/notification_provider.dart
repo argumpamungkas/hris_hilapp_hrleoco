@@ -1,12 +1,10 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 
 import '../../constant/constant.dart';
 import '../../data/models/notifications/notification_response.dart';
 import '../../data/network/api/api_notification.dart';
-import '../../ui/util/utils.dart';
 
 class NotificationProvider extends ChangeNotifier {
   final ApiNotification _api = ApiNotification();

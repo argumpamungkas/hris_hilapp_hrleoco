@@ -17,7 +17,6 @@ import '../data/models/notifications/notification_response.dart';
 import '../data/models/overtime.dart';
 import '../data/models/pay_slip.dart';
 import '../data/models/permit.dart';
-import '../data/models/profile.dart';
 import '../ui/attendance/attendance_screen.dart';
 import '../ui/attendance/camera_screen.dart';
 import '../ui/attendance/picture_preview.dart';

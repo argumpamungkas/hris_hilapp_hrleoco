@@ -2,7 +2,6 @@ import 'package:easy_hris/constant/constant.dart';
 import 'package:easy_hris/data/models/request/experience_request.dart';
 import 'package:easy_hris/data/network/api/api_employee.dart';
 import 'package:flutter/widgets.dart';
-import 'package:intl/intl.dart';
 
 import '../../../constant/exports.dart';
 

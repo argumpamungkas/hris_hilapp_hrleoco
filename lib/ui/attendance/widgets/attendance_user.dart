@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import '../../../constant/exports.dart';
 import '../../../providers/home_provider.dart';
 import '../../util/utils.dart';
-import '../camera_screen.dart';
 import '../controller/attendance_controller.dart';
 
 class AttendanceUser extends StatelessWidget {

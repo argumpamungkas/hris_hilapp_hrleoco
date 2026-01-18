@@ -4,7 +4,6 @@ import 'package:easy_hris/data/models/response/contract_model.dart';
 import 'package:easy_hris/data/models/response/department_model.dart';
 import 'package:easy_hris/data/models/response/department_sub_model.dart';
 import 'package:easy_hris/data/models/response/division_model.dart';
-import 'package:easy_hris/data/models/response/employee_agreement_model.dart';
 import 'package:easy_hris/data/models/response/employee_career_model.dart';
 import 'package:easy_hris/data/models/response/employee_education_model.dart';
 import 'package:easy_hris/data/models/response/employee_experience_model.dart';
@@ -116,7 +115,7 @@ class EmployeeResponseModel {
     "employee_educations": List<dynamic>.from(employeeEducations.map((x) => x)),
     "employee_experiences": List<dynamic>.from(employeeExperiences.map((x) => x)),
     "employee_trainings": List<dynamic>.from(employeeTrainings.map((x) => x)),
-    "employee_carrers": List<dynamic>.from(employeeCarrers.map((x) => x?.toJson())),
+    "employee_carrers": List<dynamic>.from(employeeCarrers.map((x) => x.toJson())),
     // "employee_agreements": List<dynamic>.from(employeeAgreements.map((x) => x.toJson())),
   };
 }

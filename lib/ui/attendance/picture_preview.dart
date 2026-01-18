@@ -5,7 +5,6 @@ import 'package:easy_hris/constant/routes.dart';
 import 'package:easy_hris/ui/util/utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:icons_plus/icons_plus.dart';
 
 class PicturePreview extends StatelessWidget {
