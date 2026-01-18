@@ -82,6 +82,8 @@ class Routes {
   static const viewImageNetworkScreen = '/view_image_network_screen';
 
   // ATTENDANCE
+  static const cameraScreen = '/camera_screen';
+  static const picturePreviewScreen = '/picture_preview_screen';
   static const attendanceSummaryScreen = '/attendance_summary_screen';
   static const attendanceTeamScreen = '/attendance_team_screen';
   static const attendanceHistoryScreen = '/attendance_history_screen';
@@ -127,6 +129,8 @@ class Routes {
     viewImageNetworkScreen: (context) => ViewImageNetwork(selectImage: ModalRoute.of(context)?.settings.arguments as String),
 
     // Attendance
+    cameraScreen: (context) => CameraScreen(cameras: ModalRoute.of(context)!.settings.arguments as List<CameraDescription>),
+    picturePreviewScreen: (context) => PicturePreview(picture: ModalRoute.of(context)!.settings.arguments as XFile),
     attendanceSummaryScreen: (context) => AttendanceSummaryScreen(result: ModalRoute.of(context)?.settings.arguments as AttendanceSummary),
     attendanceTeamScreen: (context) => const AttendanceTeam(),
     attendanceHistoryScreen: (context) => const AttendanceHistoryScreen(),
@@ -144,8 +148,6 @@ class Routes {
     teamsDetailScreen: (context) => TeamsDetailScreen(dataEmployee: ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>),
 
     AttendanceScreen.routeName: (context) => AttendanceScreen(locOffice: ModalRoute.of(context)!.settings.arguments as String),
-    CameraScreen.routeName: (context) => CameraScreen(cameras: ModalRoute.of(context)!.settings.arguments as List<CameraDescription>),
-    PicturePreview.routeName: (context) => PicturePreview(picture: ModalRoute.of(context)!.settings.arguments as XFile),
     ChangeDayScreen.routeName: (context) => const ChangeDayScreen(),
     ChangeDayDetailScreen.routeName: (context) =>
         ChangeDayDetailScreen(resultsChangeDays: ModalRoute.of(context)!.settings.arguments as ResultsChangeDays),

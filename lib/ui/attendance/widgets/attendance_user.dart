@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:easy_hris/constant/routes.dart';
 import 'package:flutter/material.dart';
 
 import '../../../constant/exports.dart';
@@ -22,7 +23,7 @@ class AttendanceUser extends StatelessWidget {
         if (!context.mounted) return;
         Navigator.pop(context);
         if (result) {
-          await availableCameras().then((value) => Navigator.pushNamed(context, CameraScreen.routeName, arguments: value));
+          await availableCameras().then((value) => Navigator.pushNamed(context, Routes.cameraScreen, arguments: value));
         }
       },
       child: Container(

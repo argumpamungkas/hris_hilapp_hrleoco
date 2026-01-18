@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:easy_hris/providers/preferences_provider.dart';
 import 'package:easy_hris/providers/providers.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -29,7 +27,7 @@ void main() async {
 
   await dotenv.load(fileName: '.env');
 
-  /// GET URL
+  /// GET URL FORM SUPABASE
   String projectUrl = dotenv.env['PROJECT_URL'] ?? "";
   String publishUrl = dotenv.env['PUBLISH_API_KEY'] ?? "";
 
@@ -61,7 +59,7 @@ class MyApp extends StatelessWidget {
           child: Consumer<PreferencesProvider>(
             builder: (context, prov, _) {
               return MaterialApp(
-                debugShowCheckedModeBanner: false,
+                debugShowCheckedModeBanner: true,
                 title: "Easy HRIS",
                 theme: prov.themeData,
                 initialRoute: Routes.splashScreen,

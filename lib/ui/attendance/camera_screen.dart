@@ -1,11 +1,15 @@
 import 'package:camera/camera.dart';
+import 'package:easy_hris/constant/routes.dart';
 import 'package:easy_hris/ui/attendance/picture_preview.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:icons_plus/icons_plus.dart';
 
 import '../util/utils.dart';
 
 class CameraScreen extends StatefulWidget {
-  static const routeName = "/camera_screen.dart";
+  // static const routeName = "/camera_screen.dart";
   const CameraScreen({super.key, required this.cameras});
   final List<CameraDescription>? cameras;
 
@@ -24,6 +28,7 @@ class _CameraScreenState extends State<CameraScreen> {
 
   Future initCamera(CameraDescription cameraDescription) async {
     _cameraC = CameraController(cameraDescription, ResolutionPreset.medium, enableAudio: false, imageFormatGroup: ImageFormatGroup.yuv420);
+    await _cameraC.setFlashMode(FlashMode.off);
 
     try {
       await _cameraC.initialize().then((value) {
@@ -31,7 +36,7 @@ class _CameraScreenState extends State<CameraScreen> {
         setState(() {});
       });
     } on CameraException catch (e) {
-      if (e.toString() == "CameraException(CameraAccessDenied, Camera access permission was denied.)") {
+      if (e.toString().contains("CameraException")) {
         if (!mounted) return;
         Navigator.pop(context);
       } else {
@@ -43,14 +48,16 @@ class _CameraScreenState extends State<CameraScreen> {
   }
 
   Future _takePicture() async {
+    showLoadingDialog(context);
     if (!_cameraC.value.isInitialized) return null;
     if (_cameraC.value.isTakingPicture) return null;
     try {
-      await _cameraC.setFlashMode(FlashMode.off);
       XFile picture = await _cameraC.takePicture();
       if (!mounted) return;
-      Navigator.pushNamed(context, PicturePreview.routeName, arguments: picture);
+      Navigator.pop(context);
+      Navigator.pushNamed(context, Routes.picturePreviewScreen, arguments: picture);
     } on CameraException catch (_) {
+      Navigator.pop(context);
       showFailSnackbar(context, "Take a picture is fail");
       // debugPrint("Error occured while taking picture: $e");
       return null;
@@ -68,28 +75,43 @@ class _CameraScreenState extends State<CameraScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Center(
-              child: _cameraC.value.isInitialized
-                  // ? CameraPreview(_cameraC)
-                  ? Transform(
-                      alignment: Alignment.center,
-                      transform: Matrix4.rotationY(_cameraC.description.lensDirection == CameraLensDirection.front ? 3.14159 : 0),
-                      child: CameraPreview(_cameraC),
-                    )
-                  : const Center(child: CircularProgressIndicator()),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: IconButton(
-                onPressed: _takePicture,
-                icon: const Icon(Icons.circle, color: Colors.white, size: 80),
-              ),
-            ),
-          ],
-        ),
+        child: _cameraC.value.isInitialized
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Align(
+                    alignment: Alignment.centerLeft,
+                    child: IconButton(
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                      icon: Icon(Iconsax.close_circle_outline, color: Colors.white, size: 24.w),
+                    ),
+                  ),
+                  Center(child: CameraPreview(_cameraC)),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: InkWell(
+                      onTap: () {
+                        // _cameraC.pausePreview();
+                        _takePicture();
+                      },
+                      borderRadius: BorderRadius.circular(50),
+                      child: Container(
+                        padding: EdgeInsets.all(12.w),
+                        decoration: BoxDecoration(color: Colors.white, shape: BoxShape.circle),
+                        child: Icon(Icons.camera_alt_outlined),
+                      ),
+                    ),
+                    // child: IconButton(
+                    //   onPressed: _takePicture,
+                    //   icon: Icon(Icons.circle, color: Colors.white, size: 0.2.sw),
+                    // ),
+                  ),
+                ],
+              )
+            : CupertinoActivityIndicator(color: Colors.white),
       ),
     );
   }

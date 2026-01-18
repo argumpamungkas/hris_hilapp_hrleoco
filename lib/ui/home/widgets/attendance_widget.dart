@@ -1,3 +1,4 @@
+import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,6 +9,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:timer_builder/timer_builder.dart';
 
 import '../../../constant/constant.dart';
+import '../../../constant/routes.dart';
 import '../../../providers/home_provider.dart';
 import '../../../providers/preferences_provider.dart';
 import '../../util/utils.dart';
@@ -260,7 +262,10 @@ class AttendanceWidget extends StatelessWidget {
                             icon: Icons.arrow_circle_down,
                             background: Colors.green,
                             iconAlignment: IconAlignment.end,
-                            onPressed: () {},
+                            onPressed: () async {
+                              print("CHECKIN");
+                              await availableCameras().then((value) => Navigator.pushNamed(context, Routes.cameraScreen, arguments: value));
+                            },
                           ),
                           SizedBox(
                             height: 26.h,
@@ -271,7 +276,10 @@ class AttendanceWidget extends StatelessWidget {
                             icon: Icons.arrow_circle_up,
                             background: Colors.red,
                             iconAlignment: IconAlignment.start,
-                            onPressed: () {},
+                            onPressed: () async {
+                              // if(!context.mounted) return;
+                              await availableCameras().then((value) => Navigator.pushNamed(context, Routes.cameraScreen, arguments: value));
+                            },
                           ),
                         ],
                       ),
@@ -301,11 +309,11 @@ class AttendanceWidget extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Check In",
+                    title,
                     style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 10.sp),
                   ),
                   Text(
-                    "00:00",
+                    time,
                     style: TextStyle(color: colorIcon, fontWeight: FontWeight.bold, fontSize: 12.sp),
                   ),
                 ],
@@ -326,7 +334,7 @@ class AttendanceWidget extends StatelessWidget {
   }) {
     return Expanded(
       child: ElevatedButton.icon(
-        onPressed: () {},
+        onPressed: onPressed,
         // onPressed: null,
         label: Text(title, style: TextStyle(fontSize: 12.sp)),
         icon: Icon(icon, size: 16.w),
