@@ -90,7 +90,7 @@ class EducationEmployeeScreen extends StatelessWidget {
                                           onPressed: () async {
                                             showLoadingDialog(context);
 
-                                            final result = await prov.deleteEmployee(employee.id!, "deleteEducation");
+                                            final result = await prov.deleteData(employee.id!, "deleteEducation");
 
                                             if (!context.mounted) return;
                                             Navigator.pop(context);

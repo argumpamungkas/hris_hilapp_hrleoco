@@ -4,9 +4,12 @@ import 'package:easy_hris/data/network/api/api_employee.dart';
 import 'package:flutter/widgets.dart';
 
 import '../../../constant/exports.dart';
+import '../../../injection.dart';
 
 class AddExperienceProvider extends ChangeNotifier {
   final ApiEmployee _api = ApiEmployee();
+  final _prefs = sl<SharedPreferences>();
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final TextEditingController _companyNameController = TextEditingController();
@@ -52,9 +55,7 @@ class AddExperienceProvider extends ChangeNotifier {
   }
 
   Future<bool> addExperience() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    final number = prefs.getString(ConstantSharedPref.numberUser);
+    final number = _prefs.getString(ConstantSharedPref.numberUser);
 
     final request = ExperienceRequest(
       number: number ?? "",

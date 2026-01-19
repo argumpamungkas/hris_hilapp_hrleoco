@@ -6,11 +6,11 @@ import '../constant/styles.dart';
 import '../data/helpers/preferences_helper.dart';
 import '../data/models/response/config_model.dart';
 import '../data/network/api/api_auth.dart';
+import '../injection.dart';
 
 class PreferencesProvider extends ChangeNotifier {
   final ApiAuth _api = ApiAuth();
-
-  final UrlServices _urlServices = UrlServices();
+  final _urlServices = sl<UrlServices>();
 
   PreferencesHelper preferencesHelper;
   ThemeData get themeData => _isDarkTheme ? darkTheme : lightTheme;

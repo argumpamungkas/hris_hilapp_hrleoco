@@ -26,11 +26,13 @@ class PersonalDataProvider extends ChangeNotifier {
   List<ReligionModel> _listReligion = [];
   List<MaritalModel> _listMarital = [];
 
+  /// STRING FILE
+
   /// FILE
-  File? _fileImageProfile;
-  File? _fileNationalId;
-  File? _fileFamilyCard;
-  File? _fileTaxNoNPWP;
+  // String? _fileImageProfile;
+  // String? _fileNationalId;
+  // String? _fileFamilyCard;
+  // String? _fileTaxNoNPWP;
 
   /// FROM MASTER
   IdNameModel? _selectedGender;
@@ -43,10 +45,10 @@ class PersonalDataProvider extends ChangeNotifier {
   ResultStatus get resultStatus => _resultStatus;
   String get message => _message;
 
-  File? get fileNationalIdFIle => _fileNationalId;
-  File? get fileFamilyCard => _fileFamilyCard;
-  File? get fileTaxNoNPWP => _fileTaxNoNPWP;
-  File? get filePhotoProfile => _fileImageProfile;
+  // File? get fileNationalIdFIle => _fileNationalId;
+  // File? get fileFamilyCard => _fileFamilyCard;
+  // File? get fileTaxNoNPWP => _fileTaxNoNPWP;
+  // File? get filePhotoProfile => _fileImageProfile;
 
   IdNameModel? get selectedGender => _selectedGender;
   IdNameModel? get selectedBlood => _selectedBlood;
@@ -96,32 +98,6 @@ class PersonalDataProvider extends ChangeNotifier {
 
     print("assign");
 
-    /// image
-    if (employee.imageId != null && employee.imageId != "" && employee.imageId != '-') {
-      _fileNationalId = await _api.urlToFile(
-        "$_baseUrl/${Constant.urlProfileKtp}/${_employee?.imageId}",
-        fileName: "ktp_${format}_${_employee?.imageId}",
-      );
-    }
-
-    if (employee.imageKk != null && employee.imageKk != "" && employee.imageKk != '-') {
-      _fileFamilyCard = await _api.urlToFile("$_baseUrl/${Constant.urlProfileKk}/${employee.imageKk}", fileName: "kk_${format}_${employee.imageKk}");
-    }
-
-    if (employee.imageNpwp != null && employee.imageNpwp != "" && employee.imageNpwp != '-') {
-      _fileTaxNoNPWP = await _api.urlToFile(
-        "$_baseUrl/${Constant.urlProfileNpwp}/${employee.imageNpwp}",
-        fileName: "taxno_${format}_${employee.imageNpwp}",
-      );
-    }
-
-    if (employee.imageProfile != null && employee.imageProfile != "" && employee.imageProfile != '-') {
-      _fileImageProfile = await _api.urlToFile(
-        "$_baseUrl/${Constant.urlProfileImage}/${employee.imageProfile}",
-        fileName: "profile_${format}_${employee.imageProfile}",
-      );
-    }
-
     /// GENDER
     if (employee.gender!.isNotEmpty) {
       for (var item in _listGender) {
@@ -160,6 +136,38 @@ class PersonalDataProvider extends ChangeNotifier {
           break;
         }
       }
+    }
+
+    /// image
+    if (employee.imageId != null && employee.imageId != "" && employee.imageId != '-') {
+      _employee?.imageId = "$_baseUrl/${Constant.urlProfileKtp}/${_employee?.imageId}";
+
+      // _fileNationalId = await _api.urlToFile(
+      //   "$_baseUrl/${Constant.urlProfileKtp}/${_employee?.imageId}",
+      //   fileName: "ktp_${format}_${_employee?.imageId}",
+      // );
+    }
+
+    if (employee.imageKk != null && employee.imageKk != "" && employee.imageKk != '-') {
+      _employee?.imageKk = "$_baseUrl/${Constant.urlProfileKk}/${employee.imageKk}";
+      // _fileFamilyCard = await _api.urlToFile("$_baseUrl/${Constant.urlProfileKk}/${employee.imageKk}", fileName: "kk_${format}_${employee.imageKk}");
+    }
+
+    if (employee.imageNpwp != null && employee.imageNpwp != "" && employee.imageNpwp != '-') {
+      _employee?.imageNpwp = "$_baseUrl/${Constant.urlProfileNpwp}/${employee.imageNpwp}";
+      // _fileTaxNoNPWP = await _api.urlToFile(
+      //   "$_baseUrl/${Constant.urlProfileNpwp}/${employee.imageNpwp}",
+      //   fileName: "taxno_${format}_${employee.imageNpwp}",
+      // );
+    }
+
+    if (employee.imageProfile != null && employee.imageProfile != "" && employee.imageProfile != '-') {
+      _employee?.imageProfile = "$_baseUrl/${Constant.urlProfileImage}/${employee.imageProfile}";
+
+      // _fileImageProfile = await _api.urlToFile(
+      //   "$_baseUrl/${Constant.urlProfileImage}/${employee.imageProfile}",
+      //   fileName: "profile_${format}_${employee.imageProfile}",
+      // );
     }
   }
 

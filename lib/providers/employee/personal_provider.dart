@@ -12,10 +12,12 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 import '../../data/models/response/employee_response_model.dart';
+import '../../injection.dart';
 
 class PersonalEmployeeProvider extends ChangeNotifier {
   final ApiEmployee _api = ApiEmployee();
-  final UrlServices _urlServices = UrlServices();
+  final _urlService = sl<UrlServices>();
+  final _prefs = sl<SharedPreferences>();
 
   ResultStatus _resultStatus = ResultStatus.init;
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
@@ -154,7 +156,7 @@ class PersonalEmployeeProvider extends ChangeNotifier {
   }
 
   Future<void> getUrl() async {
-    final urlModel = await _urlServices.getUrlModel();
+    final urlModel = await _urlService.getUrlModel();
     _baseUrl = urlModel!.link!;
     return;
   }
@@ -240,9 +242,7 @@ class PersonalEmployeeProvider extends ChangeNotifier {
     try {
       /// GET URL
       await getUrl();
-
-      final prefs = await SharedPreferences.getInstance();
-      _number = prefs.getString(ConstantSharedPref.numberUser)!;
+      _number = _prefs.getString(ConstantSharedPref.numberUser)!;
 
       await Future.wait([fetchGender(), fetchBlood(), fetchReligion(), fetchMarital()]);
       await assignData(employee);
@@ -437,9 +437,7 @@ class PersonalEmployeeProvider extends ChangeNotifier {
   }
 
   Future<bool> updatePersonalData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    final number = prefs.getString(ConstantSharedPref.numberUser);
+    final number = _prefs.getString(ConstantSharedPref.numberUser);
 
     final request = PersonalDataUpdateRequest(
       number: number ?? "",
@@ -484,8 +482,6 @@ class PersonalEmployeeProvider extends ChangeNotifier {
         return false;
       }
     } catch (e, trcae) {
-      print("trace $trcae");
-      print("trace $e");
       _title = "Failed";
       _message = e.toString();
       notifyListeners();

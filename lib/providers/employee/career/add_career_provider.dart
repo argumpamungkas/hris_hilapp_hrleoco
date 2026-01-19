@@ -5,9 +5,11 @@ import 'package:intl/intl.dart';
 import '../../../constant/constant.dart';
 import '../../../constant/exports.dart';
 import '../../../data/network/api/api_employee.dart';
+import '../../../injection.dart';
 
 class AddCareerProvider extends ChangeNotifier {
   final ApiEmployee _api = ApiEmployee();
+  final _prefs = sl<SharedPreferences>();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _dateController = TextEditingController();
@@ -45,9 +47,7 @@ class AddCareerProvider extends ChangeNotifier {
   }
 
   Future<bool> addCareer() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    final number = prefs.getString(ConstantSharedPref.numberUser);
+    final number = _prefs.getString(ConstantSharedPref.numberUser);
 
     final request = CareerRequest(
       number: number ?? "",

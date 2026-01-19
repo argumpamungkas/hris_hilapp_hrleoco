@@ -9,10 +9,10 @@ import 'package:provider/provider.dart';
 import '../../../providers/preferences_provider.dart';
 
 class ItemDataUser extends StatelessWidget {
-  ItemDataUser({super.key, required this.title, required this.value, this.filePhoto, this.hasPhoto = false});
+  ItemDataUser({super.key, required this.title, required this.value, this.filePhoto = '', this.hasPhoto = false});
 
-  final String title, value;
-  final File? filePhoto;
+  final String title, value, filePhoto;
+  // final File? filePhoto;
   final bool hasPhoto;
 
   @override
@@ -43,13 +43,13 @@ class ItemDataUser extends StatelessWidget {
                     visible: hasPhoto ? true : false,
                     child: InkWell(
                       onTap: () {
-                        if (filePhoto == null) {
+                        if (filePhoto.isEmpty) {
                           showFailSnackbar(context, "${title.toUpperCase()} doesn't have photo");
                           return;
                         }
-                        Navigator.pushNamed(context, Routes.viewImageScreen, arguments: filePhoto);
+                        Navigator.pushNamed(context, Routes.viewImageNetworkScreen, arguments: filePhoto);
                       },
-                      child: Icon(filePhoto == null ? Icons.visibility_off : Icons.visibility),
+                      child: Icon(filePhoto.isEmpty ? Icons.visibility_off : Icons.visibility),
                     ),
                   ),
                 ],

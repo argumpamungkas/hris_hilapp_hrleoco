@@ -1,9 +1,12 @@
+import 'package:easy_hris/constant/exports.dart';
 import 'package:flutter/material.dart';
 
 import '../../data/network/api/api_auth.dart';
+import '../../injection.dart';
 
 class SignUpProvider with ChangeNotifier {
   final ApiAuth _apiAuth = ApiAuth();
+  final _prefs = sl<SharedPreferences>();
 
   final TextEditingController _employeeIdController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
@@ -39,7 +42,7 @@ class SignUpProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> createAccount(BuildContext context) async {
+  Future<bool> createAccount() async {
     try {
       Map<String, dynamic> result = await _apiAuth.registerUser(_employeeIdController.text, _usernameController.text, _pwdController.text);
 

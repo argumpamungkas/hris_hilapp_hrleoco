@@ -15,10 +15,15 @@ class UrlServices {
   Future<UrlModel?> getUrlModel() async {
     final prefs = await SharedPreferences.getInstance();
 
-    final now = DateTime.now();
+    final now = DateTime.now().toLocal();
     final today = DateTime(now.year, now.month, now.day);
 
     try {
+      if (_urlModel != null) {
+        print("yang ada aja call url get it");
+        return _urlModel;
+      }
+
       final savedDatePrefs = prefs.getString(ConstantSharedPref.baseUrlDate);
       final savedUrl = prefs.getString(ConstantSharedPref.baseUrl);
 
@@ -31,12 +36,13 @@ class UrlServices {
 
         if (savedDate.isAtSameMomentAs(today)) {
           print("PAKAI PREFS (HARI INI)");
-          return UrlModel.fromJson(jsonDecode(savedUrl));
+          _urlModel = UrlModel.fromJson(jsonDecode(savedUrl));
+          return _urlModel;
         }
       }
 
       /// ============= CALL SUPABASE =====================
-      print("call");
+      print("call supabase");
       final result = await Supabase.instance.client.from('master_link').select('''link, access''');
 
       if (result.isNotEmpty) {

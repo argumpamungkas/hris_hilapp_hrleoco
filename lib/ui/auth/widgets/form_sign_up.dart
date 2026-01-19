@@ -100,7 +100,7 @@ class FormSignUp extends StatelessWidget {
                 onPressed: () async {
                   if (provSignUp.formKey.currentState!.validate()) {
                     showLoadingDialog(context);
-                    final result = await provSignUp.createAccount(context);
+                    final result = await provSignUp.createAccount();
 
                     if (!context.mounted) return;
                     Navigator.pop(context);

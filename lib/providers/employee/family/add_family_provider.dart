@@ -6,8 +6,11 @@ import 'package:easy_hris/data/network/api/api_employee.dart';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
+import '../../../injection.dart';
+
 class AddFamilyProvider extends ChangeNotifier {
   final ApiEmployee _api = ApiEmployee();
+  final _prefs = sl<SharedPreferences>();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _nationalIdController = TextEditingController();
@@ -80,9 +83,7 @@ class AddFamilyProvider extends ChangeNotifier {
   }
 
   Future<bool> addFamily() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    final number = prefs.getString(ConstantSharedPref.numberUser);
+    final number = _prefs.getString(ConstantSharedPref.numberUser);
 
     final request = FamilyRequest(
       number: number ?? "",
@@ -115,27 +116,27 @@ class AddFamilyProvider extends ChangeNotifier {
     }
   }
 
-  Future<bool> deleteFamily(String id) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final number = prefs.getString(ConstantSharedPref.numberUser);
-
-    try {
-      final result = await _api.deleteEmployee(id, number ?? "", "");
-
-      if (result.theme == 'success') {
-        _title = result.title!;
-        _message = result.message!;
-        return true;
-      } else {
-        _title = result.title!;
-        _message = result.message!;
-        return false;
-      }
-    } catch (e) {
-      _title = "Failed";
-      _message = e.toString();
-      notifyListeners();
-      return false;
-    }
-  }
+  //
+  // Future<bool> deleteFamily(String id) async {
+  //   final number = _prefs.getString(ConstantSharedPref.numberUser);
+  //
+  //   try {
+  //     final result = await _api.deleteEmployee(id, number ?? "", "");
+  //
+  //     if (result.theme == 'success') {
+  //       _title = result.title!;
+  //       _message = result.message!;
+  //       return true;
+  //     } else {
+  //       _title = result.title!;
+  //       _message = result.message!;
+  //       return false;
+  //     }
+  //   } catch (e) {
+  //     _title = "Failed";
+  //     _message = e.toString();
+  //     notifyListeners();
+  //     return false;
+  //   }
+  // }
 }

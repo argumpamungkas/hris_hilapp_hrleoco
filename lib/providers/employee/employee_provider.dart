@@ -4,8 +4,11 @@ import 'package:easy_hris/data/models/response/employee_response_model.dart';
 import 'package:easy_hris/data/network/api/api_employee.dart';
 import 'package:flutter/widgets.dart';
 
+import '../../injection.dart';
+
 class EmployeeProvider extends ChangeNotifier {
   final ApiEmployee _api = ApiEmployee();
+  final _prefs = sl<SharedPreferences>();
   int _index = 0;
 
   final List<String> _tabs = ["Company", "Personal Data", "Family", "Education", "Experience", "Training", "Career"];
@@ -38,15 +41,10 @@ class EmployeeProvider extends ChangeNotifier {
   }
 
   Future<void> fetchEmployee() async {
-    print("aaa");
     _resultStatus = ResultStatus.loading;
     notifyListeners();
     try {
-      print("1");
-      final prefs = await SharedPreferences.getInstance();
-      print("2");
-      final number = prefs.getString(ConstantSharedPref.numberUser);
-      print("3");
+      final number = _prefs.getString(ConstantSharedPref.numberUser);
       final result = await _api.fetchEmployeeUser(number ?? "");
 
       if (result.theme == "success") {
@@ -59,20 +57,17 @@ class EmployeeProvider extends ChangeNotifier {
       }
       notifyListeners();
     } catch (e, trace) {
-      print("error $e");
-      print("Trace $trace");
       _title = "Failed"!;
       _message = e.toString()!;
       _resultStatus = ResultStatus.error;
     }
   }
 
-  Future<bool> deleteEmployee(String id, String endPointDelete) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    final number = prefs.getString(ConstantSharedPref.numberUser);
+  Future<bool> deleteData(String id, String endPointDelete) async {
+    final number = _prefs.getString(ConstantSharedPref.numberUser);
 
     try {
-      final result = await _api.deleteEmployee(id, number ?? "", endPointDelete);
+      final result = await _api.deleteDataEmployee(id, number ?? "", endPointDelete);
 
       if (result.theme == 'success') {
         _title = result.title!;

@@ -59,7 +59,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                                 onPressed: () async {
                                   if (provForgot.formKey.currentState!.validate()) {
                                     showLoadingDialog(context);
-                                    final result = await provForgot.resetPassword(context);
+                                    final result = await provForgot.resetPassword();
 
                                     if (!context.mounted) return;
                                     Navigator.pop(context);

@@ -18,7 +18,7 @@ class ForgotPasswordProvider with ChangeNotifier {
   String get title => _title;
   String get message => _message;
 
-  Future<bool> resetPassword(BuildContext context) async {
+  Future<bool> resetPassword() async {
     try {
       var result = await _api.forgotPassword(_emailC.text);
       _title = result['title'];

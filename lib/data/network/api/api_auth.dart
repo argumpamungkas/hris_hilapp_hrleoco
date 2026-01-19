@@ -9,12 +9,15 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../constant/constant.dart';
+import '../../../injection.dart';
 
-class ApiAuth extends UrlServices {
+class ApiAuth {
+  final _urlService = sl<UrlServices>();
+
   Future<ApiResponse<ConfigModel>> fetchConfig() async {
-    final baseUrl = await getUrlModel();
+    final baseUrl = await _urlService.getUrlModel();
 
-    Uri url = Uri.parse("${baseUrl!.link}/api/auth/config");
+    Uri url = Uri.parse("${baseUrl?.link}/api/auth/config");
 
     print("URL =>> $url");
 
@@ -49,7 +52,7 @@ class ApiAuth extends UrlServices {
   }
 
   Future<dynamic> loginUser(String username, String pwd) async {
-    final baseUrl = await getUrlModel();
+    final baseUrl = await _urlService.getUrlModel();
 
     Uri url = Uri.parse("${baseUrl!.link}/api/auth/login");
 
@@ -107,7 +110,7 @@ class ApiAuth extends UrlServices {
   }
 
   Future<Map<String, dynamic>> registerUser(String employeeId, String username, String pwd) async {
-    final baseUrl = await getUrlModel();
+    final baseUrl = await _urlService.getUrlModel();
 
     Uri url = Uri.parse("${baseUrl!.link}/api/auth/register");
 
@@ -138,7 +141,7 @@ class ApiAuth extends UrlServices {
   }
 
   Future<Map<String, dynamic>> forgotPassword(String email) async {
-    final baseUrl = await getUrlModel();
+    final baseUrl = await _urlService.getUrlModel();
 
     Uri url = Uri.parse("${baseUrl!.link}/api/auth/forgotPassword");
 
@@ -167,7 +170,7 @@ class ApiAuth extends UrlServices {
   }
 
   Future<ApiResponse> changePassword(String username, String password) async {
-    final baseUrl = await getUrlModel();
+    final baseUrl = await _urlService.getUrlModel();
 
     Uri url = Uri.parse("${baseUrl!.link}/api/auth/changePassword");
 

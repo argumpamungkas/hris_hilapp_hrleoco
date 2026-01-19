@@ -1,10 +1,10 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 
-import '../../helpers/notification_helper.dart';
+import '../../services/notification_services.dart';
 
 class FirebaseApi {
   final _firebaseMessaging = FirebaseMessaging.instance;
-  final NotificationHelper _notificationHelper = NotificationHelper();
+  final NotificationServices _NotificationServices = NotificationServices();
 
   Future<dynamic> setupNotification() async {
     NotificationSettings settings = await _firebaseMessaging.requestPermission(
@@ -27,18 +27,13 @@ class FirebaseApi {
   }
 
   Future<void> initPushNotification() async {
-    await FirebaseMessaging.instance
-        .setForegroundNotificationPresentationOptions(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
+    await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(alert: true, badge: true, sound: true);
 
     FirebaseMessaging.instance.getInitialMessage();
 
     FirebaseMessaging.onMessage.listen((message) async {
       if (message.notification != null) {
-        _notificationHelper.showNotifOnForeground(message);
+        _NotificationServices.showNotifOnForeground(message);
       }
     });
   }

@@ -20,11 +20,14 @@ import 'package:path_provider/path_provider.dart';
 import '../../../constant/constant.dart';
 import 'package:http/http.dart' as http;
 
+import '../../../injection.dart';
 import '../../models/response/employee_model.dart';
 
-class ApiEmployee extends UrlServices {
+class ApiEmployee {
+  final _urlService = sl<UrlServices>();
+
   Future<ApiResponse<List<IdNameModel>>> fetchMaster(String source) async {
-    final baseUrl = await getUrlModel();
+    final baseUrl = await _urlService.getUrlModel();
 
     Uri url = Uri.parse("${baseUrl!.link}/api/master/reads?source=$source");
 
@@ -47,7 +50,7 @@ class ApiEmployee extends UrlServices {
   }
 
   Future<ApiResponse<List<ReligionModel>>> fetchReligion(String source) async {
-    final baseUrl = await getUrlModel();
+    final baseUrl = await _urlService.getUrlModel();
 
     Uri url = Uri.parse("${baseUrl!.link}/api/master/reads?source=$source");
 
@@ -70,7 +73,7 @@ class ApiEmployee extends UrlServices {
   }
 
   Future<ApiResponse<List<MaritalModel>>> fetchMarital(String source) async {
-    final baseUrl = await getUrlModel();
+    final baseUrl = await _urlService.getUrlModel();
 
     Uri url = Uri.parse("${baseUrl!.link}/api/master/reads?source=$source");
 
@@ -93,7 +96,7 @@ class ApiEmployee extends UrlServices {
   }
 
   Future<ApiResponse<EmployeeModel>> fetchEmployee(String numberUser) async {
-    final baseUrl = await getUrlModel();
+    final baseUrl = await _urlService.getUrlModel();
 
     Uri url = Uri.parse("${baseUrl!.link}/api/employees/reads?number=$numberUser");
 
@@ -117,7 +120,7 @@ class ApiEmployee extends UrlServices {
 
   Future<ApiResponse<EmployeeResponseModel>> fetchEmployeeUser(String numberUser) async {
     // print("call");
-    final baseUrl = await getUrlModel();
+    final baseUrl = await _urlService.getUrlModel();
 
     Uri url = Uri.parse("${baseUrl!.link}/api/employees/reads?number=$numberUser");
 
@@ -146,7 +149,7 @@ class ApiEmployee extends UrlServices {
     required File fileTax,
     required File fileImageProfile,
   }) async {
-    final baseUrl = await getUrlModel();
+    final baseUrl = await _urlService.getUrlModel();
 
     Uri url = Uri.parse("${baseUrl!.link}/api/employees/updateData");
 
@@ -202,7 +205,7 @@ class ApiEmployee extends UrlServices {
   }
 
   Future<ApiResponse> addFamily(FamilyRequest request) async {
-    final baseUrl = await getUrlModel();
+    final baseUrl = await _urlService.getUrlModel();
 
     Uri url = Uri.parse("${baseUrl!.link}/api/employees/createFamily");
 
@@ -225,10 +228,10 @@ class ApiEmployee extends UrlServices {
     }
   }
 
-  Future<ApiResponse> deleteEmployee(String id, String number, String enpoint) async {
-    final baseUrl = await getUrlModel();
+  Future<ApiResponse> deleteDataEmployee(String id, String number, String endPoint) async {
+    final baseUrl = await _urlService.getUrlModel();
 
-    Uri url = Uri.parse("${baseUrl!.link}/api/employees/$enpoint");
+    Uri url = Uri.parse("${baseUrl!.link}/api/employees/$endPoint");
 
     try {
       var response = await http.post(url, body: {"id": id, "number": number});
@@ -250,7 +253,7 @@ class ApiEmployee extends UrlServices {
   }
 
   Future<ApiResponse> addEducation(EducationRequest request) async {
-    final baseUrl = await getUrlModel();
+    final baseUrl = await _urlService.getUrlModel();
 
     Uri url = Uri.parse("${baseUrl!.link}/api/employees/createEducation");
 
@@ -274,7 +277,7 @@ class ApiEmployee extends UrlServices {
   }
 
   Future<ApiResponse> addExperience(ExperienceRequest request) async {
-    final baseUrl = await getUrlModel();
+    final baseUrl = await _urlService.getUrlModel();
 
     Uri url = Uri.parse("${baseUrl!.link}/api/employees/createExperience");
 
@@ -298,7 +301,7 @@ class ApiEmployee extends UrlServices {
   }
 
   Future<ApiResponse> addTraining(TrainingRequest request) async {
-    final baseUrl = await getUrlModel();
+    final baseUrl = await _urlService.getUrlModel();
 
     Uri url = Uri.parse("${baseUrl!.link}/api/employees/createTraining");
 
@@ -322,7 +325,7 @@ class ApiEmployee extends UrlServices {
   }
 
   Future<ApiResponse> addCareer(CareerRequest request) async {
-    final baseUrl = await getUrlModel();
+    final baseUrl = await _urlService.getUrlModel();
 
     Uri url = Uri.parse("${baseUrl!.link}/api/employees/createCarrer");
 

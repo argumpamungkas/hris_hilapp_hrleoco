@@ -7,7 +7,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../../data/helpers/notification_helper.dart';
+import '../../data/services/notification_services.dart';
 import '../../main.dart';
 import '../util/utils.dart';
 import '../util/widgets/app_bar_custom.dart';
@@ -26,7 +26,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
 
   String _localPath = "";
 
-  final NotificationHelper _notificationHelper = NotificationHelper();
+  final NotificationServices _NotificationServices = NotificationServices();
 
   Future<bool> _checkPermissionStorage() async {
     // print("CALL");
@@ -160,7 +160,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                             )
                                 .then((value) async {
                               Navigator.pop(context);
-                              await _notificationHelper
+                              await _NotificationServices
                                   .showNotificationSuccessDownloading(
                                 flutterLocalNotificationsPlugin,
                                 file.path,
@@ -195,7 +195,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                             )
                                 .then((value) async {
                               Navigator.pop(context);
-                              await _notificationHelper
+                              await _NotificationServices
                                   .showNotificationSuccessDownloading(
                                 flutterLocalNotificationsPlugin,
                                 file.path,

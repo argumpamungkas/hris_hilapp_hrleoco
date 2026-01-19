@@ -5,9 +5,11 @@ import 'package:flutter/widgets.dart';
 import '../../../constant/constant.dart';
 import '../../../data/models/response/id_name_model.dart';
 import '../../../data/network/api/api_employee.dart';
+import '../../../injection.dart';
 
 class AddEducationProvider extends ChangeNotifier {
   final ApiEmployee _api = ApiEmployee();
+  final _prefs = sl<SharedPreferences>();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -86,9 +88,7 @@ class AddEducationProvider extends ChangeNotifier {
   }
 
   Future<bool> addEducation() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    final number = prefs.getString(ConstantSharedPref.numberUser);
+    final number = _prefs.getString(ConstantSharedPref.numberUser);
 
     final request = EducationRequest(
       number: number ?? "",

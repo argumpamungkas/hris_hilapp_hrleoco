@@ -10,11 +10,13 @@ import '../../data/models/profile.dart';
 import '../../data/models/response/user_model.dart';
 import '../../data/network/api/api_auth.dart';
 import '../../data/network/api/api_dashboard.dart';
+import '../../injection.dart';
 import '../../ui/util/utils.dart';
 
 class ProfileProvider extends ChangeNotifier {
   final ApiDashboard _api = ApiDashboard();
   final ApiAuth _apiAuth = ApiAuth();
+  final _prefs = sl<SharedPreferences>();
 
   late ResultProfile _userProfile;
   late String _linkServer;
@@ -40,10 +42,9 @@ class ProfileProvider extends ChangeNotifier {
     _resultStatusUserModel = ResultStatus.loading;
     _greetingCondition = greeting();
     notifyListeners();
-    SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    if (prefs.getString(ConstantSharedPref.user) != null) {
-      final user = prefs.getString(ConstantSharedPref.user);
+    if (_prefs.getString(ConstantSharedPref.user) != null) {
+      final user = _prefs.getString(ConstantSharedPref.user);
       _userModel = UserModel.fromJson(jsonDecode(user!));
       _resultStatusUserModel = ResultStatus.hasData;
       notifyListeners();
@@ -65,17 +66,12 @@ class ProfileProvider extends ChangeNotifier {
   }
 
   Future<dynamic> fetchUserProfile() async {
-    // print("call kdmbali");
-    // print("ERR");
     _resultStatus = ResultStatus.loading;
     notifyListeners();
-    _linkServer = await getLink();
     try {
       Map<String, dynamic> response = await _api.fetchUserProfile();
       User user = User.fromJson(response);
-      // debugPrint("USERR => ${user.results.toJson()}");
       _userProfile = user.results;
-      // print(user.results.status);
       if (_userProfile.status == "1") {
         _resultStatus = ResultStatus.noData;
         _message = "You account deactivate. You haven't access this application";

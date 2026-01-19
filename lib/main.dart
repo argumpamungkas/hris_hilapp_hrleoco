@@ -1,3 +1,4 @@
+import 'package:easy_hris/injection.dart';
 import 'package:easy_hris/providers/preferences_provider.dart';
 import 'package:easy_hris/providers/providers.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -11,7 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'constant/routes.dart';
-import 'data/helpers/notification_helper.dart';
+import 'data/services/notification_services.dart';
 import 'data/network/api/firebase_api.dart';
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
@@ -24,6 +25,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+
+  await Injection().initialize();
 
   await dotenv.load(fileName: '.env');
 
@@ -38,8 +41,8 @@ void main() async {
 
   await FirebaseApi().setupNotification();
 
-  final NotificationHelper notificationHelper = NotificationHelper();
-  await notificationHelper.initNotifications(flutterLocalNotificationsPlugin);
+  final NotificationServices notificationServices = NotificationServices();
+  await notificationServices.initNotifications(flutterLocalNotificationsPlugin);
 
   runApp(const MyApp());
 }

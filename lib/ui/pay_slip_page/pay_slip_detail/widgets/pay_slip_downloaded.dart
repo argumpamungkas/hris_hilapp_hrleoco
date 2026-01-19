@@ -7,13 +7,13 @@ import 'package:path_provider/path_provider.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-import '../../../../data/helpers/notification_helper.dart';
+import '../../../../data/services/notification_services.dart';
 import '../../../../data/models/pay_slip.dart';
 import '../../../../main.dart';
 import '../../../util/utils.dart';
 
 class PaySlipDownloaded {
-  final NotificationHelper _notificationHelper = NotificationHelper();
+  final NotificationServices _NotificationServices = NotificationServices();
 
   Future<void> createPdf(
     BuildContext context,
@@ -355,7 +355,7 @@ class PaySlipDownloaded {
       ..writeAsBytesSync(await pdf.save(), flush: true);
 
     Future.delayed(const Duration(seconds: 1), () async {
-      await _notificationHelper.showNotificationSuccessDownloading(
+      await _NotificationServices.showNotificationSuccessDownloading(
         flutterLocalNotificationsPlugin,
         '$localPath/$fileName.pdf',
         "$fileName.pdf",

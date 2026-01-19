@@ -9,10 +9,12 @@ import '../../constant/constant.dart';
 import '../../data/models/profile.dart';
 import '../../data/network/api/api_auth.dart';
 import '../../data/network/api/api_dashboard.dart';
+import '../../injection.dart';
 
 class SignInProvider with ChangeNotifier {
   final ApiAuth _api = ApiAuth();
   final ApiDashboard _apiD = ApiDashboard();
+  final _prefs = sl<SharedPreferences>();
 
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _usernameC = TextEditingController();
@@ -42,7 +44,6 @@ class SignInProvider with ChangeNotifier {
   }
 
   Future<bool> signInEmployee() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
     final user = UserModel(
       departementId: "IT",
       number: "2360-020525",
@@ -56,9 +57,9 @@ class SignInProvider with ChangeNotifier {
       avatar: "",
       roles: "Lead",
     );
-    prefs.setString(ConstantSharedPref.user, jsonEncode(user));
-    prefs.setString(ConstantSharedPref.numberUser, user.number!);
-    prefs.setBool(ConstantSharedPref.isLogin, true);
+    _prefs.setString(ConstantSharedPref.user, jsonEncode(user));
+    _prefs.setString(ConstantSharedPref.numberUser, user.number!);
+    _prefs.setBool(ConstantSharedPref.isLogin, true);
     return true;
   }
 
