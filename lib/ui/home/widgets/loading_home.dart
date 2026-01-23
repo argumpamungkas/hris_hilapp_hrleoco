@@ -6,7 +6,6 @@ import 'package:shimmer/shimmer.dart';
 import '../../../providers/home_provider.dart';
 import '../../../providers/notifications/notification_provider.dart';
 import '../../../providers/preferences_provider.dart';
-import '../../attendance_team/controller/day_off_controller.dart';
 import 'background_home.dart';
 import 'notification_widget.dart';
 
@@ -19,9 +18,9 @@ class LoadingHome extends StatelessWidget {
       builder: (context, provHome, provPref, _) {
         return RefreshIndicator(
           onRefresh: () async {
-            provHome.fetchHome();
+            // provHome.fetchHome();
             Provider.of<NotificationProvider>(context, listen: false).fetchNotification();
-            Provider.of<AttendanceTeamController>(context, listen: false).fetchDaysOff();
+            // Provider.of<AttendanceTeamController>(context, listen: false).fetchDaysOff();
             // Provider.of<NewsController>(context, listen: false).fetchNews(context);
           },
           child: SingleChildScrollView(

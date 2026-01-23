@@ -4,6 +4,8 @@ import 'package:easy_hris/constant/routes.dart';
 import 'package:easy_hris/data/models/response/employee_response_model.dart';
 import 'package:easy_hris/providers/employee/employee_provider.dart';
 import 'package:easy_hris/providers/employee/personal_provider.dart';
+import 'package:easy_hris/providers/preferences_provider.dart';
+import 'package:easy_hris/ui/employee/widgets/card_info_custom.dart';
 import 'package:easy_hris/ui/util/utils.dart';
 import 'package:easy_hris/ui/util/widgets/build_upload_card_image.dart';
 import 'package:easy_hris/ui/util/widgets/dialog_helpers.dart';
@@ -25,8 +27,8 @@ class PersonalScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => PersonalEmployeeProvider(employee),
       child: Scaffold(
-        body: Consumer<PersonalEmployeeProvider>(
-          builder: (context, prov, _) {
+        body: Consumer2<PersonalEmployeeProvider, PreferencesProvider>(
+          builder: (context, prov, provPref, _) {
             switch (prov.resultStatus) {
               case ResultStatus.loading:
                 return Center(child: CupertinoActivityIndicator());
@@ -57,19 +59,16 @@ class PersonalScreen extends StatelessWidget {
                             employee.temporary.isNotEmpty
                                 ? Column(
                                     children: [
-                                      Card(
-                                        child: Container(
-                                          decoration: BoxDecoration(color: Colors.amber, borderRadius: BorderRadius.circular(16)),
-                                          padding: EdgeInsets.all(16),
-                                          child: Row(
-                                            spacing: 8.w,
-                                            children: [
-                                              Icon(Icons.info_outline),
-                                              Expanded(child: Text("You cannot update Personal Data. Because yours data still Waiting Approval.")),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
+                                      CardInfoCustom(value: "You cannot update Personal Data. Because yours data still Waiting Approval."),
+                                      SizedBox(height: 12.h),
+                                    ],
+                                  )
+                                : SizedBox.shrink(),
+
+                            !provPref.isUpdatePersonalData
+                                ? Column(
+                                    children: [
+                                      CardInfoCustom(value: "Not yet entered the Personal Data update period."),
                                       SizedBox(height: 12.h),
                                     ],
                                   )
@@ -464,7 +463,7 @@ class PersonalScreen extends StatelessWidget {
                                       isRequired: false,
                                       readOnly: true,
                                       keyboardType: TextInputType.number,
-                                      enabled: false,
+                                      enabled: true,
                                     ),
                                   ),
 
@@ -475,7 +474,21 @@ class PersonalScreen extends StatelessWidget {
                                       hint: "-",
                                       isRequired: false,
                                       readOnly: true,
-                                      enabled: false,
+                                      iconSuffix: IconButton(
+                                        icon: const Icon(Icons.calendar_today),
+                                        onPressed: () async {
+                                          DateTime? pickedDate = await showDatePicker(
+                                            context: context,
+                                            initialDate: DateTime.now().toLocal(),
+                                            firstDate: DateTime(1900),
+                                            lastDate: DateTime.now().toLocal(),
+                                          );
+
+                                          if (pickedDate != null) {
+                                            prov.onChangePickerBpjs(pickedDate);
+                                          }
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -490,9 +503,9 @@ class PersonalScreen extends StatelessWidget {
                                       controller: prov.jknController,
                                       label: "JKN",
                                       hint: "-",
-                                      isRequired: true,
+                                      isRequired: false,
                                       readOnly: true,
-                                      enabled: false,
+                                      enabled: true,
                                     ),
                                   ),
 
@@ -503,7 +516,21 @@ class PersonalScreen extends StatelessWidget {
                                       hint: "-",
                                       isRequired: false,
                                       readOnly: true,
-                                      enabled: false,
+                                      iconSuffix: IconButton(
+                                        icon: const Icon(Icons.calendar_today),
+                                        onPressed: () async {
+                                          DateTime? pickedDate = await showDatePicker(
+                                            context: context,
+                                            initialDate: DateTime.now().toLocal(),
+                                            firstDate: DateTime(1900),
+                                            lastDate: DateTime.now().toLocal(),
+                                          );
+
+                                          if (pickedDate != null) {
+                                            prov.onChangePickerJkn(pickedDate);
+                                          }
+                                        },
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -645,7 +672,7 @@ class PersonalScreen extends StatelessWidget {
 
                         SizedBox(height: 8.h),
 
-                        employee.temporary.isEmpty
+                        employee.temporary.isEmpty && provPref.isUpdatePersonalData
                             ? Consumer<EmployeeProvider>(
                                 builder: (context, provEmployee, _) {
                                   return Padding(

@@ -1,12 +1,14 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:easy_hris/ui/attendance/camera_face_detection_screen.dart';
 import 'package:easy_hris/ui/employee/add/add_career_screen.dart';
 import 'package:easy_hris/ui/employee/add/add_education_screen.dart';
 import 'package:easy_hris/ui/employee/add/add_experience_screen.dart';
 import 'package:easy_hris/ui/employee/add/add_family_screen.dart';
 import 'package:easy_hris/ui/employee/add/add_training_screen.dart';
 import 'package:easy_hris/ui/employee/employee_screen.dart';
+import 'package:easy_hris/ui/profile/id_card_screen.dart';
 import 'package:easy_hris/ui/util/widgets/view_image.dart';
 import 'package:easy_hris/ui/util/widgets/view_image_network.dart';
 import 'package:flutter/material.dart';
@@ -64,6 +66,7 @@ class Routes {
   static const profileChangePasswordScreen = '/profile_change_password_screen';
   static const profilePersonalDataScreen = '/profile_personal_data_screen';
   static const settingScreen = '/setting_screen';
+  static const idCardScreen = '/id_card_screen';
   static const teamsDetailScreen = '/teams_detail_screen';
 
   // NOTIFICATION
@@ -82,6 +85,7 @@ class Routes {
 
   // ATTENDANCE
   static const cameraScreen = '/camera_screen';
+  static const cameraFaceDetectionScreen = '/camera_face_detection_screen';
   static const picturePreviewScreen = '/picture_preview_screen';
   static const attendanceSummaryScreen = '/attendance_summary_screen';
   static const attendanceTeamScreen = '/attendance_team_screen';
@@ -112,6 +116,7 @@ class Routes {
     profilePersonalDataScreen: (context) => ProfilePersonalDataScreen(),
     profileChangePasswordScreen: (context) => const ProfileChangePasswordScreen(),
     settingScreen: (context) => const SettingsScreen(),
+    idCardScreen: (context) => const IdCardScreen(),
 
     // Notification
     notificationScreen: (context) => const NotificationScreen(),
@@ -128,8 +133,9 @@ class Routes {
     viewImageNetworkScreen: (context) => ViewImageNetwork(selectImage: ModalRoute.of(context)?.settings.arguments as String),
 
     // Attendance
-    cameraScreen: (context) => CameraScreen(cameras: ModalRoute.of(context)!.settings.arguments as List<CameraDescription>),
-    picturePreviewScreen: (context) => PicturePreview(picture: ModalRoute.of(context)!.settings.arguments as XFile),
+    cameraScreen: (context) => CameraScreen(args: ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>),
+    // cameraFaceDetectionScreen: (context) => CameraFaceDetectionScreen(),
+    picturePreviewScreen: (context) => PicturePreview(args: ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>),
     attendanceSummaryScreen: (context) => AttendanceSummaryScreen(result: ModalRoute.of(context)?.settings.arguments as AttendanceSummary),
     attendanceTeamScreen: (context) => const AttendanceTeam(),
     attendanceHistoryScreen: (context) => const AttendanceHistoryScreen(),

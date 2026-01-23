@@ -134,7 +134,7 @@ class PermitAddedProvider extends ChangeNotifier {
       // notifyListeners();
 
       List response = await _api.fetchPermitReason(permitType!.id);
-      print("RESPONSE PERMIT REASON $response");
+      // print("RESPONSE PERMIT REASON $response");
 
       final listReas = response.map((e) => PermitReason.fromJson(e)).toSet().toList();
 

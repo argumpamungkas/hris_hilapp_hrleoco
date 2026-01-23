@@ -112,7 +112,7 @@ class ApiPermit {
       // print("RESPONSE ${response.body}");
 
       var responseBody = jsonDecode(response.body);
-      print("Fetch permit available $responseBody");
+      // print("Fetch permit available $responseBody");
       if (response.statusCode == 200) {
         return responseBody;
       } else {
@@ -191,7 +191,7 @@ class ApiPermit {
       }
     } catch (e) {
       // debugPrint("STATUS CODE add permit ${e.toString()}");
-      print("error $e");
+      // print("error $e");
       throw errMessage;
     }
   }

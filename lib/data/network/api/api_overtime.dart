@@ -159,12 +159,12 @@ class ApiOvertime {
     }
 
     Uri url = Uri.parse("${link}api/overtimes/overtimeSummary/$apiKey");
-    print("URL overtime summary $url");
+    // print("URL overtime summary $url");
 
     try {
       var response = await http.post(url, body: {'trans_date': date});
       var responseBody = jsonDecode(response.body);
-      print("RESPONSE $responseBody");
+      // print("RESPONSE $responseBody");
       if (response.statusCode == 200) {
         return responseBody;
       } else {

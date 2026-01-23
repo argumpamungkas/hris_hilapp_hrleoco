@@ -2,6 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:easy_hris/constant/exports.dart';
+import 'package:easy_hris/data/models/response/attendance_model.dart';
+import 'package:easy_hris/data/models/response/config_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -10,19 +13,29 @@ import '../constant/constant.dart';
 import '../data/models/attendance.dart';
 import '../data/models/attendance_summary.dart';
 import '../data/models/news.dart';
+import '../data/models/response/shift_user_model.dart';
 import '../data/network/api/api_home.dart';
+import '../injection.dart';
 import '../ui/util/utils.dart';
 
 class HomeProvider extends ChangeNotifier {
   final ApiHome _api = ApiHome();
+  final _prefs = sl<SharedPreferences>();
 
   String _linkServer = '';
   // ResultStatus _resultStatus = ResultStatus.init;
   ResultStatus _resultStatus = ResultStatus.hasData;
   ResultStatus _resultStatusLocation = ResultStatus.init;
+  ResultStatus _resultStatusAttendanceToday = ResultStatus.init;
   String _address = '';
   String _message = '';
+  String _messageAttendanceToday = '';
   bool _canAttendance = false;
+  double _radiusDistance = 0;
+
+  ShiftUserModel? _shiftUserModel;
+  String _checkIn = '00:00';
+  String _checkOut = '00:00';
 
   late ResultsAttendance _attendanceToday;
   late AttendanceSummary _attendanceSummary;
@@ -32,9 +45,15 @@ class HomeProvider extends ChangeNotifier {
 
   ResultStatus get resultStatus => _resultStatus;
   ResultStatus get resultStatusLocation => _resultStatusLocation;
+  ResultStatus get resultStatusAttendanceToday => _resultStatusAttendanceToday;
 
   String get address => _address;
   String get message => _message;
+  String get messageAttendanceToday => _messageAttendanceToday;
+  String get checkIn => _checkIn;
+  String get checkOut => _checkOut;
+
+  ShiftUserModel? get shiftUserModel => _shiftUserModel;
 
   bool get canAttendance => _canAttendance;
 
@@ -44,19 +63,98 @@ class HomeProvider extends ChangeNotifier {
 
   List<ResultsNews> get listNews => _listNews;
 
-  HomeProvider() {
-    fetchCurrentLocation();
+  double get radiusDistance => _radiusDistance;
+
+  HomeProvider(ConfigModel configModel) {
+    init();
+    fetchCurrentLocation(configModel);
   }
 
-  Future<void> fetchCurrentLocation() async {
+  Future<void> init() async {
+    _resultStatusAttendanceToday = ResultStatus.loading;
+    notifyListeners();
+
+    try {
+      await Future.wait([fetchShift(), fetchAttendanceToday()]);
+
+      _resultStatusAttendanceToday = ResultStatus.hasData;
+      notifyListeners();
+    } catch (e) {
+      _resultStatusAttendanceToday = ResultStatus.error;
+      notifyListeners();
+    }
+  }
+
+  Future<void> fetchShift() async {
+    try {
+      final number = _prefs.getString(ConstantSharedPref.numberUser);
+      final result = await _api.fetchShiftUser(number ?? "");
+
+      if (result.theme == 'success') {
+        _shiftUserModel = result.result!;
+        return;
+      } else {
+        return;
+      }
+    } catch (e) {
+      return;
+    }
+  }
+
+  Future<void> fetchAttendanceToday() async {
+    final now = DateTime.now().toLocal();
+    try {
+      final number = _prefs.getString(ConstantSharedPref.numberUser);
+      final transDate = "${now.year}-${now.month}-${now.day}";
+      final result = await _api.fetchAttendanceData(number ?? "", transDate);
+      final data = result.result;
+
+      if (data!.isNotEmpty) {
+        for (var item in data) {
+          if (item.location == '1') {
+            _checkIn = item.transTime!;
+          }
+
+          if (item.location == '2') {
+            _checkOut = item.transTime!;
+          }
+        }
+      }
+    } catch (e) {
+      return;
+    }
+  }
+
+  Future<void> fetchCurrentLocation(ConfigModel configModel) async {
     _resultStatusLocation = ResultStatus.loading;
     notifyListeners();
 
-    await Future.delayed(Duration(seconds: 3));
+    if (configModel.latitude == "0" || configModel.longitude == "0" || configModel.radius == "0") {
+      _message = "Something wrong as coordinate location company.";
+      _resultStatusLocation = ResultStatus.error;
+      _canAttendance = false;
+      notifyListeners();
+      return;
+    }
+
+    final latCompany = double.tryParse(configModel.latitude ?? '0');
+    final longCompany = double.tryParse(configModel.longitude ?? '0');
+    final maxRadius = double.tryParse(configModel.radius ?? '0');
+
+    if (latCompany == null || longCompany == null || maxRadius == null) {
+      _message = "Invalid company location data.";
+      _resultStatusLocation = ResultStatus.error;
+      _canAttendance = false;
+      notifyListeners();
+      return;
+    }
 
     final serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       _message = "Your gps inactive";
+      _resultStatusLocation = ResultStatus.error;
+      _canAttendance = false;
+      notifyListeners();
       return;
     }
 
@@ -68,11 +166,14 @@ class HomeProvider extends ChangeNotifier {
       final p = place.first;
       _address = [p.street, p.subLocality, p.locality, p.administrativeArea, p.postalCode, p.country].where((e) => e != null).join(', ');
 
-      final radius = 100;
+      final distance = Geolocator.distanceBetween(location.latitude, location.longitude, latCompany!, longCompany!);
 
-      final distance = Geolocator.distanceBetween(location.latitude, location.longitude, 123, 123);
-
-      _canAttendance = true;
+      if (distance <= maxRadius!.toDouble()) {
+        _canAttendance = true;
+      } else {
+        _radiusDistance = distance;
+        _canAttendance = false;
+      }
 
       _resultStatusLocation = ResultStatus.hasData;
       notifyListeners();
@@ -89,7 +190,7 @@ class HomeProvider extends ChangeNotifier {
       notifyListeners();
       return;
     } catch (e, trace) {
-      print("error $e");
+      // print("error $e");
       _resultStatusLocation = ResultStatus.error;
       _canAttendance = false;
       _message = "Something wrong get location. $e";
@@ -98,40 +199,40 @@ class HomeProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> fetchHome() async {
-    // print("CALL");
-    _resultStatus = ResultStatus.loading;
-    notifyListeners();
-    _linkServer = await getLink();
-
-    try {
-      var response = await _api.fetchHomeApi();
-      Attendance attendance = Attendance.fromJson(jsonDecode(response[0].body));
-      _attendanceToday = attendance.results;
-      // =================
-      _attendanceSummary = AttendanceSummary.fromJson(jsonDecode(response[1].body));
-
-      // print("aattendance summary ${_attendanceSummary.toJson()}");
-
-      // =================
-      News news = News.fromJson(jsonDecode(response[2].body));
-      _listNews = news.results;
-      _resultStatus = ResultStatus.hasData;
-      notifyListeners();
-    } on TimeoutException catch (_) {
-      _resultStatus = ResultStatus.error;
-      _message = errTimeOutMsg;
-      notifyListeners();
-    } on SocketException catch (_) {
-      _resultStatus = ResultStatus.error;
-      _message = errMessageNoInternet;
-      notifyListeners();
-    } catch (e, trace) {
-      print("ERROR $e");
-      print("ERROR $trace");
-      _resultStatus = ResultStatus.error;
-      _message = "$errMessage. $e";
-      notifyListeners();
-    }
-  }
+  // Future<void> fetchHome() async {
+  //   // print("CALL");
+  //   _resultStatus = ResultStatus.loading;
+  //   notifyListeners();
+  //   _linkServer = await getLink();
+  //
+  //   try {
+  //     var response = await _api.fetchHomeApi();
+  //     Attendance attendance = Attendance.fromJson(jsonDecode(response[0].body));
+  //     _attendanceToday = attendance.results;
+  //     // =================
+  //     _attendanceSummary = AttendanceSummary.fromJson(jsonDecode(response[1].body));
+  //
+  //     // print("aattendance summary ${_attendanceSummary.toJson()}");
+  //
+  //     // =================
+  //     News news = News.fromJson(jsonDecode(response[2].body));
+  //     _listNews = news.results;
+  //     _resultStatus = ResultStatus.hasData;
+  //     notifyListeners();
+  //   } on TimeoutException catch (_) {
+  //     _resultStatus = ResultStatus.error;
+  //     _message = errTimeOutMsg;
+  //     notifyListeners();
+  //   } on SocketException catch (_) {
+  //     _resultStatus = ResultStatus.error;
+  //     _message = errMessageNoInternet;
+  //     notifyListeners();
+  //   } catch (e, trace) {
+  //     print("ERROR $e");
+  //     print("ERROR $trace");
+  //     _resultStatus = ResultStatus.error;
+  //     _message = "$errMessage. $e";
+  //     notifyListeners();
+  //   }
+  // }
 }

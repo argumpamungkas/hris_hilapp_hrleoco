@@ -1,6 +1,7 @@
 import 'package:easy_hris/injection.dart';
 import 'package:easy_hris/providers/preferences_provider.dart';
 import 'package:easy_hris/providers/providers.dart';
+// import 'package:face_camera/face_camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,7 @@ import 'constant/routes.dart';
 import 'data/services/notification_services.dart';
 import 'data/network/api/firebase_api.dart';
 
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+// final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -25,9 +26,8 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-
   await Injection().initialize();
-
+  // await FaceCamera.initialize();
   await dotenv.load(fileName: '.env');
 
   /// GET URL FORM SUPABASE
@@ -42,7 +42,7 @@ void main() async {
   await FirebaseApi().setupNotification();
 
   final NotificationServices notificationServices = NotificationServices();
-  await notificationServices.initNotifications(flutterLocalNotificationsPlugin);
+  await notificationServices.initNotifications();
 
   runApp(const MyApp());
 }
@@ -67,6 +67,14 @@ class MyApp extends StatelessWidget {
                 theme: prov.themeData,
                 initialRoute: Routes.splashScreen,
                 routes: Routes.routesPage,
+                builder: (context, child) {
+                  return MediaQuery(
+                    data: MediaQuery.of(context).copyWith(
+                      textScaleFactor: 0.8, // 🔥 KUNCI
+                    ),
+                    child: child!,
+                  );
+                },
               );
             },
           ),

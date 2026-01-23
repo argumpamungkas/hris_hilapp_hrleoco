@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constant/constant.dart';
+import '../../../constant/routes.dart';
 import '../../../providers/preferences_provider.dart';
 import '../../util/widgets/image_network_custom.dart';
 
@@ -23,7 +24,14 @@ class IdentityUser extends StatelessWidget {
               SizedBox(
                 height: 80.h,
                 width: 80.w,
-                child: ImageNetworkCustom(url: imageUrl),
+                child: InkWell(
+                  onTap: imageUrl.contains('default.png')
+                      ? null
+                      : () {
+                          Navigator.pushNamed(context, Routes.viewImageNetworkScreen, arguments: imageUrl);
+                        },
+                  child: ClipOval(child: ImageNetworkCustom(url: imageUrl, isFit: true)),
+                ),
               ),
               SizedBox(height: 8.h),
               Text(

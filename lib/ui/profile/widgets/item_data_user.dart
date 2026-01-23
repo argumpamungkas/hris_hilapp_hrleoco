@@ -36,7 +36,7 @@ class ItemDataUser extends StatelessWidget {
                     child: Text(
                       value,
                       softWrap: true,
-                      style: TextStyle(fontSize: 13.sp, color: provPref.isDarkTheme ? Colors.white : Colors.black, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 11.sp, color: provPref.isDarkTheme ? Colors.white : Colors.black, fontWeight: FontWeight.bold),
                     ),
                   ),
                   Visibility(

@@ -65,11 +65,31 @@ class DialogHelper {
             children: [
               ?icon,
               SizedBox(height: 4.h),
-              Text(title),
+              Text(title, style: TextStyle(fontSize: 18.sp)),
             ],
           ),
           content: Text(message),
           actions: [TextButton(onPressed: onPressed, child: Text("OK"))],
+        );
+      },
+    );
+  }
+
+  static Future<void> showLoadingDialog<T>(BuildContext context, {String? message}) {
+    return showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          content: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Padding(padding: EdgeInsets.symmetric(vertical: 16), child: CircularProgressIndicator()),
+              const SizedBox(),
+              Text(message ?? ""),
+            ],
+          ),
         );
       },
     );

@@ -49,8 +49,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
       }
     } else {
       var status = await Permission.storage.status;
-      if (status == PermissionStatus.denied ||
-          status == PermissionStatus.permanentlyDenied) {
+      if (status == PermissionStatus.denied || status == PermissionStatus.permanentlyDenied) {
         var req = await Permission.storage.request();
         if (req == PermissionStatus.granted) {
           // print("GRANTED");
@@ -99,23 +98,15 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
     return Scaffold(
       appBar: appBarCustom(context, title: "News Detail", leadingBack: true),
       body: ListView(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 24,
-          vertical: 10,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
         children: [
           Text(
             widget.args['news'].name,
             textAlign: TextAlign.center,
             softWrap: true,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
           ),
-          Html(
-            data: widget.args['news'].description,
-          ),
+          Html(data: widget.args['news'].description),
           Visibility(
             visible: widget.args['news'].attachment == "" ? false : true,
             child: Container(
@@ -132,15 +123,10 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                           ),
                           child: Row(
                             mainAxisSize: MainAxisSize.min,
-                            children: [
-                              const Icon(Icons.file_copy_outlined),
-                              const SizedBox(width: 8),
-                              Text("${widget.args['news'].name}.pdf"),
-                            ],
+                            children: [const Icon(Icons.file_copy_outlined), const SizedBox(width: 8), Text("${widget.args['news'].name}.pdf")],
                           ),
                         )
-                      : Image.network(
-                          "${widget.args['link']}${widget.args['news'].attachment}"),
+                      : Image.network("${widget.args['link']}${widget.args['news'].attachment}"),
                   const SizedBox(height: 16),
                   ElevatedButton(
                     onPressed: () async {
@@ -151,34 +137,19 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                           showLoadingDialog(context);
                           await _prepareSaveDir();
                           try {
-                            final file = File(
-                                "$_localPath/${widget.args['news'].name}.pdf");
-                            await Dio()
-                                .download(
-                              "${widget.args['link']}${widget.args['news'].attachment}",
-                              file.path,
-                            )
-                                .then((value) async {
+                            final file = File("$_localPath/${widget.args['news'].name}.pdf");
+                            await Dio().download("${widget.args['link']}${widget.args['news'].attachment}", file.path).then((value) async {
                               Navigator.pop(context);
-                              await _NotificationServices
-                                  .showNotificationSuccessDownloading(
-                                flutterLocalNotificationsPlugin,
-                                file.path,
-                                "${widget.args['news'].name}.pdf",
-                              );
+                              await _NotificationServices.showNotificationSuccessDownloading(file.path, "${widget.args['news'].name}.pdf");
                             });
                           } catch (e) {
                             if (!context.mounted) return;
                             Navigator.pop(context);
-                            showFailSnackbar(
-                              context,
-                              "Downloading ${widget.args['news'].name} is Failed",
-                            );
+                            showFailSnackbar(context, "Downloading ${widget.args['news'].name} is Failed");
                           }
                         } else {
                           if (!context.mounted) return;
-                          showFailSnackbar(
-                              context, "Your has not granted permission");
+                          showFailSnackbar(context, "Your has not granted permission");
                         }
                       } else {
                         if (response) {
@@ -186,37 +157,22 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                           showLoadingDialog(context);
                           await _prepareSaveDir();
                           try {
-                            final file = File(
-                                "$_localPath/${widget.args['news'].name}.jpg");
-                            await Dio()
-                                .download(
-                              "${widget.args['link']}${widget.args['news'].attachment}",
-                              file.path,
-                            )
-                                .then((value) async {
+                            final file = File("$_localPath/${widget.args['news'].name}.jpg");
+                            await Dio().download("${widget.args['link']}${widget.args['news'].attachment}", file.path).then((value) async {
                               Navigator.pop(context);
-                              await _NotificationServices
-                                  .showNotificationSuccessDownloading(
-                                flutterLocalNotificationsPlugin,
-                                file.path,
-                                "${widget.args['news'].name}.jpg",
-                              );
+                              await _NotificationServices.showNotificationSuccessDownloading(file.path, "${widget.args['news'].name}.jpg");
                             });
                           } catch (e, trace) {
                             // print("ERROR $e");
                             // print("ERROR $trace");
                             if (!context.mounted) return;
                             Navigator.pop(context);
-                            showFailSnackbar(
-                              context,
-                              "Downloading ${widget.args['news'].name} is Failed",
-                            );
+                            showFailSnackbar(context, "Downloading ${widget.args['news'].name} is Failed");
                           }
                         } else {
                           if (!context.mounted) return;
                           Navigator.pop(context);
-                          showFailSnackbar(
-                              context, "Your has not granted permission");
+                          showFailSnackbar(context, "Your has not granted permission");
                         }
                       }
                     },

@@ -41,8 +41,8 @@ class AttendanceSummaryScreen extends StatelessWidget {
                           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
                           child: InkWell(
                             onTap: () async {
-                              var dateJoin = DateFormat("yyyy-MM-dd").parse(provProf.userProfile!.dateSign!);
-                              provTeam.changeDate(context, dateJoin.year);
+                              // var dateJoin = DateFormat("yyyy-MM-dd").parse(provProf.userProfile!.dateSign!);
+                              // provTeam.changeDate(context, dateJoin.year);
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,

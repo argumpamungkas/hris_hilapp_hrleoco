@@ -20,7 +20,7 @@ class UrlServices {
 
     try {
       if (_urlModel != null) {
-        print("yang ada aja call url get it");
+        // print("yang ada aja call url get it");
         return _urlModel;
       }
 
@@ -31,18 +31,18 @@ class UrlServices {
       if (savedUrl != null && savedDatePrefs != null) {
         final savedDate = DateTime.parse(savedDatePrefs);
 
-        print("save date $savedDate");
-        print("Today $today");
+        // print("save date $savedDate");
+        // print("Today $today");
 
         if (savedDate.isAtSameMomentAs(today)) {
-          print("PAKAI PREFS (HARI INI)");
+          // print("PAKAI PREFS (HARI INI)");
           _urlModel = UrlModel.fromJson(jsonDecode(savedUrl));
           return _urlModel;
         }
       }
 
       /// ============= CALL SUPABASE =====================
-      print("call supabase");
+      // print("call supabase");
       final result = await Supabase.instance.client.from('master_link').select('''link, access''');
 
       if (result.isNotEmpty) {

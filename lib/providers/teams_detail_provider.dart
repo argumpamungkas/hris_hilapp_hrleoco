@@ -58,9 +58,9 @@ class TeamsDetailProvider extends ChangeNotifier {
       final dateFormat = formatDateYearMont(date);
       Map<String, dynamic> respTeams = await _api.fetchTeamAttendancePerson(requestDate: dateFormat, employee_id: _employeeId);
       _attendanceSummary = AttendanceSummary.fromJson(respTeams);
-      print(_attendanceSummary?.toJson());
+      // print(_attendanceSummary?.toJson());
       _listAttendanceSummary = _attendanceSummary!.details;
-      print(_listAttendanceSummary.length);
+      // print(_listAttendanceSummary.length);
       if (_listAttendanceSummary.isEmpty) {
         _resultStatus = ResultStatus.noData;
         notifyListeners();
@@ -79,7 +79,7 @@ class TeamsDetailProvider extends ChangeNotifier {
       _message = ConstantMessage.errMsgNoInternet;
       notifyListeners();
     } catch (e, trace) {
-      print("trae $trace");
+      // print("trae $trace");
       _resultStatus = ResultStatus.error;
       _message = '${ConstantMessage.errMsg} $e';
       notifyListeners();

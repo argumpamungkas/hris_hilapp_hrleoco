@@ -1,4 +1,5 @@
 import 'package:easy_hris/providers/employee/employee_provider.dart';
+import 'package:easy_hris/providers/preferences_provider.dart';
 import 'package:easy_hris/ui/profile/widgets/item_data_user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,6 +10,7 @@ import '../../../constant/routes.dart';
 import '../../../data/models/response/employee_response_model.dart';
 import '../../util/utils.dart';
 import '../../util/widgets/dialog_helpers.dart';
+import '../widgets/card_info_custom.dart';
 import '../widgets/header_employee_action.dart';
 
 class EducationEmployeeScreen extends StatelessWidget {
@@ -23,24 +25,37 @@ class EducationEmployeeScreen extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(height: 8.h),
-              Consumer<EmployeeProvider>(
-                builder: (context, prov, _) {
-                  return HeaderEmployeeAction(
-                    title: "Education Information",
-                    onTap: () {
-                      Navigator.pushNamed(context, Routes.addEducationScreen).then((value) {
-                        prov.fetchEmployee();
-                      });
-                    },
+              Consumer2<EmployeeProvider, PreferencesProvider>(
+                builder: (context, prov, provPref, _) {
+                  return Column(
+                    children: [
+                      HeaderEmployeeAction(
+                        title: "Education Information",
+                        isUpdate: provPref.isUpdatePersonalData,
+                        onTap: () {
+                          Navigator.pushNamed(context, Routes.addEducationScreen).then((value) {
+                            prov.fetchEmployee();
+                          });
+                        },
+                      ),
+                      Divider(),
+
+                      !provPref.isUpdatePersonalData
+                          ? Column(
+                              children: [
+                                CardInfoCustom(value: "Not yet entered the Personal Data update period."),
+                                SizedBox(height: 12.h),
+                              ],
+                            )
+                          : SizedBox.shrink(),
+                    ],
                   );
                 },
               ),
 
-              Divider(),
-
               Expanded(
-                child: Consumer<EmployeeProvider>(
-                  builder: (context, prov, _) {
+                child: Consumer2<EmployeeProvider, PreferencesProvider>(
+                  builder: (context, prov, provPref, _) {
                     if (prov.employeeResponseModel!.employeeEducations.isEmpty) {
                       return Center(child: Text("Data Education is Empty"));
                     }
@@ -73,59 +88,62 @@ class EducationEmployeeScreen extends StatelessWidget {
                                 ItemDataUser(title: "Start", value: employee.start ?? "-"),
                                 ItemDataUser(title: "End", value: employee.end ?? "-"),
                                 ItemDataUser(title: "QPA", value: employee.qpa ?? "-"),
-                                ElevatedButton.icon(
-                                  onPressed: () {
-                                    showConfirmDialog(
-                                      context,
-                                      titleConfirm: "Confirm",
-                                      descriptionConfirm: "Are you sure remove data ${employee.degree} - ${employee.school} ?",
-                                      action: [
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.pop(context);
-                                          },
-                                          child: Text("Cancel"),
-                                        ),
-                                        TextButton(
-                                          onPressed: () async {
-                                            showLoadingDialog(context);
+                                Visibility(
+                                  visible: provPref.isUpdatePersonalData ? true : false,
+                                  child: ElevatedButton.icon(
+                                    onPressed: () {
+                                      showConfirmDialog(
+                                        context,
+                                        titleConfirm: "Confirm",
+                                        descriptionConfirm: "Are you sure remove data ${employee.degree} - ${employee.school} ?",
+                                        action: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: Text("Cancel"),
+                                          ),
+                                          TextButton(
+                                            onPressed: () async {
+                                              showLoadingDialog(context);
 
-                                            final result = await prov.deleteData(employee.id!, "deleteEducation");
+                                              final result = await prov.deleteData(employee.id!, "deleteEducation");
 
-                                            if (!context.mounted) return;
-                                            Navigator.pop(context);
-                                            if (result) {
-                                              DialogHelper.showInfoDialog(
-                                                context,
-                                                icon: Icon(Icons.check, size: 32, color: Colors.green),
-                                                title: prov.title,
-                                                message: prov.message,
-                                                onPressed: () {
-                                                  prov.fetchEmployee();
-                                                  Navigator.pop(context);
-                                                  Navigator.pop(context);
-                                                },
-                                              );
-                                            } else {
-                                              DialogHelper.showInfoDialog(
-                                                context,
-                                                icon: Icon(Icons.close_rounded, size: 32, color: Colors.red.shade700),
-                                                title: prov.title,
-                                                message: prov.message,
-                                                onPressed: () {
-                                                  Navigator.pop(context);
-                                                },
-                                              );
-                                            }
-                                          },
-                                          child: Text("Yes"),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                  label: Text("Remove"),
-                                  icon: Icon(Icons.delete_outline),
-                                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red.shade700, foregroundColor: Colors.white),
+                                              if (!context.mounted) return;
+                                              Navigator.pop(context);
+                                              if (result) {
+                                                DialogHelper.showInfoDialog(
+                                                  context,
+                                                  icon: Icon(Icons.check, size: 32, color: Colors.green),
+                                                  title: prov.title,
+                                                  message: prov.message,
+                                                  onPressed: () {
+                                                    prov.fetchEmployee();
+                                                    Navigator.pop(context);
+                                                    Navigator.pop(context);
+                                                  },
+                                                );
+                                              } else {
+                                                DialogHelper.showInfoDialog(
+                                                  context,
+                                                  icon: Icon(Icons.close_rounded, size: 32, color: Colors.red.shade700),
+                                                  title: prov.title,
+                                                  message: prov.message,
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                );
+                                              }
+                                            },
+                                            child: Text("Yes"),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                    label: Text("Remove"),
+                                    icon: Icon(Icons.delete_outline),
+                                    style: ElevatedButton.styleFrom(backgroundColor: Colors.red.shade700, foregroundColor: Colors.white),
+                                  ),
                                 ),
                                 SizedBox(height: 8.h),
                               ],

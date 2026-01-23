@@ -31,7 +31,7 @@ class ProfileScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           IdentityUser(
-                            imageUrl: prov.userModel?.avatar == "" ? "${provPref.baseUrl}/${Constant.urlDefaultImage}" : "",
+                            imageUrl: prov.photoProfile.isEmpty ? "${provPref.baseUrl}/${Constant.urlDefaultImage}" : prov.photoProfile,
                             name: prov.userModel?.name?.toUpperCase() ?? "",
                             position: prov.userModel?.position?.toUpperCase() ?? "",
                           ),
@@ -42,6 +42,11 @@ class ProfileScreen extends StatelessWidget {
                             iconLeading: Icons.person,
                             title: "Personal Data",
                             onTap: () => Navigator.pushNamed(context, Routes.profilePersonalDataScreen),
+                          ),
+                          ItemListTile(
+                            iconLeading: Icons.credit_card_outlined,
+                            title: "ID Card",
+                            onTap: () => Navigator.pushNamed(context, Routes.idCardScreen),
                           ),
                           ItemListTile(
                             iconLeading: Icons.lock_outline_rounded,
@@ -60,11 +65,25 @@ class ProfileScreen extends StatelessWidget {
                                   actions: [
                                     TextButton(onPressed: () => Navigator.pop(context), child: const Text("Cancel")),
                                     TextButton(
-                                      onPressed: () {
+                                      onPressed: () async {
                                         showLoadingDialog(context);
                                         provDashboard.setIndex();
-                                        prov.logout(context);
-                                        Navigator.pushNamedAndRemoveUntil(context, Routes.signInScreen, (route) => false);
+                                        final result = await prov.logoutUser();
+
+                                        if (!context.mounted) return;
+                                        Navigator.pop(context);
+                                        if (result) {
+                                          Navigator.pushNamedAndRemoveUntil(context, Routes.signInScreen, (route) => false);
+                                        } else {
+                                          showInfoDialog(
+                                            context,
+                                            titleSuccess: prov.title,
+                                            descriptionSuccess: prov.message,
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                          );
+                                        }
                                       },
                                       child: const Text("Yes"),
                                     ),

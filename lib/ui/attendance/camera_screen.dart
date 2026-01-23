@@ -1,16 +1,22 @@
+import 'dart:io';
+
 import 'package:camera/camera.dart';
 import 'package:easy_hris/constant/routes.dart';
+import 'package:easy_hris/ui/util/widgets/dialog_helpers.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_mlkit_face_detection/google_mlkit_face_detection.dart';
+// import 'package:google_ml_vision/google_ml_vision.dart';
 import 'package:icons_plus/icons_plus.dart';
 
 import '../util/utils.dart';
 
 class CameraScreen extends StatefulWidget {
   // static const routeName = "/camera_screen.dart";
-  const CameraScreen({super.key, required this.cameras});
-  final List<CameraDescription>? cameras;
+  const CameraScreen({super.key, required this.args});
+  // final List<CameraDescription>? cameras;
+  final Map<String, dynamic> args;
 
   @override
   State<CameraScreen> createState() => _CameraScreenState();
@@ -18,14 +24,18 @@ class CameraScreen extends StatefulWidget {
 
 class _CameraScreenState extends State<CameraScreen> {
   late CameraController _cameraC;
+  int location = 0;
 
   @override
   void initState() {
     super.initState();
-    initCamera(widget.cameras![1]);
+    location = widget.args['location'];
+    final cameras = widget.args['cameras'] as List<CameraDescription>;
+
+    initCamera(cameras![1]);
   }
 
-  Future initCamera(CameraDescription cameraDescription) async {
+  Future<void> initCamera(CameraDescription cameraDescription) async {
     _cameraC = CameraController(cameraDescription, ResolutionPreset.medium, enableAudio: false, imageFormatGroup: ImageFormatGroup.yuv420);
     await _cameraC.setFlashMode(FlashMode.off);
 
@@ -46,15 +56,47 @@ class _CameraScreenState extends State<CameraScreen> {
     }
   }
 
+  Future<bool> _checkFaceVision(String pathImage) async {
+    final inputImage = InputImage.fromFilePath(pathImage);
+
+    final faceDetector = FaceDetector(
+      options: FaceDetectorOptions(performanceMode: FaceDetectorMode.fast, enableContours: false, enableLandmarks: false),
+    );
+
+    final faces = await faceDetector.processImage(inputImage);
+
+    await faceDetector.close();
+    if (faces.isEmpty) {
+      return false;
+    } else {
+      return true;
+    }
+  }
+
   Future _takePicture() async {
-    showLoadingDialog(context);
+    DialogHelper.showLoadingDialog(context, message: "Loading detecting image...");
     if (!_cameraC.value.isInitialized) return null;
     if (_cameraC.value.isTakingPicture) return null;
     try {
       XFile picture = await _cameraC.takePicture();
+
+      final hasFace = await _checkFaceVision(picture.path);
+
       if (!mounted) return;
       Navigator.pop(context);
-      Navigator.pushNamed(context, Routes.picturePreviewScreen, arguments: picture);
+      if (hasFace) {
+        Navigator.pushNamed(context, Routes.picturePreviewScreen, arguments: {'location': location, 'picture': picture});
+      } else {
+        DialogHelper.showInfoDialog(
+          context,
+          icon: Icon(Iconsax.close_circle_outline, size: 28.w, color: Colors.red),
+          title: "Attendance",
+          message: "No face was detected in the captured image. Please retake the photo with your face clearly visible.",
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        );
+      }
     } on CameraException catch (_) {
       Navigator.pop(context);
       showFailSnackbar(context, "Take a picture is fail");

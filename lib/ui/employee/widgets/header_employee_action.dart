@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HeaderEmployeeAction extends StatelessWidget {
-  const HeaderEmployeeAction({super.key, required this.title, required this.onTap});
+  const HeaderEmployeeAction({super.key, required this.title, required this.onTap, required this.isUpdate});
 
   final String title;
   final void Function()? onTap;
+  final bool isUpdate;
 
   @override
   Widget build(BuildContext context) {
@@ -21,17 +22,19 @@ class HeaderEmployeeAction extends StatelessWidget {
               style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
             ),
           ),
-          InkWell(
-            onTap: onTap,
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.black),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Row(spacing: 4, children: [Icon(Icons.add), Text("Add")]),
-            ),
-          ),
+          isUpdate
+              ? InkWell(
+                  onTap: onTap,
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black),
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Row(spacing: 4, children: [Icon(Icons.add), Text("Add")]),
+                  ),
+                )
+              : SizedBox.shrink(),
         ],
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:easy_hris/providers/preferences_provider.dart';
 import 'package:easy_hris/ui/profile/widgets/item_data_user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,6 +9,7 @@ import '../../../constant/routes.dart';
 import '../../../providers/employee/employee_provider.dart';
 import '../../util/utils.dart';
 import '../../util/widgets/dialog_helpers.dart';
+import '../widgets/card_info_custom.dart';
 import '../widgets/header_employee_action.dart';
 
 class CareerEmployeeScreen extends StatelessWidget {
@@ -22,24 +24,37 @@ class CareerEmployeeScreen extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(height: 8.h),
-              Consumer<EmployeeProvider>(
-                builder: (context, prov, _) {
-                  return HeaderEmployeeAction(
-                    title: "Career Information",
-                    onTap: () {
-                      Navigator.pushNamed(context, Routes.addCareerScreen).then((value) {
-                        prov.fetchEmployee();
-                      });
-                    },
+              Consumer2<EmployeeProvider, PreferencesProvider>(
+                builder: (context, prov, provPref, _) {
+                  return Column(
+                    children: [
+                      HeaderEmployeeAction(
+                        title: "Career Information",
+                        isUpdate: provPref.isUpdatePersonalData,
+                        onTap: () {
+                          Navigator.pushNamed(context, Routes.addCareerScreen).then((value) {
+                            prov.fetchEmployee();
+                          });
+                        },
+                      ),
+                      Divider(),
+
+                      !provPref.isUpdatePersonalData
+                          ? Column(
+                              children: [
+                                CardInfoCustom(value: "Not yet entered the Personal Data update period."),
+                                SizedBox(height: 12.h),
+                              ],
+                            )
+                          : SizedBox.shrink(),
+                    ],
                   );
                 },
               ),
 
-              Divider(),
-
               Expanded(
-                child: Consumer<EmployeeProvider>(
-                  builder: (context, prov, _) {
+                child: Consumer2<EmployeeProvider, PreferencesProvider>(
+                  builder: (context, prov, provPref, _) {
                     if (prov.employeeResponseModel!.employeeCarrers.isEmpty) {
                       return Center(child: Text("Data Career is Empty"));
                     }
@@ -67,14 +82,19 @@ class CareerEmployeeScreen extends StatelessWidget {
                               children: [
                                 Divider(),
                                 ItemDataUser(title: "Date", value: employee.start ?? "-"),
-                                ItemDataUser(title: "Division", value: employee.division ?? "-"),
-                                ItemDataUser(title: "Description", value: employee.description ?? "-"),
+                                // ItemDataUser(title: "Division", value: employee.division ?? "-"),
+                                ItemDataUser(title: "Departement", value: employee.name ?? "-"),
+                                ItemDataUser(title: "Departement Sub", value: employee.description ?? "-"),
                                 // ItemDataUser(title: "Departement", value: employee.),
                                 // ItemDataUser(title: "Departement Sub", value: "PROGRAMMER"),
                                 ItemDataUser(title: "Employee Type", value: employee.contact ?? "-"),
                                 ItemDataUser(title: "Position", value: employee.name ?? "-"),
                                 Visibility(
-                                  visible: employee.id!.isEmpty ? false : true,
+                                  visible: provPref.isUpdatePersonalData
+                                      ? employee.id!.isEmpty
+                                            ? false
+                                            : true
+                                      : false,
                                   child: ElevatedButton.icon(
                                     onPressed: () {
                                       showConfirmDialog(

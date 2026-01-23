@@ -190,6 +190,16 @@ class PersonalEmployeeProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void onChangePickerBpjs(DateTime? pickDate) {
+    _bpjsDateController.text = DateFormat('yyyy-MM-dd').format(pickDate!);
+    notifyListeners();
+  }
+
+  void onChangePickerJkn(DateTime? pickDate) {
+    _jknDateController.text = DateFormat('yyyy-MM-dd').format(pickDate!);
+    notifyListeners();
+  }
+
   void onChangePickerDriver(DateTime? pickDate) {
     _drivingLicenseDateController.text = DateFormat('yyyy-MM-dd').format(pickDate!);
     notifyListeners();
@@ -380,7 +390,7 @@ class PersonalEmployeeProvider extends ChangeNotifier {
 
       notifyListeners();
     } catch (e) {
-      print("error");
+      // print("error");
       notifyListeners();
     }
   }
@@ -397,7 +407,7 @@ class PersonalEmployeeProvider extends ChangeNotifier {
 
       notifyListeners();
     } catch (e) {
-      print("error");
+      // print("error");
       notifyListeners();
     }
   }
@@ -414,7 +424,7 @@ class PersonalEmployeeProvider extends ChangeNotifier {
 
       notifyListeners();
     } catch (e) {
-      print("error");
+      // print("error");
       notifyListeners();
     }
   }
@@ -431,7 +441,7 @@ class PersonalEmployeeProvider extends ChangeNotifier {
 
       notifyListeners();
     } catch (e) {
-      print("error");
+      // print("error");
       notifyListeners();
     }
   }

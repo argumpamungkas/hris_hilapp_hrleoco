@@ -15,38 +15,19 @@ import '../../../util/utils.dart';
 class PaySlipDownloaded {
   final NotificationServices _NotificationServices = NotificationServices();
 
-  Future<void> createPdf(
-    BuildContext context,
-    ResultsPaySlip resultsPaySlip,
-  ) async {
+  Future<void> createPdf(BuildContext context, ResultsPaySlip resultsPaySlip) async {
     final pdf = pw.Document();
 
     var font = await rootBundle.load("assets/fonts/Poppins-Regular.ttf");
     var ttf = pw.Font.ttf(font);
 
-    final pw.TextStyle titleStyle = pw.TextStyle(
-      font: ttf,
-      fontSize: 12,
-      fontWeight: pw.FontWeight.bold,
-    );
+    final pw.TextStyle titleStyle = pw.TextStyle(font: ttf, fontSize: 12, fontWeight: pw.FontWeight.bold);
 
-    final pw.TextStyle totalTextStyle = pw.TextStyle(
-      fontSize: 9,
-      fontWeight: pw.FontWeight.bold,
-      color: const PdfColor.fromInt(0xFF616161),
-    );
+    final pw.TextStyle totalTextStyle = pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold, color: const PdfColor.fromInt(0xFF616161));
 
-    final pw.TextStyle dataTextStyle = pw.TextStyle(
-      fontSize: 8,
-      fontWeight: pw.FontWeight.bold,
-      color: const PdfColor.fromInt(0xFF616161),
-    );
+    final pw.TextStyle dataTextStyle = pw.TextStyle(fontSize: 8, fontWeight: pw.FontWeight.bold, color: const PdfColor.fromInt(0xFF616161));
 
-    pw.Widget itemSlip(
-        {required String titleItem,
-        required String dataItem,
-        pw.TextStyle? titleStyleTotal,
-        pw.TextStyle? valueStyleTotal}) {
+    pw.Widget itemSlip({required String titleItem, required String dataItem, pw.TextStyle? titleStyleTotal, pw.TextStyle? valueStyleTotal}) {
       return pw.Column(
         children: [
           pw.Row(
@@ -55,34 +36,21 @@ class PaySlipDownloaded {
               pw.Expanded(
                 child: pw.Text(
                   titleItem,
-                  style: titleStyleTotal ??
-                      pw.TextStyle(
-                        font: ttf,
-                        color: const PdfColor.fromInt(0xFF616161),
-                        fontSize: 10,
-                      ),
+                  style: titleStyleTotal ?? pw.TextStyle(font: ttf, color: const PdfColor.fromInt(0xFF616161), fontSize: 10),
                 ),
               ),
               pw.Expanded(
                 child: pw.Text(
                   dataItem,
                   textAlign: pw.TextAlign.end,
-                  style: valueStyleTotal ??
-                      pw.TextStyle(
-                        font: ttf,
-                        color: const PdfColor.fromInt(0xFF616161),
-                        fontWeight: pw.FontWeight.bold,
-                        fontSize: 9,
-                      ),
+                  style:
+                      valueStyleTotal ??
+                      pw.TextStyle(font: ttf, color: const PdfColor.fromInt(0xFF616161), fontWeight: pw.FontWeight.bold, fontSize: 9),
                 ),
               ),
             ],
           ),
-          pw.Divider(
-            thickness: 1,
-            height: 4,
-            color: const PdfColor.fromInt(0xFFE0E0E0),
-          ),
+          pw.Divider(thickness: 1, height: 4, color: const PdfColor.fromInt(0xFFE0E0E0)),
         ],
       );
     }
@@ -150,177 +118,117 @@ class PaySlipDownloaded {
                   ),
                   pw.SizedBox(width: 20),
                   pw.Flexible(
-                      flex: 1,
-                      child: pw.Column(
-                        children: [
-                          itemSlip(
-                            titleItem: "National ID",
-                            titleStyleTotal: dataTextStyle,
-                            valueStyleTotal: dataTextStyle,
-                            dataItem: resultsPaySlip.nationalId!,
-                          ),
-                          pw.SizedBox(height: 4),
-                          itemSlip(
-                            titleItem: "Tax ID",
-                            titleStyleTotal: dataTextStyle,
-                            valueStyleTotal: dataTextStyle,
-                            dataItem: resultsPaySlip.taxId!,
-                          ),
-                          pw.SizedBox(height: 4),
-                          itemSlip(
-                            titleItem: "Marital Status",
-                            titleStyleTotal: dataTextStyle,
-                            valueStyleTotal: dataTextStyle,
-                            dataItem:
-                                "(${resultsPaySlip.marital!}) ${resultsPaySlip.maritalName}",
-                          ),
-                          pw.SizedBox(height: 4),
-                          itemSlip(
-                            titleItem: "TER Code",
-                            titleStyleTotal: dataTextStyle,
-                            valueStyleTotal: dataTextStyle,
-                            dataItem: resultsPaySlip.terCode!,
-                          ),
-                          pw.SizedBox(height: 4),
-                          itemSlip(
-                            titleItem: "Working Days",
-                            titleStyleTotal: dataTextStyle,
-                            valueStyleTotal: dataTextStyle,
-                            dataItem: "${resultsPaySlip.workingDays!} Days",
-                          ),
-                        ],
-                      ))
+                    flex: 1,
+                    child: pw.Column(
+                      children: [
+                        itemSlip(
+                          titleItem: "National ID",
+                          titleStyleTotal: dataTextStyle,
+                          valueStyleTotal: dataTextStyle,
+                          dataItem: resultsPaySlip.nationalId!,
+                        ),
+                        pw.SizedBox(height: 4),
+                        itemSlip(
+                          titleItem: "Tax ID",
+                          titleStyleTotal: dataTextStyle,
+                          valueStyleTotal: dataTextStyle,
+                          dataItem: resultsPaySlip.taxId!,
+                        ),
+                        pw.SizedBox(height: 4),
+                        itemSlip(
+                          titleItem: "Marital Status",
+                          titleStyleTotal: dataTextStyle,
+                          valueStyleTotal: dataTextStyle,
+                          dataItem: "(${resultsPaySlip.marital!}) ${resultsPaySlip.maritalName}",
+                        ),
+                        pw.SizedBox(height: 4),
+                        itemSlip(
+                          titleItem: "TER Code",
+                          titleStyleTotal: dataTextStyle,
+                          valueStyleTotal: dataTextStyle,
+                          dataItem: resultsPaySlip.terCode!,
+                        ),
+                        pw.SizedBox(height: 4),
+                        itemSlip(
+                          titleItem: "Working Days",
+                          titleStyleTotal: dataTextStyle,
+                          valueStyleTotal: dataTextStyle,
+                          dataItem: "${resultsPaySlip.workingDays!} Days",
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               ),
-              // pw.SizedBox(height: 4),
 
+              // pw.SizedBox(height: 4),
               pw.SizedBox(height: 10),
               pw.Text("INCOME", style: titleStyle),
               pw.SizedBox(height: 4),
-              itemSlip(
-                titleItem: "Basic Salary",
-                dataItem: formatRp(resultsPaySlip.basicSalary!),
-              ),
+              itemSlip(titleItem: "Basic Salary", dataItem: formatRp(resultsPaySlip.basicSalary!)),
               pw.SizedBox(height: 4),
-              itemSlip(
-                titleItem: "Allowance (Fix)",
-                dataItem: formatRp(resultsPaySlip.allowanceFix!),
-              ),
+              itemSlip(titleItem: "Allowance (Fix)", dataItem: formatRp(resultsPaySlip.allowanceFix!)),
               pw.SizedBox(height: 4),
-              itemSlip(
-                titleItem: "Allowance (Temp)",
-                dataItem: formatRp(resultsPaySlip.allowanceTemp!),
-              ),
+              itemSlip(titleItem: "Allowance (Temp)", dataItem: formatRp(resultsPaySlip.allowanceTemp!)),
               pw.SizedBox(height: 4),
-              itemSlip(
-                titleItem: "Overtime",
-                dataItem:
-                    "(${resultsPaySlip.overtimeHour} hours) ${formatRp(resultsPaySlip.overtimeAmount!)}",
-              ),
+              itemSlip(titleItem: "Overtime", dataItem: "(${resultsPaySlip.overtimeHour} hours) ${formatRp(resultsPaySlip.overtimeAmount!)}"),
               pw.SizedBox(height: 4),
               itemSlip(
                 titleItem: "Correction Overtime",
-                dataItem:
-                    "(${resultsPaySlip.overtimeCorrectionHour} hours) ${formatRp(resultsPaySlip.overtimeCorrectionAmount!)}",
+                dataItem: "(${resultsPaySlip.overtimeCorrectionHour} hours) ${formatRp(resultsPaySlip.overtimeCorrectionAmount!)}",
               ),
               pw.SizedBox(height: 4),
-              itemSlip(
-                titleItem: "Correction Plus",
-                dataItem: formatRp(resultsPaySlip.correctionPlus!),
-              ),
+              itemSlip(titleItem: "Correction Plus", dataItem: formatRp(resultsPaySlip.correctionPlus!)),
               pw.SizedBox(height: 4),
-              itemSlip(
-                titleItem: "TOTAL INCOME (a)",
-                titleStyleTotal: totalTextStyle,
-                dataItem: formatRp(resultsPaySlip.income!),
-              ),
+              itemSlip(titleItem: "TOTAL INCOME (a)", titleStyleTotal: totalTextStyle, dataItem: formatRp(resultsPaySlip.income!)),
               pw.SizedBox(height: 10),
               pw.Text("BPJS COMPANY", style: titleStyle),
               pw.SizedBox(height: 4),
               ...resultsPaySlip.bpjsCompany
                   .map(
-                    (bpjs) => pw.Column(children: [
-                      itemSlip(
-                        titleItem: bpjs.name,
-                        dataItem: formatRp(bpjs.amount!),
-                      ),
-                      pw.SizedBox(height: 4),
-                    ]),
+                    (bpjs) => pw.Column(
+                      children: [
+                        itemSlip(titleItem: bpjs.name, dataItem: formatRp(bpjs.amount!)),
+                        pw.SizedBox(height: 4),
+                      ],
+                    ),
                   )
                   .toList(),
-              itemSlip(
-                titleItem: "TOTAL BPJS COMPANY (b)",
-                dataItem: formatRp(resultsPaySlip.totalBpjsCompany!),
-              ),
+              itemSlip(titleItem: "TOTAL BPJS COMPANY (b)", dataItem: formatRp(resultsPaySlip.totalBpjsCompany!)),
               pw.SizedBox(height: 4),
-              itemSlip(
-                titleItem: "BRUTO INCOME (c) = (a + b)",
-                titleStyleTotal: totalTextStyle,
-                dataItem: formatRp(resultsPaySlip.brutoIncome!),
-              ),
+              itemSlip(titleItem: "BRUTO INCOME (c) = (a + b)", titleStyleTotal: totalTextStyle, dataItem: formatRp(resultsPaySlip.brutoIncome!)),
               pw.SizedBox(height: 10),
               pw.Text("DEDUCTION", style: titleStyle),
               pw.SizedBox(height: 4),
-              itemSlip(
-                titleItem: "Absence Hour",
-                dataItem: resultsPaySlip.absenceHour.toString(),
-              ),
+              itemSlip(titleItem: "Absence Hour", dataItem: resultsPaySlip.absenceHour.toString()),
               pw.SizedBox(height: 4),
-              itemSlip(
-                titleItem: "Absence Amount",
-                dataItem: formatRp(resultsPaySlip.absenceAmount!),
-              ),
+              itemSlip(titleItem: "Absence Amount", dataItem: formatRp(resultsPaySlip.absenceAmount!)),
               pw.SizedBox(height: 4),
-              itemSlip(
-                titleItem: "Loans",
-                dataItem: resultsPaySlip.loans.toString(),
-              ),
+              itemSlip(titleItem: "Loans", dataItem: resultsPaySlip.loans.toString()),
               pw.SizedBox(height: 4),
-              itemSlip(
-                titleItem: "Correction Minus",
-                dataItem: resultsPaySlip.correctionMinus.toString(),
-              ),
+              itemSlip(titleItem: "Correction Minus", dataItem: resultsPaySlip.correctionMinus.toString()),
               pw.SizedBox(height: 4),
-              itemSlip(
-                titleItem: "Allowance (BPJS)",
-                dataItem: formatRp(resultsPaySlip.allowanceBpjs!),
-              ),
+              itemSlip(titleItem: "Allowance (BPJS)", dataItem: formatRp(resultsPaySlip.allowanceBpjs!)),
               pw.SizedBox(height: 4),
-              itemSlip(
-                titleItem: "TOTAL DEDUCTION (d)",
-                dataItem: formatRp(resultsPaySlip.totalDeduction!),
-              ),
+              itemSlip(titleItem: "TOTAL DEDUCTION (d)", dataItem: formatRp(resultsPaySlip.totalDeduction!)),
               pw.SizedBox(height: 10),
               pw.Text("BPJS EMPLOYEE", style: titleStyle),
               pw.SizedBox(height: 4),
               ...resultsPaySlip.bpjsEmployee
                   .map(
-                    (bpjs) => pw.Column(children: [
-                      itemSlip(
-                        titleItem: bpjs.name,
-                        dataItem: formatRp(bpjs.amount!),
-                      ),
-                      pw.SizedBox(height: 4),
-                    ]),
+                    (bpjs) => pw.Column(
+                      children: [
+                        itemSlip(titleItem: bpjs.name, dataItem: formatRp(bpjs.amount!)),
+                        pw.SizedBox(height: 4),
+                      ],
+                    ),
                   )
                   .toList(),
-              itemSlip(
-                titleItem: "TOTAL BPJS (e)",
-                titleStyleTotal: totalTextStyle,
-                dataItem: formatRp(resultsPaySlip.totalBpjsEmployee!),
-              ),
+              itemSlip(titleItem: "TOTAL BPJS (e)", titleStyleTotal: totalTextStyle, dataItem: formatRp(resultsPaySlip.totalBpjsEmployee!)),
               pw.SizedBox(height: 4),
-              itemSlip(
-                titleItem: "TER (f)",
-                titleStyleTotal: totalTextStyle,
-                dataItem: formatRp(resultsPaySlip.ter!),
-              ),
+              itemSlip(titleItem: "TER (f)", titleStyleTotal: totalTextStyle, dataItem: formatRp(resultsPaySlip.ter!)),
               pw.SizedBox(height: 4),
-              itemSlip(
-                titleItem: "NET INCOME (c - d - e - f)",
-                titleStyleTotal: totalTextStyle,
-                dataItem: formatRp(resultsPaySlip.netIncome!),
-              ),
+              itemSlip(titleItem: "NET INCOME (c - d - e - f)", titleStyleTotal: totalTextStyle, dataItem: formatRp(resultsPaySlip.netIncome!)),
             ],
           );
         },
@@ -348,18 +256,13 @@ class PaySlipDownloaded {
       localPath = '${directory.path}${Platform.pathSeparator}Download';
     }
 
-    String fileName =
-        "${resultsPaySlip.employeeNumber}_${resultsPaySlip.period}";
+    String fileName = "${resultsPaySlip.employeeNumber}_${resultsPaySlip.period}";
     File('$localPath/$fileName.pdf')
       ..createSync(recursive: true)
       ..writeAsBytesSync(await pdf.save(), flush: true);
 
     Future.delayed(const Duration(seconds: 1), () async {
-      await _NotificationServices.showNotificationSuccessDownloading(
-        flutterLocalNotificationsPlugin,
-        '$localPath/$fileName.pdf',
-        "$fileName.pdf",
-      );
+      await _NotificationServices.showNotificationSuccessDownloading('$localPath/$fileName.pdf', "$fileName.pdf");
 
       if (!context.mounted) return;
       Navigator.pop(context);

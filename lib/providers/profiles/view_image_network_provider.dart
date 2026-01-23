@@ -62,7 +62,7 @@ class ViewImageNetworkProvider extends ChangeNotifier {
           if (total != -1) {
             final progress = (count / total * 100).floor();
 
-            await _notifService.showNotificationProgressDownload(flutterLocalNotificationsPlugin, notificationId, progress);
+            await _notifService.showNotificationProgressDownload(notificationId, progress);
             // await flutterLocalNotificationsPlugin.show(
             //   notificationId,
             //   "Downloading Image",
@@ -87,11 +87,11 @@ class ViewImageNetworkProvider extends ChangeNotifier {
       );
       await Future.delayed(Duration(milliseconds: 1500));
 
-      await flutterLocalNotificationsPlugin.cancel(notificationId);
+      await _notifService.notificationCancel(notificationId);
 
       // await Future.delayed(Duration(milliseconds: 1500));
 
-      await _notifService.showNotificationSuccessDownloadPicture(flutterLocalNotificationsPlugin, filePath, notificationId);
+      await _notifService.showNotificationSuccessDownloadPicture(filePath, notificationId);
       // Notifikasi sukses
       // await flutterLocalNotificationsPlugin.show(
       //   notificationId,

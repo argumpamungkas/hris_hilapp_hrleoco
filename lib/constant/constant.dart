@@ -18,7 +18,8 @@ class Constant {
 
   static const String logo = "assets/images/logo.png";
 
-  static const String appVersion = "v1.1.0";
+  // static const String appVersion = "v1.1.0";
+  static const String appVersion = "v1.1.1";
 
   // static const String baseUrl = "https://hrleoco.hris-server.com";
   static const String urlILogo = "assets/image/config/logo";
@@ -27,6 +28,7 @@ class Constant {
   static const String urlProfileNpwp = "assets/image/employee/npwp";
   static const String urlProfileKk = "assets/image/employee/kk";
   static const String urlProfileKtp = "assets/image/employee/id";
+  static const String bgIdCard = "assets/image/idcard_front.png";
 }
 
 class ConstantSharedPref {

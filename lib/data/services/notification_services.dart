@@ -12,6 +12,8 @@ final selectNotificationSubject = BehaviorSubject<String?>();
 final didReceiveLocalNotificationSubject = BehaviorSubject<ReceivedNotification>();
 
 class NotificationServices {
+  static final _notificationPlugin = FlutterLocalNotificationsPlugin();
+
   static NotificationServices? _instance;
 
   NotificationServices._internal() {
@@ -21,7 +23,7 @@ class NotificationServices {
   factory NotificationServices() => _instance ?? NotificationServices._internal();
 
   // Kita akan membuat beberapa fungsi jenis notifikasi di dalam kelas ini
-  Future<void> initNotifications(FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin) async {
+  Future<void> initNotifications() async {
     var initializationSettingsAndroid = const AndroidInitializationSettings('app_icon');
 
     var initializationSettingsIOS = DarwinInitializationSettings(
@@ -37,7 +39,7 @@ class NotificationServices {
 
     var initializationSettings = InitializationSettings(android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
 
-    await flutterLocalNotificationsPlugin.initialize(
+    await _notificationPlugin.initialize(
       initializationSettings,
       onDidReceiveNotificationResponse: (details) async {
         final payload = details.payload;
@@ -59,8 +61,8 @@ class NotificationServices {
     );
   }
 
-  void requestIOSPermissions(FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin) {
-    flutterLocalNotificationsPlugin.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()?.requestPermissions(
+  void requestIOSPermissions() {
+    _notificationPlugin.resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()?.requestPermissions(
       alert: true,
       badge: true,
       sound: true,
@@ -89,11 +91,11 @@ class NotificationServices {
     });
   }
 
-  Future<void> showNotificationProgressDownload(
-    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin,
-    int notificationId,
-    int progress,
-  ) async {
+  Future<void> notificationCancel(int notificationId) async {
+    await _notificationPlugin.cancel(notificationId);
+  }
+
+  Future<void> showNotificationProgressDownload(int notificationId, int progress) async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       "download_channel",
       "Download",
@@ -110,14 +112,10 @@ class NotificationServices {
 
     var platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics, iOS: iOSPlatformChannelSpecifics);
 
-    await flutterLocalNotificationsPlugin.show(notificationId, 'Download Image', "$progress%", platformChannelSpecifics);
+    await _notificationPlugin.show(notificationId, 'Download Image', "$progress%", platformChannelSpecifics);
   }
 
-  Future<void> showNotificationSuccessDownloadPicture(
-    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin,
-    String pathFile,
-    int notificationId,
-  ) async {
+  Future<void> showNotificationSuccessDownloadPicture(String pathFile, int notificationId) async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       'download_channel',
       "Download",
@@ -130,7 +128,7 @@ class NotificationServices {
 
     var platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics, iOS: iOSPlatformChannelSpecifics);
 
-    await flutterLocalNotificationsPlugin.show(
+    await _notificationPlugin.show(
       notificationId,
       "Download Success",
       "Picture has been download in Folder Downloads.",
@@ -139,11 +137,7 @@ class NotificationServices {
     );
   }
 
-  Future<void> showNotificationSuccessDownloading(
-    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin,
-    String pathFile,
-    String description,
-  ) async {
+  Future<void> showNotificationSuccessDownloading(String pathFile, String description) async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
       DateTime.now().toIso8601String(),
       "_channelDownload ${DateTime.now()}",
@@ -157,7 +151,7 @@ class NotificationServices {
 
     var platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics, iOS: iOSPlatformChannelSpecifics);
 
-    await flutterLocalNotificationsPlugin.show(0, 'Download Success', description, platformChannelSpecifics, payload: pathFile);
+    await _notificationPlugin.show(0, 'Download Success', description, platformChannelSpecifics, payload: pathFile);
   }
 
   Future<void> showNotifOnForeground(RemoteMessage message) async {
@@ -175,7 +169,7 @@ class NotificationServices {
 
     var platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics, iOS: iOSPlatformChannelSpecifics);
 
-    await flutterLocalNotificationsPlugin.show(1, message.notification?.title, message.notification!.body, platformChannelSpecifics);
+    await _notificationPlugin.show(1, message.notification?.title, message.notification!.body, platformChannelSpecifics);
   }
 
   Future<void> showNotifOnBG(RemoteMessage message) async {
@@ -193,6 +187,6 @@ class NotificationServices {
 
     var platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics, iOS: iOSPlatformChannelSpecifics);
 
-    await flutterLocalNotificationsPlugin.show(1, message.notification?.title, message.notification!.body, platformChannelSpecifics);
+    await _notificationPlugin.show(1, message.notification?.title, message.notification!.body, platformChannelSpecifics);
   }
 }

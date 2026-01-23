@@ -1,5 +1,6 @@
 import 'package:easy_hris/data/services/url_services.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../constant/constant.dart';
 import '../constant/styles.dart';
@@ -20,6 +21,7 @@ class PreferencesProvider extends ChangeNotifier {
   ConfigModel? _configModel;
 
   String _baseUrl = '';
+  bool _isUpdatePersonalData = false;
 
   String _title = '';
   String _message = '';
@@ -32,6 +34,7 @@ class PreferencesProvider extends ChangeNotifier {
   String get baseUrl => _baseUrl;
   String get title => _title;
   String get message => _message;
+  bool get isUpdatePersonalData => _isUpdatePersonalData;
 
   PreferencesProvider({required this.preferencesHelper}) {
     // fetchInit();
@@ -53,6 +56,11 @@ class PreferencesProvider extends ChangeNotifier {
 
       if (result.theme == 'success') {
         _configModel = result.result;
+
+        /// Cek untuk periode update data employee
+        if (_configModel!.empDateStart!.isNotEmpty && _configModel!.empDateEnd!.isNotEmpty) {
+          checkUpdatePersonalData();
+        }
         _resultStatus = ResultStatus.hasData;
         await getUrl();
         notifyListeners();
@@ -69,6 +77,23 @@ class PreferencesProvider extends ChangeNotifier {
       _resultStatus = ResultStatus.error;
       notifyListeners();
     }
+  }
+
+  void checkUpdatePersonalData() {
+    final now = DateTime.now().toLocal();
+
+    final dateNow = DateTime(now.year, now.month, now.day);
+
+    final dateStart = DateFormat('yyyy-MM-dd').parse(_configModel!.empDateStart!);
+    final dateEnd = DateFormat('yyyy-MM-dd').parse(_configModel!.empDateEnd!);
+
+    if (dateNow.isBefore(dateStart) || dateNow.isAfter(dateEnd)) {
+      _isUpdatePersonalData = false;
+    } else {
+      _isUpdatePersonalData = true;
+    }
+
+    // print("is update $isUpdatePersonalData");
   }
 
   void _getDarkTheme() async {

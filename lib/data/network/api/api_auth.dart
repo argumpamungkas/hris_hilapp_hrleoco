@@ -19,45 +19,33 @@ class ApiAuth {
 
     Uri url = Uri.parse("${baseUrl?.link}/api/auth/config");
 
-    print("URL =>> $url");
+    // print("URL =>> $url");
 
     try {
       var response = await http.get(url);
 
-      print("response config ${response.body}");
+      // print("response config ${response.body}");
 
       Map<String, dynamic> result = jsonDecode(response.body);
 
       return ApiResponse.fromJson(result, onDataSerialized: (_) => null, onDataDeserialized: (json) => ConfigModel.fromJson(json));
-
-      // if (response.statusCode == 200) {
-      //   var status = result["theme"];
-      //
-      //   if (status == "success") {
-      //     return result;
-      //   } else {
-      //     return result;
-      //   }
-      // } else {
-      //   return result;
-      // }
     } on TimeoutException catch (_) {
       throw Exception(ConstantMessage.errMsgTimeOut);
     } on SocketException catch (_) {
       throw Exception(ConstantMessage.errMsgNoInternet);
     } catch (e, trace) {
-      print("TRACE $trace");
+      // print("TRACE $trace");
       throw Exception("${ConstantMessage.errMsg} $e");
     }
   }
 
-  Future<dynamic> loginUser(String username, String pwd) async {
+  Future<dynamic> loginUser(String username, String pwd, String token) async {
     final baseUrl = await _urlService.getUrlModel();
 
     Uri url = Uri.parse("${baseUrl!.link}/api/auth/login");
 
     try {
-      var response = await http.post(url, body: {"username": username, "password": pwd});
+      var response = await http.post(url, body: {"username": username, "password": pwd, "token": token});
       // print(response.body);
 
       Map<String, dynamic> result = jsonDecode(response.body);
@@ -82,30 +70,24 @@ class ApiAuth {
     }
   }
 
-  Future<Map<String, dynamic>> logoutUser() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    late String apiKey;
-    if (prefs.getString(ConstantSharedPref.apiKey) != null && prefs.getString(ConstantSharedPref.linkServer) != null) {
-      apiKey = prefs.getString(ConstantSharedPref.apiKey)!;
-    }
-    Uri url = Uri.parse("${Constant.baseUrlMaster}/");
+  Future<ApiResponse> logoutUser(String username) async {
+    final baseUrl = await _urlService.getUrlModel();
+
+    Uri url = Uri.parse("${baseUrl!.link}/api/auth/logout");
 
     try {
-      var response = await http.post(url, body: {"get": "logout", "api_key": apiKey});
+      var response = await http.post(url, body: {"username": username});
 
+      // print("Resp logout ${response.body}");
       Map<String, dynamic> result = jsonDecode(response.body);
-      if (response.statusCode == 200) {
-        var status = result["theme"];
-        if (status == "success") {
-          return result;
-        } else {
-          return result;
-        }
-      } else {
-        return result;
-      }
+
+      return ApiResponse.fromJson(result, onDataSerialized: (_) => null, onDataDeserialized: (json) => null);
+    } on TimeoutException catch (_) {
+      throw Exception(ConstantMessage.errMsgTimeOut);
+    } on SocketException catch (_) {
+      throw Exception(ConstantMessage.errMsgNoInternet);
     } catch (e) {
-      return {"title": "Failed logout"};
+      throw Exception("${ConstantMessage.errMsg} $e");
     }
   }
 

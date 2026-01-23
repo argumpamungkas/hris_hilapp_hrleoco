@@ -23,50 +23,61 @@ class AttendanceSummaryContainer extends StatelessWidget {
           color: provPref.isDarkTheme ? Colors.black : Colors.white,
           elevation: 4,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(16.w),
             side: BorderSide(color: provPref.isDarkTheme ? colorBlueDark : Colors.grey.shade300),
           ),
           child: Container(
             padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
-            decoration: BoxDecoration(color: provPref.isDarkTheme ? Colors.black : Colors.white, borderRadius: BorderRadius.circular(16)),
+            decoration: BoxDecoration(color: provPref.isDarkTheme ? Colors.black : Colors.white, borderRadius: BorderRadius.circular(16.w)),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      flex: 2,
-                      child: Text(
-                        "My Attendance Summary",
-                        style: TextStyle(
-                          height: 0,
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.bold,
-                          color: provPref.isDarkTheme ? Colors.white : Colors.grey.shade600,
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8.h),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        flex: 2,
+                        child: Text(
+                          "My Attendance Summary",
+                          style: TextStyle(
+                            height: 0,
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.bold,
+                            color: provPref.isDarkTheme ? Colors.white : Colors.grey.shade600,
+                          ),
                         ),
                       ),
-                    ),
-                    Flexible(
-                      flex: 1,
-                      child: TextButton(
-                        onPressed: () {
-                          // Navigator.pushNamed(
-                          //   context,
-                          //   Routes.attendanceSummaryScreen,
-                          //   // arguments: prov.attendanceSummary,
-                          // );
-
+                      InkWell(
+                        onTap: () {
                           showInfoSnackbar(context, "Feature on Progress");
                         },
-                        style: TextButton.styleFrom(
-                          textStyle: TextStyle(color: Colors.blue, fontSize: 12.sp),
+                        child: Text(
+                          "View All",
+                          style: TextStyle(color: ConstantColor.colorPurpleAccent, fontSize: 12.sp),
                         ),
-                        child: const Text("View All"),
                       ),
-                    ),
-                  ],
+                      // TextButton(
+                      //   onPressed: () {
+                      //     // Navigator.pushNamed(
+                      //     //   context,
+                      //     //   Routes.attendanceSummaryScreen,
+                      //     //   // arguments: prov.attendanceSummary,
+                      //     // );
+                      //
+                      //     showInfoSnackbar(context, "Feature on Progress");
+                      //   },
+                      //   style: TextButton.styleFrom(
+                      //     textStyle: TextStyle(color: Colors.blue, fontSize: 12.sp),
+                      //     padding: EdgeInsets.zero,
+                      //   ),
+                      //   child: const Text("View All"),
+                      // ),
+                    ],
+                  ),
                 ),
+                SizedBox(height: 8.h),
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                   child: PieChart(
@@ -87,7 +98,7 @@ class AttendanceSummaryContainer extends StatelessWidget {
                     chartValuesOptions: ChartValuesOptions(showChartValuesOutside: true),
                   ),
                 ),
-                SizedBox(height: 8.h),
+                SizedBox(height: 16.h),
               ],
             ),
           ),

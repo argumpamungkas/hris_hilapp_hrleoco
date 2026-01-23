@@ -17,12 +17,12 @@ class ShowDialogPickerYear extends StatelessWidget {
       title: const Text("Select Date"),
       content: Consumer<ProfileProvider>(
         builder: (context, provProf, _) {
-          var dateFormatDefault = DateFormat("yyyy-MM-dd").parse(provProf.userProfile!.dateSign!);
+          // var dateFormatDefault = DateFormat("yyyy-MM-dd").parse(provProf.userProfile!.dateSign!);
           return SizedBox(
             height: 300.h,
             width: 300.w,
             child: YearPicker(
-              firstDate: DateTime(dateFormatDefault.year),
+              firstDate: DateTime(DateTime.now().year),
               lastDate: DateTime(DateTime.now().year),
               selectedDate: selectDate,
               onChanged: onChanged,

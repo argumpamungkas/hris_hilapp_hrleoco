@@ -44,8 +44,8 @@ class AttendanceHistoryScreen extends StatelessWidget {
                     child: provHistory.resultStatus != ResultStatus.loading
                         ? InkWell(
                             onTap: () async {
-                              var dateJoin = DateFormat("yyyy-MM-dd").parse(provProf.userProfile!.dateSign!);
-                              provHistory.changeDate(context, dateJoin.year);
+                              // var dateJoin = DateFormat("yyyy-MM-dd").parse(provProf.userProfile!.dateSign!);
+                              // provHistory.changeDate(context, dateJoin.year);
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,

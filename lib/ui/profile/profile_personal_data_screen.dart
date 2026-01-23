@@ -1,6 +1,6 @@
 import 'package:easy_hris/constant/constant.dart';
 import 'package:easy_hris/constant/exports.dart';
-import 'package:easy_hris/providers/personal_data_provider.dart';
+import 'package:easy_hris/providers/profiles/personal_data_provider.dart';
 import 'package:easy_hris/ui/profile/widgets/item_data_user.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +20,10 @@ class ProfilePersonalDataScreen extends StatelessWidget {
           builder: (context, prov, _) {
             if (prov.resultStatus == ResultStatus.loading) {
               return Center(child: CupertinoActivityIndicator());
+            }
+
+            if (prov.resultStatus == ResultStatus.error || prov.resultStatus == ResultStatus.noData) {
+              return Center(child: Text(prov.message));
             }
 
             return SafeArea(

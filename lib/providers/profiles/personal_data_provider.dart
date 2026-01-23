@@ -7,14 +7,16 @@ import 'package:easy_hris/data/services/url_services.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-import '../data/models/response/employee_model.dart';
-import '../data/models/response/id_name_model.dart';
-import '../data/models/response/marital_model.dart';
-import '../data/models/response/religion_model.dart';
+import '../../data/models/response/employee_model.dart';
+import '../../data/models/response/id_name_model.dart';
+import '../../data/models/response/marital_model.dart';
+import '../../data/models/response/religion_model.dart';
+import '../../injection.dart';
 
 class PersonalDataProvider extends ChangeNotifier {
   final ApiEmployee _api = ApiEmployee();
-  final UrlServices _urlServices = UrlServices();
+  final _urlService = sl<UrlServices>();
+  final _prefs = sl<SharedPreferences>();
 
   ResultStatus _resultStatus = ResultStatus.init;
   Employee? _employee;
@@ -60,7 +62,7 @@ class PersonalDataProvider extends ChangeNotifier {
   }
 
   Future<void> getUrl() async {
-    final urlModel = await _urlServices.getUrlModel();
+    final urlModel = await _urlService.getUrlModel();
     _baseUrl = urlModel!.link!;
     return;
   }
@@ -68,10 +70,9 @@ class PersonalDataProvider extends ChangeNotifier {
   Future<void> fetchPersonalData() async {
     _resultStatus = ResultStatus.loading;
     notifyListeners();
-    final prefs = await SharedPreferences.getInstance();
     try {
       await Future.wait([fetchGender(), fetchBlood(), fetchReligion(), fetchMarital()]);
-      final number = prefs.getString(ConstantSharedPref.numberUser);
+      final number = _prefs.getString(ConstantSharedPref.numberUser);
       final result = await _api.fetchEmployee(number ?? "");
 
       if (result.theme == "success") {

@@ -35,14 +35,13 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       Provider.of<NotificationProvider>(context, listen: false).fetchNotification();
-      // Provider.of<AttendanceTeamController>(context, listen: false).fetchDaysOff();
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (context) => HomeProvider(),
+      create: (context) => HomeProvider(Provider.of<PreferencesProvider>(context, listen: false).configModel!),
       child: Scaffold(
         body: Consumer2<HomeProvider, PreferencesProvider>(
           builder: (context, provHome, provPref, _) {
@@ -58,9 +57,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       title: "Error",
                       description: provHome.message,
                       onPressed: () {
-                        // provHome.fetchHome();
-                        // Provider.of<NotificationProvider>(context, listen: false).fetchNotification();
-                        // Provider.of<AttendanceTeamController>(context, listen: false).fetchDaysOff();
+                        provHome.init();
+                        provHome.fetchCurrentLocation(provPref.configModel!);
                       },
                       titleButton: "Refresh",
                       colorTitle: Colors.red,
@@ -71,11 +69,8 @@ class _HomeScreenState extends State<HomeScreen> {
               case ResultStatus.hasData:
                 return RefreshIndicator(
                   onRefresh: () async {
-                    // provHome.fetchHome();
-                    // Provider.of<NotificationProvider>(context, listen: false).fetchNotification();
-                    // Provider.of<AttendanceTeamController>(context, listen: false).fetchDaysOff();
-                    // Provider.of<NewsController>(context, listen: false)
-                    //     .fetchNews(context);
+                    provHome.init();
+                    provHome.fetchCurrentLocation(provPref.configModel!);
                   },
                   child: SingleChildScrollView(
                     child: Stack(

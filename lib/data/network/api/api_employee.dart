@@ -36,7 +36,7 @@ class ApiEmployee {
 
       Map<String, dynamic> result = jsonDecode(response.body);
 
-      print("result => $result");
+      // print("result => $result");
 
       return ApiResponse.fromJson(result, onDataSerialized: (_) => null, onDataDeserialized: (json) => IdNameModel.fromJsonList(json));
     } on TimeoutException catch (_) {
@@ -44,7 +44,7 @@ class ApiEmployee {
     } on SocketException catch (_) {
       throw Exception(ConstantMessage.errMsgNoInternet);
     } catch (e, trace) {
-      print("traceee $trace");
+      // print("traceee $trace");
       throw Exception("${ConstantMessage.errMsg} $e");
     }
   }
@@ -59,7 +59,7 @@ class ApiEmployee {
 
       Map<String, dynamic> result = jsonDecode(response.body);
 
-      print("result => $result");
+      // print("result => $result");
 
       return ApiResponse.fromJson(result, onDataSerialized: (_) => null, onDataDeserialized: (json) => ReligionModel.fromJsonList(json));
     } on TimeoutException catch (_) {
@@ -67,7 +67,7 @@ class ApiEmployee {
     } on SocketException catch (_) {
       throw Exception(ConstantMessage.errMsgNoInternet);
     } catch (e, trace) {
-      print("traceee $trace");
+      // print("traceee $trace");
       throw Exception("${ConstantMessage.errMsg} $e");
     }
   }
@@ -82,7 +82,7 @@ class ApiEmployee {
 
       Map<String, dynamic> result = jsonDecode(response.body);
 
-      print("result => $result");
+      // print("result => $result");
 
       return ApiResponse.fromJson(result, onDataSerialized: (_) => null, onDataDeserialized: (json) => MaritalModel.fromJsonList(json));
     } on TimeoutException catch (_) {
@@ -90,7 +90,7 @@ class ApiEmployee {
     } on SocketException catch (_) {
       throw Exception(ConstantMessage.errMsgNoInternet);
     } catch (e, trace) {
-      print("traceee $trace");
+      // print("traceee $trace");
       throw Exception("${ConstantMessage.errMsg} $e");
     }
   }
@@ -105,7 +105,7 @@ class ApiEmployee {
 
       Map<String, dynamic> result = jsonDecode(response.body);
 
-      print("result => $result");
+      // print("result => $result");
 
       return ApiResponse.fromJson(result, onDataSerialized: (_) => null, onDataDeserialized: (json) => EmployeeModel.fromJson(json));
     } on TimeoutException catch (_) {
@@ -113,7 +113,7 @@ class ApiEmployee {
     } on SocketException catch (_) {
       throw Exception(ConstantMessage.errMsgNoInternet);
     } catch (e, trace) {
-      print("traceee $trace");
+      // print("traceee $trace");
       throw Exception("${ConstantMessage.errMsg} $e");
     }
   }
@@ -129,7 +129,7 @@ class ApiEmployee {
 
       Map<String, dynamic> result = jsonDecode(response.body);
 
-      print("result fetchEmployeeuser => $result");
+      // print("result fetchEmployeeuser => $result");
 
       return ApiResponse.fromJson(result, onDataSerialized: (_) => null, onDataDeserialized: (json) => EmployeeResponseModel.fromJson(json));
     } on TimeoutException catch (_) {
@@ -137,7 +137,7 @@ class ApiEmployee {
     } on SocketException catch (_) {
       throw Exception(ConstantMessage.errMsgNoInternet);
     } catch (e, trace) {
-      print("traceee $trace");
+      // print("traceee $trace");
       throw Exception("${ConstantMessage.errMsg} $e");
     }
   }
@@ -160,10 +160,10 @@ class ApiEmployee {
 
       request.fields.addAll(req);
 
-      print("ktp => ${fileNationalID.path}");
-      print("kk => ${fileKK.path}");
-      print("tax => ${fileTax.path}");
-      print("pr => ${fileImageProfile.path}");
+      // print("ktp => ${fileNationalID.path}");
+      // print("kk => ${fileKK.path}");
+      // print("tax => ${fileTax.path}");
+      // print("pr => ${fileImageProfile.path}");
 
       request.files.add(await http.MultipartFile.fromPath('image_id', fileNationalID.path));
       request.files.add(await http.MultipartFile.fromPath('image_kk', fileKK.path));
@@ -181,13 +181,13 @@ class ApiEmployee {
 
       final response = await request.send();
 
-      print("response $response");
-      print("response ${response.reasonPhrase}");
+      // print("response $response");
+      // print("response ${response.reasonPhrase}");
       // baca stream jadi string
       final responseBody = await response.stream.bytesToString();
 
-      print("status code => ${response.statusCode}");
-      print("body => $responseBody");
+      // print("status code => ${response.statusCode}");
+      // print("body => $responseBody");
 
       // decode JSON
       final Map<String, dynamic> result = jsonDecode(responseBody);
@@ -214,7 +214,7 @@ class ApiEmployee {
 
       Map<String, dynamic> result = jsonDecode(response.body);
 
-      debugPrint("result addFamily => $result");
+      // debugPrint("result addFamily => $result");
 
       return ApiResponse.fromJson(result, onDataSerialized: (_) => null, onDataDeserialized: (json) => null);
     } on TimeoutException catch (_) {
@@ -222,8 +222,8 @@ class ApiEmployee {
     } on SocketException catch (_) {
       throw Exception(ConstantMessage.errMsgNoInternet);
     } catch (e, trace) {
-      print("debugPrint $e");
-      print("traceee $trace");
+      // print("debugPrint $e");
+      // print("traceee $trace");
       throw Exception("${ConstantMessage.errMsg} $e");
     }
   }
@@ -238,7 +238,7 @@ class ApiEmployee {
 
       Map<String, dynamic> result = jsonDecode(response.body);
 
-      debugPrint("result addFamily => $result");
+      // debugPrint("result addFamily => $result");
 
       return ApiResponse.fromJson(result, onDataSerialized: (_) => null, onDataDeserialized: (json) => null);
     } on TimeoutException catch (_) {
@@ -246,8 +246,8 @@ class ApiEmployee {
     } on SocketException catch (_) {
       throw Exception(ConstantMessage.errMsgNoInternet);
     } catch (e, trace) {
-      print("debugPrint $e");
-      print("traceee $trace");
+      // print("debugPrint $e");
+      // print("traceee $trace");
       throw Exception("${ConstantMessage.errMsg} $e");
     }
   }
@@ -262,7 +262,7 @@ class ApiEmployee {
 
       Map<String, dynamic> result = jsonDecode(response.body);
 
-      debugPrint("result add educ => $result");
+      // debugPrint("result add educ => $result");
 
       return ApiResponse.fromJson(result, onDataSerialized: (_) => null, onDataDeserialized: (json) => null);
     } on TimeoutException catch (_) {
@@ -270,8 +270,8 @@ class ApiEmployee {
     } on SocketException catch (_) {
       throw Exception(ConstantMessage.errMsgNoInternet);
     } catch (e, trace) {
-      print("debugPrint $e");
-      print("traceee $trace");
+      // print("debugPrint $e");
+      // print("traceee $trace");
       throw Exception("${ConstantMessage.errMsg} $e");
     }
   }
@@ -286,7 +286,7 @@ class ApiEmployee {
 
       Map<String, dynamic> result = jsonDecode(response.body);
 
-      debugPrint("result add educ => $result");
+      // debugPrint("result add educ => $result");
 
       return ApiResponse.fromJson(result, onDataSerialized: (_) => null, onDataDeserialized: (json) => null);
     } on TimeoutException catch (_) {
@@ -294,8 +294,8 @@ class ApiEmployee {
     } on SocketException catch (_) {
       throw Exception(ConstantMessage.errMsgNoInternet);
     } catch (e, trace) {
-      print("debugPrint $e");
-      print("traceee $trace");
+      // print("debugPrint $e");
+      // print("traceee $trace");
       throw Exception("${ConstantMessage.errMsg} $e");
     }
   }
@@ -310,7 +310,7 @@ class ApiEmployee {
 
       Map<String, dynamic> result = jsonDecode(response.body);
 
-      debugPrint("result add educ => $result");
+      // debugPrint("result add educ => $result");
 
       return ApiResponse.fromJson(result, onDataSerialized: (_) => null, onDataDeserialized: (json) => null);
     } on TimeoutException catch (_) {
@@ -318,8 +318,8 @@ class ApiEmployee {
     } on SocketException catch (_) {
       throw Exception(ConstantMessage.errMsgNoInternet);
     } catch (e, trace) {
-      print("debugPrint $e");
-      print("traceee $trace");
+      // print("debugPrint $e");
+      // print("traceee $trace");
       throw Exception("${ConstantMessage.errMsg} $e");
     }
   }
@@ -352,7 +352,7 @@ class ApiEmployee {
   }
 
   Future<File?> urlToFile(String imageUrl, {String? fileName}) async {
-    print("IMAGE URL => $imageUrl");
+    // print("IMAGE URL => $imageUrl");
 
     try {
       final response = await http.get(Uri.parse(imageUrl));
@@ -370,7 +370,7 @@ class ApiEmployee {
 
       return file;
     } catch (e) {
-      print("error get foto $e");
+      // print("error get foto $e");
       return null;
     }
   }

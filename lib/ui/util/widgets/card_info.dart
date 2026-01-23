@@ -1,3 +1,5 @@
+import 'package:easy_hris/constant/exports.dart';
+import 'package:easy_hris/providers/preferences_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -22,43 +24,35 @@ class CardInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      color: Colors.white,
-      margin: EdgeInsets.symmetric(horizontal: 16.w),
-      child: Padding(
-        padding: EdgeInsets.all(16.w.h),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              iconData,
-              size: 24.h.w,
-              color: colorIcon,
+    return Consumer<PreferencesProvider>(
+      builder: (context, prov, _) {
+        return Card(
+          color: Colors.white,
+          margin: EdgeInsets.symmetric(horizontal: 16.w),
+          child: Padding(
+            padding: EdgeInsets.all(16.w.h),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(iconData, size: 24.h.w, color: colorIcon),
+                SizedBox(height: 4.h),
+                Text(
+                  title,
+                  style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold, color: colorTitle),
+                ),
+                SizedBox(height: 4.h),
+                Text(
+                  description,
+                  style: TextStyle(fontSize: 12.sp, color: Colors.black),
+                ),
+                SizedBox(height: 12.h),
+                ElevatedButton(style: buttonStyle, onPressed: onPressed, child: Text(titleButton)),
+              ],
             ),
-            SizedBox(height: 4.h),
-            Text(
-              title,
-              style: TextStyle(
-                fontSize: 16.sp,
-                fontWeight: FontWeight.bold,
-                color: colorTitle,
-              ),
-            ),
-            SizedBox(height: 4.h),
-            Text(
-              description,
-              style: TextStyle(fontSize: 12.sp),
-            ),
-            SizedBox(height: 12.h),
-            ElevatedButton(
-              style: buttonStyle,
-              onPressed: onPressed,
-              child: Text(titleButton),
-            ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

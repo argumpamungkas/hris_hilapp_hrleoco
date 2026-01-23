@@ -13,6 +13,7 @@ class ConfigModel {
   String? npwp;
   String? latitude;
   String? longitude;
+  String? radius;
   String? logo;
   String? favicon;
   String? image;
@@ -38,6 +39,7 @@ class ConfigModel {
     required this.npwp,
     required this.latitude,
     required this.longitude,
+    required this.radius,
     required this.logo,
     required this.favicon,
     required this.image,
@@ -64,6 +66,7 @@ class ConfigModel {
     npwp: json["npwp"] ?? "",
     latitude: json["latitude"] ?? "",
     longitude: json["longitude"] ?? "",
+    radius: json["radius"] ?? "",
     logo: json["logo"] ?? "",
     favicon: json["favicon"] ?? "",
     image: json["image"] ?? "",
@@ -90,6 +93,7 @@ class ConfigModel {
     "npwp": npwp,
     "latitude": latitude,
     "longitude": longitude,
+    "radius": radius,
     "logo": logo,
     "favicon": favicon,
     "image": image,

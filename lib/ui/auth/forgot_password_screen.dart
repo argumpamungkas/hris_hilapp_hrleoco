@@ -91,7 +91,7 @@ class ForgotPasswordScreen extends StatelessWidget {
                                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                                   minimumSize: const Size.fromHeight(46),
                                 ),
-                                child: const Text("RESET PASSWORD"),
+                                child: const Text("SEND MAIL"),
                               ),
                             ],
                           ),
