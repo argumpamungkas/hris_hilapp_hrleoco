@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:easy_hris/ui/util/widgets/dialog_helpers.dart';
 import 'package:easy_hris/ui/util/widgets/loading_shimmer_card.dart';
 import 'package:easy_hris/ui/util/widgets/shimmer_list_load_data.dart';
 import 'package:flutter/cupertino.dart';
@@ -120,7 +121,7 @@ class AttendanceWidget extends StatelessWidget {
                               Text(
                                 homeProv.shiftUserModel!.shiftName!.isEmpty
                                     ? "Your shift has not been registered"
-                                    : "${homeProv.shiftUserModel?.shiftStart} - ${homeProv.shiftUserModel?.shiftEnd}",
+                                    : "${homeProv.shiftUserModel?.shiftStart?.substring(0, 5)} - ${homeProv.shiftUserModel?.shiftEnd?.substring(0, 5)}",
                                 style: TextStyle(
                                   fontSize: homeProv.shiftUserModel!.shiftName!.isEmpty ? 13.sp : 16.sp,
                                   color: provPref.isDarkTheme ? Colors.white : Colors.grey.shade700,
@@ -130,158 +131,157 @@ class AttendanceWidget extends StatelessWidget {
                           ),
                         ),
 
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          spacing: 4.h,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              mainAxisSize: MainAxisSize.max,
-                              spacing: 4.w,
-                              children: [
-                                Flexible(
-                                  child: homeProv.resultStatusLocation == ResultStatus.loading
-                                      ? Text(
-                                          "Loading get your Location...",
-                                          maxLines: 1,
-                                          style: TextStyle(fontSize: 9.sp, color: Colors.grey),
-                                        )
-                                      : RichText(
-                                          text: TextSpan(
-                                            text: "Your current Location ",
-                                            children: [TextSpan(text: homeProv.canAttendance ? 'can do Attendance' : "can't do Attendance")],
-                                            style: TextStyle(fontSize: 9.sp, color: Colors.grey),
-                                          ),
-                                          maxLines: 1,
-                                        ),
-                                  // child: Text(
-                                  //   "Your current Location ${homeProv.canAttendance ? 'can check in' : 'can not check in'}",
-                                  //   maxLines: 1,
-                                  //   style: TextStyle(fontSize: 10.sp, color: Colors.grey.shade700),
-                                  // ),
-                                ),
-                                homeProv.resultStatusLocation == ResultStatus.loading
-                                    ? CupertinoActivityIndicator()
-                                    : Icon(
-                                        homeProv.canAttendance ? Icons.check_circle_outline : Iconsax.close_circle_outline,
-                                        size: 16.w,
-                                        color: homeProv.canAttendance ? Colors.green : Colors.red.shade900,
-                                      ),
-                              ],
-                            ),
-                            Builder(
-                              builder: (context_) {
-                                if (homeProv.resultStatusLocation == ResultStatus.loading) {
-                                  return Shimmer.fromColors(
-                                    baseColor: provPref.isDarkTheme ? ConstantColor.colorBlueDark : Colors.grey.shade300,
-                                    highlightColor: provPref.isDarkTheme ? ConstantColor.colorPurpleAccent : Colors.grey.shade100,
-                                    child: Container(
-                                      width: 0.7.sw,
-                                      height: 30.h,
-                                      padding: EdgeInsets.all(8),
-                                      decoration: BoxDecoration(
-                                        color: provPref.isDarkTheme ? Colors.transparent : Colors.grey.shade200,
-                                        borderRadius: BorderRadius.circular(8),
-                                        border: Border.all(color: provPref.isDarkTheme ? colorBlueDark : Colors.grey.shade300),
-                                      ),
-                                    ),
-                                  );
-                                }
-
-                                if (homeProv.resultStatusLocation == ResultStatus.error) {
-                                  return Container(
-                                    margin: EdgeInsets.symmetric(horizontal: 8.w),
-                                    width: 0.7.sw,
-                                    height: 30.h,
-                                    padding: EdgeInsets.all(8),
-                                    decoration: BoxDecoration(
-                                      color: provPref.isDarkTheme ? Colors.transparent : Colors.grey.shade200,
-                                      borderRadius: BorderRadius.circular(8),
-                                      border: Border.all(color: provPref.isDarkTheme ? colorBlueDark : Colors.grey.shade300),
-                                    ),
-                                    child: Marquee(
-                                      text: homeProv.message,
-                                      style: TextStyle(fontSize: 10.sp, color: Colors.red),
-                                      scrollAxis: Axis.horizontal,
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      blankSpace: 20,
-                                      velocity: 50,
-                                      pauseAfterRound: const Duration(seconds: 1),
-                                      accelerationDuration: const Duration(seconds: 1),
-                                      accelerationCurve: Curves.linear,
-                                      decelerationDuration: const Duration(seconds: 1),
-                                      decelerationCurve: Curves.easeOut,
-                                    ),
-                                  );
-                                }
-
-                                return Container(
-                                  margin: EdgeInsets.symmetric(horizontal: 8.w),
-                                  width: 0.7.sw,
-                                  height: 30.h,
-                                  padding: EdgeInsets.all(8),
-                                  decoration: BoxDecoration(
-                                    color: provPref.isDarkTheme ? Colors.transparent : Colors.grey.shade200,
-                                    borderRadius: BorderRadius.circular(8),
-                                    border: Border.all(color: provPref.isDarkTheme ? colorBlueDark : Colors.grey.shade300),
-                                  ),
-                                  child: Row(
-                                    spacing: 4.w,
-                                    children: [
-                                      Icon(Iconsax.location_outline, color: Colors.red.shade700, size: 16.w),
-                                      Expanded(
-                                        child: Marquee(
-                                          text: homeProv.address,
-                                          style: TextStyle(fontSize: 10.sp, color: provPref.isDarkTheme ? Colors.white : Colors.grey),
-                                          scrollAxis: Axis.horizontal,
-                                          crossAxisAlignment: CrossAxisAlignment.center,
-                                          blankSpace: 20,
-                                          velocity: 50,
-                                          pauseAfterRound: const Duration(seconds: 1),
-                                          accelerationDuration: const Duration(seconds: 1),
-                                          accelerationCurve: Curves.linear,
-                                          decelerationDuration: const Duration(seconds: 1),
-                                          decelerationCurve: Curves.easeOut,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
-                          ],
-                        ),
-
-                        Visibility(
-                          visible: homeProv.resultStatusLocation == ResultStatus.loading
-                              ? false
-                              : homeProv.resultStatusLocation == ResultStatus.hasData && homeProv.canAttendance
-                              ? false
-                              : true,
-                          child: Center(
-                            child: Column(
-                              children: [
-                                SizedBox(height: 8.h),
-                                ElevatedButton.icon(
-                                  onPressed: () {
-                                    homeProv.fetchCurrentLocation(provPref.configModel!);
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    fixedSize: Size(0.3.sw, 20.h),
-                                    padding: EdgeInsets.symmetric(horizontal: 2.w),
-                                    backgroundColor: Colors.orange.shade700,
-                                    foregroundColor: Colors.white,
-                                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.w)),
-                                  ),
-                                  label: Text("Sync Location", style: TextStyle(fontSize: 10.sp), maxLines: 1),
-                                  icon: Icon(Icons.refresh),
-                                  iconAlignment: IconAlignment.end,
-                                ),
-                                SizedBox(height: 4.h),
-                              ],
-                            ),
-                          ),
-                        ),
+                        // Column(
+                        //   crossAxisAlignment: CrossAxisAlignment.stretch,
+                        //   spacing: 4.h,
+                        //   children: [
+                        //     Row(
+                        //       mainAxisAlignment: MainAxisAlignment.center,
+                        //       mainAxisSize: MainAxisSize.max,
+                        //       spacing: 4.w,
+                        //       children: [
+                        //         Flexible(
+                        //           child: homeProv.resultStatusLocation == ResultStatus.loading
+                        //               ? Text(
+                        //                   "Loading get your Location...",
+                        //                   maxLines: 1,
+                        //                   style: TextStyle(fontSize: 9.sp, color: Colors.grey),
+                        //                 )
+                        //               : RichText(
+                        //                   text: TextSpan(
+                        //                     text: "Your current Location ",
+                        //                     children: [TextSpan(text: homeProv.canAttendance ? 'can do Attendance' : "can't do Attendance")],
+                        //                     style: TextStyle(fontSize: 9.sp, color: Colors.grey),
+                        //                   ),
+                        //                   maxLines: 1,
+                        //                 ),
+                        //           // child: Text(
+                        //           //   "Your current Location ${homeProv.canAttendance ? 'can check in' : 'can not check in'}",
+                        //           //   maxLines: 1,
+                        //           //   style: TextStyle(fontSize: 10.sp, color: Colors.grey.shade700),
+                        //           // ),
+                        //         ),
+                        //         homeProv.resultStatusLocation == ResultStatus.loading
+                        //             ? CupertinoActivityIndicator()
+                        //             : Icon(
+                        //                 homeProv.canAttendance ? Icons.check_circle_outline : Iconsax.close_circle_outline,
+                        //                 size: 16.w,
+                        //                 color: homeProv.canAttendance ? Colors.green : Colors.red.shade900,
+                        //               ),
+                        //       ],
+                        //     ),
+                        //     Builder(
+                        //       builder: (context_) {
+                        //         if (homeProv.resultStatusLocation == ResultStatus.loading) {
+                        //           return Shimmer.fromColors(
+                        //             baseColor: provPref.isDarkTheme ? ConstantColor.colorBlueDark : Colors.grey.shade300,
+                        //             highlightColor: provPref.isDarkTheme ? ConstantColor.colorPurpleAccent : Colors.grey.shade100,
+                        //             child: Container(
+                        //               width: 0.7.sw,
+                        //               height: 30.h,
+                        //               padding: EdgeInsets.all(8),
+                        //               decoration: BoxDecoration(
+                        //                 color: provPref.isDarkTheme ? Colors.transparent : Colors.grey.shade200,
+                        //                 borderRadius: BorderRadius.circular(8),
+                        //                 border: Border.all(color: provPref.isDarkTheme ? colorBlueDark : Colors.grey.shade300),
+                        //               ),
+                        //             ),
+                        //           );
+                        //         }
+                        //
+                        //         if (homeProv.resultStatusLocation == ResultStatus.error) {
+                        //           return Container(
+                        //             margin: EdgeInsets.symmetric(horizontal: 8.w),
+                        //             width: 0.7.sw,
+                        //             height: 30.h,
+                        //             padding: EdgeInsets.all(8),
+                        //             decoration: BoxDecoration(
+                        //               color: provPref.isDarkTheme ? Colors.transparent : Colors.grey.shade200,
+                        //               borderRadius: BorderRadius.circular(8),
+                        //               border: Border.all(color: provPref.isDarkTheme ? colorBlueDark : Colors.grey.shade300),
+                        //             ),
+                        //             child: Marquee(
+                        //               text: homeProv.message,
+                        //               style: TextStyle(fontSize: 10.sp, color: Colors.red),
+                        //               scrollAxis: Axis.horizontal,
+                        //               crossAxisAlignment: CrossAxisAlignment.center,
+                        //               blankSpace: 20,
+                        //               velocity: 50,
+                        //               pauseAfterRound: const Duration(seconds: 1),
+                        //               accelerationDuration: const Duration(seconds: 1),
+                        //               accelerationCurve: Curves.linear,
+                        //               decelerationDuration: const Duration(seconds: 1),
+                        //               decelerationCurve: Curves.easeOut,
+                        //             ),
+                        //           );
+                        //         }
+                        //
+                        //         return Container(
+                        //           margin: EdgeInsets.symmetric(horizontal: 8.w),
+                        //           width: 0.7.sw,
+                        //           height: 30.h,
+                        //           padding: EdgeInsets.all(8),
+                        //           decoration: BoxDecoration(
+                        //             color: provPref.isDarkTheme ? Colors.transparent : Colors.grey.shade200,
+                        //             borderRadius: BorderRadius.circular(8),
+                        //             border: Border.all(color: provPref.isDarkTheme ? colorBlueDark : Colors.grey.shade300),
+                        //           ),
+                        //           child: Row(
+                        //             spacing: 4.w,
+                        //             children: [
+                        //               Icon(Iconsax.location_outline, color: Colors.red.shade700, size: 16.w),
+                        //               Expanded(
+                        //                 child: Marquee(
+                        //                   text: homeProv.address,
+                        //                   style: TextStyle(fontSize: 10.sp, color: provPref.isDarkTheme ? Colors.white : Colors.grey),
+                        //                   scrollAxis: Axis.horizontal,
+                        //                   crossAxisAlignment: CrossAxisAlignment.center,
+                        //                   blankSpace: 20,
+                        //                   velocity: 50,
+                        //                   pauseAfterRound: const Duration(seconds: 1),
+                        //                   accelerationDuration: const Duration(seconds: 1),
+                        //                   accelerationCurve: Curves.linear,
+                        //                   decelerationDuration: const Duration(seconds: 1),
+                        //                   decelerationCurve: Curves.easeOut,
+                        //                 ),
+                        //               ),
+                        //             ],
+                        //           ),
+                        //         );
+                        //       },
+                        //     ),
+                        //   ],
+                        // ),
+                        // Visibility(
+                        //   visible: homeProv.resultStatusLocation == ResultStatus.loading
+                        //       ? false
+                        //       : homeProv.resultStatusLocation == ResultStatus.hasData && homeProv.canAttendance
+                        //       ? false
+                        //       : true,
+                        //   child: Center(
+                        //     child: Column(
+                        //       children: [
+                        //         SizedBox(height: 8.h),
+                        //         ElevatedButton.icon(
+                        //           onPressed: () {
+                        //             homeProv.fetchCurrentLocation(provPref.configModel!);
+                        //           },
+                        //           style: ElevatedButton.styleFrom(
+                        //             fixedSize: Size(0.3.sw, 20.h),
+                        //             padding: EdgeInsets.symmetric(horizontal: 2.w),
+                        //             backgroundColor: Colors.orange.shade700,
+                        //             foregroundColor: Colors.white,
+                        //             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.w)),
+                        //           ),
+                        //           label: Text("Sync Location", style: TextStyle(fontSize: 10.sp), maxLines: 1),
+                        //           icon: Icon(Icons.refresh),
+                        //           iconAlignment: IconAlignment.end,
+                        //         ),
+                        //         SizedBox(height: 4.h),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
 
                         // Text("Your")
                         SizedBox(height: 8.h),
@@ -292,7 +292,7 @@ class AttendanceWidget extends StatelessWidget {
                             children: [
                               _informationAttendance(
                                 title: "Check In",
-                                time: homeProv.checkIn,
+                                time: homeProv.checkIn.substring(0, 5),
                                 colorIcon: Colors.green,
                                 colorBackground: Colors.green.shade50,
                               ),
@@ -301,7 +301,7 @@ class AttendanceWidget extends StatelessWidget {
 
                               _informationAttendance(
                                 title: "Check Out",
-                                time: homeProv.checkOut,
+                                time: homeProv.checkOut.substring(0, 5),
                                 colorIcon: Colors.red,
                                 colorBackground: Colors.red.shade50,
                               ),
@@ -323,12 +323,39 @@ class AttendanceWidget extends StatelessWidget {
                                   icon: Icons.arrow_circle_down,
                                   background: Colors.green,
                                   iconAlignment: IconAlignment.end,
-                                  onPressed: homeProv.canAttendance && homeProv.checkIn == "00:00"
+                                  onPressed: homeProv.checkIn == "00:00"
                                       ? () async {
-                                          await availableCameras().then(
-                                            (value) =>
-                                                Navigator.pushNamed(context, Routes.cameraScreen, arguments: {'location': 1, 'cameras': value}),
-                                          );
+                                          DialogHelper.showLoadingDialog(context, message: "Loading validate location...");
+                                          final checkAttendance = await homeProv.fetchCurrentLocation(provPref.configModel!);
+
+                                          if (!context.mounted) return;
+                                          Navigator.pop(context);
+                                          if (checkAttendance) {
+                                            DialogHelper.showInfoDialog(
+                                              context,
+                                              icon: Icon(Icons.info_outline, size: 32, color: Colors.blue),
+                                              title: "Attendance",
+                                              message: homeProv.message,
+                                              confirmText: "Next",
+                                              onPressed: () async {
+                                                Navigator.pop(context);
+                                                await availableCameras().then(
+                                                  (value) =>
+                                                      Navigator.pushNamed(context, Routes.cameraScreen, arguments: {'location': 1, 'cameras': value}),
+                                                );
+                                              },
+                                            );
+                                          } else {
+                                            DialogHelper.showInfoDialog(
+                                              context,
+                                              icon: Icon(Iconsax.close_circle_outline, size: 32, color: Colors.red),
+                                              title: "Attendance",
+                                              message: homeProv.message,
+                                              onPressed: () async {
+                                                Navigator.pop(context);
+                                              },
+                                            );
+                                          }
                                         }
                                       : null,
                                 ),
@@ -341,12 +368,39 @@ class AttendanceWidget extends StatelessWidget {
                                   icon: Icons.arrow_circle_up,
                                   background: Colors.red,
                                   iconAlignment: IconAlignment.start,
-                                  onPressed: homeProv.canAttendance && homeProv.checkIn != "00:00"
+                                  onPressed: homeProv.checkIn != "00:00" && homeProv.checkOut == "00:00"
                                       ? () async {
-                                          await availableCameras().then(
-                                            (value) =>
-                                                Navigator.pushNamed(context, Routes.cameraScreen, arguments: {'location': 2, 'cameras': value}),
-                                          );
+                                          DialogHelper.showLoadingDialog(context, message: "Loading validate location...");
+                                          final checkAttendance = await homeProv.fetchCurrentLocation(provPref.configModel!);
+
+                                          if (!context.mounted) return;
+                                          Navigator.pop(context);
+                                          if (checkAttendance) {
+                                            DialogHelper.showInfoDialog(
+                                              context,
+                                              icon: Icon(Icons.info_outline, size: 32, color: Colors.blue),
+                                              title: "Attendance",
+                                              message: homeProv.message,
+                                              confirmText: "Next",
+                                              onPressed: () async {
+                                                Navigator.pop(context);
+                                                await availableCameras().then(
+                                                  (value) =>
+                                                      Navigator.pushNamed(context, Routes.cameraScreen, arguments: {'location': 2, 'cameras': value}),
+                                                );
+                                              },
+                                            );
+                                          } else {
+                                            DialogHelper.showInfoDialog(
+                                              context,
+                                              icon: Icon(Iconsax.close_circle_outline, size: 32, color: Colors.red),
+                                              title: "Attendance",
+                                              message: homeProv.message,
+                                              onPressed: () async {
+                                                Navigator.pop(context);
+                                              },
+                                            );
+                                          }
                                         }
                                       : null,
                                 ),

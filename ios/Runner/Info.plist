@@ -25,11 +25,13 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-    <string>Kami memerlukan akses kamera untuk mengambil foto.</string>
+    <string>We need access camera for take a picture.</string>
     <key>NSPhotoLibraryUsageDescription</key>
-    <string>Kami memerlukan akses ke galeri untuk mengunggah foto.</string>
+    <string>We need access to galley for get a picture.</string>
     <key>NSUserNotificationUsageDescription</key>
-    <string>Aplikasi membutuhkan notifikasi</string>
+    <string>The app need notification</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>This app needs your location for Attendance</string>
     <key>UIApplicationSupportsIndirectInputEvents</key>
     <true/>
 	<key>UILaunchStoryboardName</key>

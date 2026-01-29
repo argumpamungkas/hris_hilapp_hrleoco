@@ -1,6 +1,7 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:easy_hris/constant/constant.dart';
 import 'package:easy_hris/constant/routes.dart';
+import 'package:easy_hris/ui/util/widgets/dialog_helpers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -35,54 +36,42 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [ChangeNotifierProvider(create: (context) => DashboardProvider())],
-      child: Consumer<PreferencesProvider>(
-        builder: (context, prefProv, _) {
-          return Scaffold(
-            backgroundColor: prefProv.isDarkTheme ? Colors.black : Colors.grey.shade50,
-            body: Consumer2<DashboardProvider, ProfileProvider>(
-              builder: (context, prov, provProfile, _) {
-                switch (provProfile.resultStatusUserModel) {
-                  case ResultStatus.loading:
-                    return Center(child: CircularProgressIndicator());
-                  case ResultStatus.error:
-                    return FadeInUp(
-                      child: Center(
-                        child: CardInfo(
-                          iconData: Iconsax.info_circle_outline,
-                          colorIcon: Colors.red,
-                          title: "Error",
-                          description: provProfile.message,
-                          onPressed: () {
-                            provProfile.getUser();
-                          },
-                          titleButton: "Refresh",
-                          colorTitle: Colors.red,
-                          buttonStyle: ElevatedButton.styleFrom(backgroundColor: ConstantColor.colorBlueDark, foregroundColor: Colors.white),
+      child: Consumer2<PreferencesProvider, DashboardProvider>(
+        builder: (context, prefProv, provDashboard, _) {
+          return WillPopScope(
+            onWillPop: () async {
+              if (provDashboard.currentIndex == 0) {
+                return true;
+              } else {
+                provDashboard.changeScreen(0);
+                return false;
+              }
+            },
+            child: Scaffold(
+              backgroundColor: prefProv.isDarkTheme ? Colors.black : Colors.grey.shade50,
+              body: Consumer2<DashboardProvider, ProfileProvider>(
+                builder: (context, prov, provProfile, _) {
+                  switch (provProfile.resultStatusUserModel) {
+                    case ResultStatus.loading:
+                      return Center(child: CircularProgressIndicator());
+                    case ResultStatus.error:
+                      return FadeInUp(
+                        child: Center(
+                          child: CardInfo(
+                            iconData: Iconsax.info_circle_outline,
+                            colorIcon: Colors.red,
+                            title: "Error",
+                            description: provProfile.message,
+                            onPressed: () {
+                              provProfile.getUser();
+                            },
+                            titleButton: "Refresh",
+                            colorTitle: Colors.red,
+                            buttonStyle: ElevatedButton.styleFrom(backgroundColor: ConstantColor.colorBlueDark, foregroundColor: Colors.white),
+                          ),
                         ),
-                      ),
-                    );
-                  case ResultStatus.noData:
-                    return FadeInUp(
-                      child: Center(
-                        child: CardInfo(
-                          iconData: Iconsax.info_circle_outline,
-                          colorIcon: Colors.red,
-                          title: "Employee",
-                          description: provProfile.message,
-                          onPressed: () {
-                            provProfile.onClearPrefs();
-                            Navigator.pushNamedAndRemoveUntil(context, Routes.signInScreen, (route) => false);
-                          },
-                          titleButton: "Re-Login",
-                          colorTitle: Colors.red,
-                          buttonStyle: ElevatedButton.styleFrom(backgroundColor: ConstantColor.colorBlueDark, foregroundColor: Colors.white),
-                        ),
-                      ),
-                    );
-                  case ResultStatus.hasData:
-                    if (provProfile.isActive == '0') {
-                      return prov.widgetScreenLead[prov.currentIndex];
-                    } else {
+                      );
+                    case ResultStatus.noData:
                       return FadeInUp(
                         child: Center(
                           child: CardInfo(
@@ -100,48 +89,70 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           ),
                         ),
                       );
-                    }
+                    case ResultStatus.hasData:
+                      if (provProfile.isActive == '0') {
+                        return prov.widgetScreenLead[prov.currentIndex];
+                      } else {
+                        return FadeInUp(
+                          child: Center(
+                            child: CardInfo(
+                              iconData: Iconsax.info_circle_outline,
+                              colorIcon: Colors.red,
+                              title: "Employee",
+                              description: provProfile.message,
+                              onPressed: () {
+                                provProfile.onClearPrefs();
+                                Navigator.pushNamedAndRemoveUntil(context, Routes.signInScreen, (route) => false);
+                              },
+                              titleButton: "Re-Login",
+                              colorTitle: Colors.red,
+                              buttonStyle: ElevatedButton.styleFrom(backgroundColor: ConstantColor.colorBlueDark, foregroundColor: Colors.white),
+                            ),
+                          ),
+                        );
+                      }
 
-                  default:
-                    return FadeInUp(
-                      child: Center(
-                        child: CardInfo(
-                          iconData: Iconsax.info_circle_outline,
-                          colorIcon: Colors.red,
-                          title: "404",
-                          description: "Something wrong.",
-                          onPressed: () {
-                            provProfile.onClearPrefs();
-                            Navigator.pushNamedAndRemoveUntil(context, Routes.signInScreen, (route) => false);
-                          },
-                          titleButton: "Re-Login",
-                          colorTitle: Colors.red,
-                          buttonStyle: ElevatedButton.styleFrom(backgroundColor: ConstantColor.colorBlueDark, foregroundColor: Colors.white),
+                    default:
+                      return FadeInUp(
+                        child: Center(
+                          child: CardInfo(
+                            iconData: Iconsax.info_circle_outline,
+                            colorIcon: Colors.red,
+                            title: "404",
+                            description: "Something wrong.",
+                            onPressed: () {
+                              provProfile.onClearPrefs();
+                              Navigator.pushNamedAndRemoveUntil(context, Routes.signInScreen, (route) => false);
+                            },
+                            titleButton: "Re-Login",
+                            colorTitle: Colors.red,
+                            buttonStyle: ElevatedButton.styleFrom(backgroundColor: ConstantColor.colorBlueDark, foregroundColor: Colors.white),
+                          ),
                         ),
+                      );
+                  }
+                },
+              ),
+              bottomNavigationBar: Consumer3<DashboardProvider, ProfileProvider, PreferencesProvider>(
+                builder: (context, provDashboard, provProfile, prefProv, _) {
+                  if (provProfile.resultStatusUserModel == ResultStatus.hasData) {
+                    return Theme(
+                      data: Theme.of(context).copyWith(canvasColor: prefProv.isDarkTheme ? Colors.black : Colors.white),
+                      child: BottomNavigationBar(
+                        items: provDashboard.bottomNavBarLead,
+                        currentIndex: provDashboard.currentIndex,
+                        onTap: provDashboard.changeScreen,
+                        selectedFontSize: 9.sp,
+                        selectedIconTheme: IconThemeData(size: 16.w.h),
+                        unselectedFontSize: 9.sp,
+                        unselectedIconTheme: IconThemeData(size: 16.w.h),
                       ),
                     );
-                }
-              },
-            ),
-            bottomNavigationBar: Consumer3<DashboardProvider, ProfileProvider, PreferencesProvider>(
-              builder: (context, provDashboard, provProfile, prefProv, _) {
-                if (provProfile.resultStatusUserModel == ResultStatus.hasData) {
-                  return Theme(
-                    data: Theme.of(context).copyWith(canvasColor: prefProv.isDarkTheme ? Colors.black : Colors.white),
-                    child: BottomNavigationBar(
-                      items: provDashboard.bottomNavBarLead,
-                      currentIndex: provDashboard.currentIndex,
-                      onTap: provDashboard.changeScreen,
-                      selectedFontSize: 9.sp,
-                      selectedIconTheme: IconThemeData(size: 16.w.h),
-                      unselectedFontSize: 9.sp,
-                      unselectedIconTheme: IconThemeData(size: 16.w.h),
-                    ),
-                  );
-                } else {
-                  return SizedBox.shrink();
-                }
-              },
+                  } else {
+                    return SizedBox.shrink();
+                  }
+                },
+              ),
             ),
           );
         },

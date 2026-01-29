@@ -3,23 +3,17 @@ import 'package:easy_hris/ui/home/widgets/attendance_summary.dart';
 import 'package:easy_hris/ui/home/widgets/attendance_widget.dart';
 import 'package:easy_hris/ui/home/widgets/background_home.dart';
 import 'package:easy_hris/ui/home/widgets/container_user_action.dart';
-import 'package:easy_hris/ui/home/widgets/list_view_days_off.dart';
-import 'package:easy_hris/ui/home/widgets/list_view_latest_news.dart';
 import 'package:easy_hris/ui/home/widgets/loading_home.dart';
-import 'package:easy_hris/ui/home/widgets/menu_home.dart';
 import 'package:easy_hris/ui/home/widgets/notification_widget.dart';
-import 'package:easy_hris/ui/home/widgets/user_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:icons_plus/icons_plus.dart';
 import 'package:provider/provider.dart';
 
 import '../../constant/constant.dart';
-import '../../providers/auth/profile_provider.dart';
 import '../../providers/home_provider.dart';
 import '../../providers/notifications/notification_provider.dart';
 import '../../providers/preferences_provider.dart';
-import '../attendance_team/controller/day_off_controller.dart';
 import '../util/widgets/card_info.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -73,6 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     provHome.fetchCurrentLocation(provPref.configModel!);
                   },
                   child: SingleChildScrollView(
+                    physics: AlwaysScrollableScrollPhysics(),
                     child: Stack(
                       children: [
                         provPref.isDarkTheme ? Container() : const BackgroundHome(),

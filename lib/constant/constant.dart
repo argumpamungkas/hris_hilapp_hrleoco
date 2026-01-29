@@ -29,6 +29,7 @@ class Constant {
   static const String urlProfileKk = "assets/image/employee/kk";
   static const String urlProfileKtp = "assets/image/employee/id";
   static const String bgIdCard = "assets/image/idcard_front.png";
+  static const String urlAttendance = "assets/image/attandance";
 }
 
 class ConstantSharedPref {

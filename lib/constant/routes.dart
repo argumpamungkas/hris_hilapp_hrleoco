@@ -22,7 +22,6 @@ import '../data/models/permit.dart';
 import '../ui/attendance/attendance_screen.dart';
 import '../ui/attendance/camera_screen.dart';
 import '../ui/attendance/picture_preview.dart';
-import '../ui/attendance_history/attendance_history_screen.dart';
 import '../ui/attendance_summary/attendance_summary_screen.dart';
 import '../ui/attendance_team/attendance_team_screen.dart';
 import '../ui/auth/forgot_password_screen.dart';
@@ -89,7 +88,6 @@ class Routes {
   static const picturePreviewScreen = '/picture_preview_screen';
   static const attendanceSummaryScreen = '/attendance_summary_screen';
   static const attendanceTeamScreen = '/attendance_team_screen';
-  static const attendanceHistoryScreen = '/attendance_history_screen';
 
   // OVERTIME
   static const overtimeScreen = "/overtime_screen";
@@ -138,7 +136,6 @@ class Routes {
     picturePreviewScreen: (context) => PicturePreview(args: ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>),
     attendanceSummaryScreen: (context) => AttendanceSummaryScreen(result: ModalRoute.of(context)?.settings.arguments as AttendanceSummary),
     attendanceTeamScreen: (context) => const AttendanceTeam(),
-    attendanceHistoryScreen: (context) => const AttendanceHistoryScreen(),
 
     // Permits
     overtimeScreen: (context) => const OvertimeScreen(),

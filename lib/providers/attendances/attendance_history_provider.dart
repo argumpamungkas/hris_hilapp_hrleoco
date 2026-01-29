@@ -1,103 +1,109 @@
-import 'dart:async';
-import 'dart:io';
-
+import 'package:easy_hris/constant/constant.dart';
+import 'package:easy_hris/constant/exports.dart';
+import 'package:easy_hris/data/models/response/attendance_model.dart';
+import 'package:easy_hris/data/network/api/api_home.dart';
+import 'package:easy_hris/data/services/url_services.dart';
 import 'package:flutter/material.dart';
-import 'package:month_picker_dialog/month_picker_dialog.dart';
+import 'package:intl/intl.dart';
 
-import '../../constant/constant.dart';
-import '../../data/models/history_attendance.dart';
-import '../../data/network/api/api_attendance.dart';
-import '../../ui/util/utils.dart';
+import '../../injection.dart';
 
 class AttendanceHistoryProvider extends ChangeNotifier {
-  final ApiAttendance _api = ApiAttendance();
+  final ApiHome _api = ApiHome();
+  final _prefs = sl<SharedPreferences>();
+  final _urlService = sl<UrlServices>();
 
+  List<AttendanceModel> _listAttendance = [];
   ResultStatus _resultStatus = ResultStatus.init;
-  String _linkServer = '';
   String _message = '';
-  List<ResultsHistoryAttendance> _listAttendance = [];
+  String _baseUrl = '';
+  String _dateMonth = '';
 
-  DateTime _initDate = DateTime.now();
-
+  List<AttendanceModel> get listAttendance => _listAttendance;
   ResultStatus get resultStatus => _resultStatus;
-
-  String get linkServer => _linkServer;
-
   String get message => _message;
-
-  DateTime get initDate => _initDate;
-
-  List<ResultsHistoryAttendance> get listAttendance => _listAttendance;
+  String get baseUrl => _baseUrl;
+  String get dateMonth => _dateMonth;
 
   AttendanceHistoryProvider() {
-    fetchHistoryAttendance(_initDate);
+    init();
   }
 
-  Future<dynamic> fetchHistoryAttendance(DateTime date) async {
-    _resultStatus = ResultStatus.loading;
+  Future<void> getUrl() async {
+    final urlModel = await _urlService.getUrlModel();
+    _baseUrl = urlModel!.link!;
+    return;
+  }
+
+  Future<void> init() async {
+    getUrl();
+    final now = DateTime.now().toLocal();
+
+    final firstOfMonth = DateTime(now.year, now.month, 1);
+    final lastOfMonth = DateTime(now.year, now.month, 31);
+    final initFrom = DateFormat('yyyy-MM-dd').format(firstOfMonth);
+    final initTo = DateFormat('yyyy-MM-dd').format(lastOfMonth);
+
+    _dateMonth = DateFormat('MMM yyyy').format(now);
+
+    // _dateFrom.text = initFrom;
+    // _dateTo.text = initTo;
     notifyListeners();
-    _linkServer = await getLink();
+
     try {
-      final date = formatDateYearMont(_initDate);
-      Map<String, dynamic> response = await _api.fetchHistoryAttendance(date);
-      HistoryAttendance historyAttendance = HistoryAttendance.fromJson(response);
-      _listAttendance = historyAttendance.results;
-      if (_listAttendance.isEmpty) {
-        _resultStatus = ResultStatus.noData;
-        notifyListeners();
-        return [];
-      } else {
-        _resultStatus = ResultStatus.hasData;
-        notifyListeners();
-        return _listAttendance;
-      }
-    } on TimeoutException catch (_) {
-      _resultStatus = ResultStatus.error;
-      _message = errTimeOutMsg;
-      notifyListeners();
-      return false;
-    } on SocketException catch (_) {
-      _resultStatus = ResultStatus.error;
-      _message = errMessageNoInternet;
-      notifyListeners();
-      return false;
+      await fetchAttendanceHistory(from: initFrom, to: initTo);
     } catch (e) {
+      _message = e.toString();
       _resultStatus = ResultStatus.error;
-      _message = errMessage;
       notifyListeners();
-      return false;
     }
   }
 
-  Future<void> changeDate(BuildContext context, int joinDate) async {
-    final selected = await showMonthPicker(
-      context: context,
-      initialDate: _initDate,
-      firstDate: DateTime(joinDate),
-      lastDate: DateTime.now(),
-      // roundedCornersRadius: 24,
-      // selectedMonthPadding: 8,
-      // selectedMonthTextColor: Colors.white,
-      // monthPickerDialogSettings: MonthPickerDialogSettings(
-      //   dialogSettings: PickerDialogSettings(
-      //     dialogBackgroundColor: Colors.white,
-      //     dismissible: false,
-      //     dialogRoundedCornersRadius: 16,
-      //   ),
-      //   // headerSettings: PickerHeaderSettings(
-      //   //   headerBackgroundColor: Constant.,
-      //   // ),
-      //   dateButtonsSettings: PickerDateButtonsSettings(
-      //     // selectedMonthBackgroundColor: Constant.colorTeal,
-      //     selectedMonthTextColor: Colors.white,
-      //     selectedDateRadius: 8,
-      //   ),
-      // ),
-    );
-
-    if (selected == null) return;
-    _initDate = selected;
-    fetchHistoryAttendance(selected);
+  Future<void> fetchAttendanceHistory({required String from, required String to}) async {
+    _listAttendance.clear();
+    _resultStatus = ResultStatus.loading;
     notifyListeners();
+
+    final number = _prefs.getString(ConstantSharedPref.numberUser);
+
+    try {
+      final result = await _api.fetchAttendanceData(number ?? "", from, to);
+      final listData = result.result;
+
+      if (result.theme == 'success') {
+        if (listData!.isEmpty) {
+          _resultStatus = ResultStatus.noData;
+          _message = "History Attendance is Empty";
+          notifyListeners();
+        } else {
+          _listAttendance.addAll(listData);
+          _resultStatus = ResultStatus.hasData;
+          notifyListeners();
+        }
+      } else {
+        _message = result.message!;
+        _resultStatus = ResultStatus.error;
+        notifyListeners();
+        return;
+      }
+    } catch (e) {
+      _message = e.toString();
+      _resultStatus = ResultStatus.error;
+      notifyListeners();
+    }
+  }
+
+  Future<void> onChangeMonth(DateTime value) async {
+    final date = value.toLocal();
+
+    final firstOfMonth = DateTime(value.year, value.month, 1);
+    final lastOfMonth = DateTime(value.year, value.month, 31);
+    final initFrom = DateFormat('yyyy-MM-dd').format(firstOfMonth);
+    final initTo = DateFormat('yyyy-MM-dd').format(lastOfMonth);
+
+    _dateMonth = DateFormat('MMM yyyy').format(date);
+    notifyListeners();
+
+    fetchAttendanceHistory(from: initFrom, to: initTo);
   }
 }

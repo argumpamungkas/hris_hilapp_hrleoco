@@ -106,7 +106,7 @@ class HomeProvider extends ChangeNotifier {
     try {
       final number = _prefs.getString(ConstantSharedPref.numberUser);
       final transDate = "${now.year}-${now.month}-${now.day}";
-      final result = await _api.fetchAttendanceData(number ?? "", transDate);
+      final result = await _api.fetchAttendanceData(number ?? "", transDate, transDate);
       final data = result.result;
 
       if (data!.isNotEmpty) {
@@ -125,16 +125,16 @@ class HomeProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> fetchCurrentLocation(ConfigModel configModel) async {
+  Future<bool> fetchCurrentLocation(ConfigModel configModel) async {
     _resultStatusLocation = ResultStatus.loading;
     notifyListeners();
 
     if (configModel.latitude == "0" || configModel.longitude == "0" || configModel.radius == "0") {
       _message = "Something wrong as coordinate location company.";
       _resultStatusLocation = ResultStatus.error;
-      _canAttendance = false;
+      // _canAttendance = false;
       notifyListeners();
-      return;
+      return false;
     }
 
     final latCompany = double.tryParse(configModel.latitude ?? '0');
@@ -144,58 +144,65 @@ class HomeProvider extends ChangeNotifier {
     if (latCompany == null || longCompany == null || maxRadius == null) {
       _message = "Invalid company location data.";
       _resultStatusLocation = ResultStatus.error;
-      _canAttendance = false;
+      // _canAttendance = false;
       notifyListeners();
-      return;
+      return false;
     }
 
     final serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      _message = "Your gps inactive";
+      _message = "Your GPS inactive";
       _resultStatusLocation = ResultStatus.error;
-      _canAttendance = false;
+      // _canAttendance = false;
       notifyListeners();
-      return;
+      return false;
     }
 
     try {
       final location = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.medium, timeLimit: Duration(seconds: 15));
 
-      final place = await placemarkFromCoordinates(location.latitude, location.longitude);
-
-      final p = place.first;
-      _address = [p.street, p.subLocality, p.locality, p.administrativeArea, p.postalCode, p.country].where((e) => e != null).join(', ');
+      // final place = await placemarkFromCoordinates(location.latitude, location.longitude);
+      //
+      // final p = place.first;
+      // _address = [p.street, p.subLocality, p.locality, p.administrativeArea, p.postalCode, p.country].where((e) => e != null).join(', ');
 
       final distance = Geolocator.distanceBetween(location.latitude, location.longitude, latCompany!, longCompany!);
 
       if (distance <= maxRadius!.toDouble()) {
-        _canAttendance = true;
+        // _canAttendance = true;
+        _message = "Your location can do Attendance. Click next for Attendance";
+        notifyListeners();
+        return true;
       } else {
-        _radiusDistance = distance;
-        _canAttendance = false;
+        final distanceInMeter = distance.toStringAsFixed(0);
+        _message = "Your current location is outside the office radius. You are $distanceInMeter meters away from the allowed area.";
+        notifyListeners();
+        // _radiusDistance = distance;
+        // _canAttendance = false;
+        return false;
       }
 
       _resultStatusLocation = ResultStatus.hasData;
       notifyListeners();
     } on TimeoutException catch (_) {
       _message = "Failed get your Location. Check GPS and Connection Device.";
-      _resultStatusLocation = ResultStatus.error;
-      _canAttendance = false;
+      // _resultStatusLocation = ResultStatus.error;
+      // _canAttendance = false;
       notifyListeners();
-      return;
+      return false;
     } on SocketException catch (_) {
       _message = ConstantMessage.errMsgNoInternet;
-      _resultStatusLocation = ResultStatus.error;
-      _canAttendance = false;
+      // _resultStatusLocation = ResultStatus.error;
+      // _canAttendance = false;
       notifyListeners();
-      return;
+      return false;
     } catch (e, trace) {
       // print("error $e");
-      _resultStatusLocation = ResultStatus.error;
-      _canAttendance = false;
+      // _resultStatusLocation = ResultStatus.error;
+      // _canAttendance = false;
       _message = "Something wrong get location. $e";
       notifyListeners();
-      return;
+      return false;
     }
   }
 

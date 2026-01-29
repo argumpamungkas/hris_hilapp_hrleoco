@@ -55,6 +55,7 @@ class DialogHelper {
     Icon? icon,
     required String title,
     required String message,
+    String confirmText = "OK",
     required void Function()? onPressed,
   }) {
     return showDialog(
@@ -69,7 +70,7 @@ class DialogHelper {
             ],
           ),
           content: Text(message),
-          actions: [TextButton(onPressed: onPressed, child: Text("OK"))],
+          actions: [TextButton(onPressed: onPressed, child: Text(confirmText))],
         );
       },
     );

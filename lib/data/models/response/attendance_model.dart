@@ -12,6 +12,11 @@ class AttendanceModel {
   String? transDate;
   String? transTime;
   String? location;
+  String? shiftName;
+  String? shiftStart;
+  String? shiftEnd;
+  String? duration;
+  String? result;
   String? source;
   String? foto;
   String? status;
@@ -24,6 +29,11 @@ class AttendanceModel {
     required this.transDate,
     required this.transTime,
     required this.location,
+    required this.shiftName,
+    required this.shiftStart,
+    required this.shiftEnd,
+    required this.duration,
+    required this.result,
     required this.source,
     required this.foto,
     required this.status,
@@ -37,6 +47,11 @@ class AttendanceModel {
     transDate: json["trans_date"] ?? "",
     transTime: json["trans_time"] ?? "",
     location: json["location"] ?? "",
+    shiftName: json["shift_name"] ?? "",
+    shiftStart: json["shift_start"] ?? "",
+    shiftEnd: json["shift_end"] ?? "",
+    duration: json["duration"] ?? "",
+    result: json["result"] ?? "", // =>Overlate / Overtime
     source: json["source"] ?? "",
     foto: json["foto"] ?? "",
     status: json["status"] ?? "",
@@ -50,6 +65,11 @@ class AttendanceModel {
     "trans_date": transDate,
     "trans_time": transTime,
     "location": location,
+    "shift_name": shiftName,
+    "shift_start": shiftStart,
+    "shift_end": shiftEnd,
+    "duration": duration,
+    "result ": result,
     "source": source,
     "foto": foto,
     "status": status,
