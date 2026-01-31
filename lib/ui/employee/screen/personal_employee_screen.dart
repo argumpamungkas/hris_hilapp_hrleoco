@@ -711,7 +711,7 @@ class PersonalScreen extends StatelessWidget {
                                         }
                                       },
                                       title: "UPDATE",
-                                      backgroundColor: colorPurpleAccent,
+                                      backgroundColor: ConstantColor.colorBlue,
                                     ),
                                   );
                                 },

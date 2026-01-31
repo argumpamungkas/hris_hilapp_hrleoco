@@ -123,7 +123,7 @@ class _PermitNotificationWidgetState extends State<PermitNotificationWidget> {
                                                       if (value.theme == "success") {
                                                         showLoadingDialog(context);
                                                         notifC.fetchNotification();
-                                                        permitC.fetchPermit(permitC.initDate.year);
+                                                        // permitC.fetchPermit(permitC.initDate.year);
                                                         Navigator.pop(context);
                                                         showInfoSnackbar(context, value.message);
                                                       } else {
@@ -156,7 +156,7 @@ class _PermitNotificationWidgetState extends State<PermitNotificationWidget> {
                                                       if (value.theme == "success") {
                                                         showLoadingDialog(context);
                                                         notifC.fetchNotification();
-                                                        permitC.fetchPermit(permitC.initDate.year);
+                                                        // permitC.fetchPermit(permitC.initDate.year);
                                                         Navigator.pop(context);
                                                         showInfoSnackbar(context, value.message);
                                                       } else {
@@ -212,7 +212,7 @@ class _PermitNotificationWidgetState extends State<PermitNotificationWidget> {
                                           if (value.theme == "success") {
                                             showLoadingDialog(context);
                                             notifC.fetchNotification();
-                                            permitC.fetchPermit(permitC.initDate.year);
+                                            // permitC.fetchPermit(permitC.initDate.year);
                                             Navigator.pop(context);
                                             showInfoSnackbar(context, value.message);
                                           } else {
@@ -245,7 +245,7 @@ class _PermitNotificationWidgetState extends State<PermitNotificationWidget> {
                                           if (value.theme == "success") {
                                             showLoadingDialog(context);
                                             notifC.fetchNotification();
-                                            permitC.fetchPermit(permitC.initDate.year);
+                                            // permitC.fetchPermit(permitC.initDate.year);
                                             Navigator.pop(context);
                                             showInfoSnackbar(context, value.message);
                                           } else {

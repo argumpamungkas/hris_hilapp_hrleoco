@@ -74,7 +74,7 @@ class CareerEmployeeScreen extends StatelessWidget {
                               tilePadding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
                               leading: Container(
                                 padding: EdgeInsets.all(8),
-                                decoration: BoxDecoration(shape: BoxShape.circle, color: colorPurpleAccent),
+                                decoration: BoxDecoration(shape: BoxShape.circle, color: ConstantColor.colorBlue),
                                 child: Icon(Icons.person, color: Colors.white),
                               ),
                               title: Text("${employee.name}"),

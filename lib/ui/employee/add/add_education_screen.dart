@@ -19,7 +19,7 @@ class AddEducationScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => AddEducationProvider(),
       child: Scaffold(
-        appBar: appBarCustom(context, title: "Add Education", leadingBack: true),
+        appBar: AppbarCustom.appbar(context, title: "Add Education", leadingBack: true),
         body: SafeArea(
           child: Consumer<AddEducationProvider>(
             builder: (context, prov, _) {
@@ -210,7 +210,7 @@ class AddEducationScreen extends StatelessWidget {
                             }
                           },
                           title: "ADD",
-                          backgroundColor: colorPurpleAccent,
+                          backgroundColor: ConstantColor.colorBlue,
                         ),
                       ),
                     ],

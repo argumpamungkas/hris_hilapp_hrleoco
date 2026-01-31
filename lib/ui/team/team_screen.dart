@@ -20,7 +20,7 @@ class TeamScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarCustom(context, title: "Teams", leadingBack: false),
+      appBar: AppbarCustom.appbar(context, title: "Teams", leadingBack: false),
       body: Center(child: Text("Feature on Progress")),
       // body: Consumer2<TeamProvider, PreferencesProvider>(
       //   builder: (context, provTeam, provPref, _) {

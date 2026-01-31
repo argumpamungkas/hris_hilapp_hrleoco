@@ -19,7 +19,7 @@ class AddCareerScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => AddCareerProvider(),
       child: Scaffold(
-        appBar: appBarCustom(context, title: "Add Career", leadingBack: true),
+        appBar: AppbarCustom.appbar(context, title: "Add Career", leadingBack: true),
         body: SafeArea(
           child: Consumer<AddCareerProvider>(
             builder: (context, prov, _) {
@@ -150,7 +150,7 @@ class AddCareerScreen extends StatelessWidget {
                             }
                           },
                           title: "ADD",
-                          backgroundColor: colorPurpleAccent,
+                          backgroundColor: ConstantColor.colorBlue,
                         ),
                       ),
                     ],

@@ -21,7 +21,7 @@ class OvertimeDetailScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => OvertimeDetailProvider(resultOvertime),
       child: Scaffold(
-        appBar: appBarCustom(context, title: "Overtime Detail", leadingBack: true),
+        appBar: AppbarCustom.appbar(context, title: "Overtime Detail", leadingBack: true),
         body: Consumer2<OvertimeDetailProvider, OvertimeProvider>(
           builder: (context, provOvertimeDetail, provOvertime, _) {
             return ListView(

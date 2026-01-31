@@ -23,7 +23,7 @@ class AttendanceSummaryScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => AttendanceSummaryProvider(),
       child: Scaffold(
-        appBar: appBarCustom(
+        appBar: AppbarCustom.appbar(
           context,
           title: "Attendance Summary",
           leadingBack: true,
@@ -35,7 +35,7 @@ class AttendanceSummaryScreen extends StatelessWidget {
                         color: provPref.isDarkTheme ? Colors.black : Colors.grey.shade100,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
-                          side: BorderSide(color: provPref.isDarkTheme ? ConstantColor.colorPurpleAccent : Colors.grey.shade100),
+                          side: BorderSide(color: provPref.isDarkTheme ? ConstantColor.colorBlue : Colors.grey.shade100),
                         ),
                         child: Padding(
                           padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),

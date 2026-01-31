@@ -44,9 +44,9 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
         return true;
       },
       child: Scaffold(
-        backgroundColor: prov.isDarkTheme ? Theme.of(context).scaffoldBackgroundColor : colorPurpleAccent,
+        backgroundColor: prov.isDarkTheme ? Theme.of(context).scaffoldBackgroundColor : ConstantColor.colorBlue,
         appBar: AppBar(
-          backgroundColor: prov.isDarkTheme ? Theme.of(context).scaffoldBackgroundColor : colorPurpleAccent,
+          backgroundColor: prov.isDarkTheme ? Theme.of(context).scaffoldBackgroundColor : ConstantColor.colorBlue,
           foregroundColor: Colors.white,
           title: const Text("Attendance", style: TextStyle(color: Colors.white)),
           elevation: 0,

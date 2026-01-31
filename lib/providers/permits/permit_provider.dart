@@ -1,77 +1,96 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:easy_hris/constant/exports.dart';
+import 'package:easy_hris/data/models/response/permit_model.dart';
 import 'package:flutter/material.dart';
 
 import '../../constant/constant.dart';
 import '../../data/models/permit.dart';
 import '../../data/network/api/api_permit.dart';
+import '../../injection.dart';
 import '../../ui/util/utils.dart';
 
 class PermitProvider extends ChangeNotifier {
   ApiPermit api = ApiPermit();
+  final _prefs = sl<SharedPreferences>();
 
-  PermitProvider() {
-    _getLinkServer();
-    // fetchPermitType();
-  }
+  // final DateTime _dateNow = DateTime.now().toLocal();
+  int _year = DateTime.now().toLocal().year;
 
-  DateTime _initDate = DateTime.now();
-  List<ResultPermit> _listPermit = [];
+  List<ResultPermitModel> _listPermit = [];
+  int _remaining = 0;
   ResultStatus _resultStatus = ResultStatus.init;
 
-  DateTime get initDate => _initDate;
-  late String _linkServer;
-  late String _message;
+  String _message = '';
 
-  List<ResultPermit> get lisPermit => _listPermit;
+  List<ResultPermitModel> get listPermit => _listPermit;
 
   ResultStatus get resultStatus => _resultStatus;
 
-  String get linkServer => _linkServer;
-
   String get message => _message;
 
-  void _getLinkServer() async {
-    _linkServer = await getLink();
+  int get remaining => _remaining;
+
+  int get year => _year;
+
+  PermitProvider() {
+    // _year = _dateNow.year.toString();
+    fetchPermit(_year);
   }
 
-  Future<dynamic> fetchPermit(int year) async {
+  Future<void> fetchPermit(int year) async {
+    _remaining = 0;
+    _listPermit.clear();
     _resultStatus = ResultStatus.loading;
     notifyListeners();
     try {
-      Map<String, dynamic> response = await api.fetchPermit(year);
-      Permit permit = Permit.fromJson(response);
-      _listPermit = permit.results;
-      if (_listPermit.isEmpty) {
-        _resultStatus = ResultStatus.noData;
-        notifyListeners();
-        return [];
+      final number = _prefs.getString(ConstantSharedPref.numberUser);
+      final response = await api.fetchPermit(number!, year);
+      debugPrint("response ${response.toJson()}");
+      if (response.theme == 'success') {
+        _remaining = response.remaining;
+        if (response.result.isEmpty) {
+          _resultStatus = ResultStatus.noData;
+          notifyListeners();
+          return;
+        } else {
+          _listPermit = response.result;
+          _resultStatus = ResultStatus.hasData;
+          notifyListeners();
+          return;
+        }
       } else {
-        _resultStatus = ResultStatus.hasData;
+        _resultStatus = ResultStatus.error;
+        _message = response.message;
         notifyListeners();
-        return _listPermit;
       }
     } on TimeoutException catch (_) {
       _resultStatus = ResultStatus.error;
       _message = errTimeOutMsg;
       notifyListeners();
-      return false;
+      return;
     } on SocketException catch (_) {
       _resultStatus = ResultStatus.error;
       _message = errMessageNoInternet;
       notifyListeners();
-      return false;
+      return;
     } catch (e) {
       _resultStatus = ResultStatus.error;
-      _message = errMessage;
+      _message = e.toString();
       notifyListeners();
-      return false;
+      return;
     }
   }
 
-  Future<void> onChangeYear(DateTime value) async {
-    _initDate = value;
+  Future<void> onChangeYear(bool isAdd) async {
+    print("Addaaaa");
+    if (isAdd) {
+      _year = _year + 1;
+    } else {
+      _year = _year - 1;
+    }
+    fetchPermit(_year);
     notifyListeners();
   }
 }

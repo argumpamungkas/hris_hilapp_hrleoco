@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:easy_hris/data/models/response/permit_model.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -19,11 +20,11 @@ class PermitDetailProvider extends ChangeNotifier {
 
   String get message => _message;
 
-  PermitDetailProvider(ResultPermit resultPermit) {
+  PermitDetailProvider(ResultPermitModel resultPermit) {
     _convert(resultPermit);
   }
 
-  void _convert(ResultPermit resultPermit) {
+  void _convert(ResultPermitModel resultPermit) {
     if (resultPermit.permitDate != null) {
       var dateFormatDefautlt = DateFormat("yyyy-MM-dd").parse(resultPermit.permitDate!);
       _permitDate = formatCreated(dateFormatDefautlt);

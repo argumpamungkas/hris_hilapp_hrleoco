@@ -19,7 +19,7 @@ class IdCardScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => IdCardProvider(),
       child: Scaffold(
-        appBar: appBarCustom(context, title: "ID Card", leadingBack: true),
+        appBar: AppbarCustom.appbar(context, title: "ID Card", leadingBack: true),
         body: Consumer2<IdCardProvider, PreferencesProvider>(
           builder: (context, prov, provPref, _) {
             if (prov.resultStatus == ResultStatus.loading) {

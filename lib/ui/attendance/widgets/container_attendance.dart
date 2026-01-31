@@ -32,7 +32,7 @@ class ContainerAttendance extends StatelessWidget {
                 decoration: BoxDecoration(
                   color: prov.isDarkTheme ? Colors.black : Colors.grey.shade100,
                   borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: prov.isDarkTheme ? colorPurpleAccent : Colors.grey.shade100),
+                  border: Border.all(color: prov.isDarkTheme ? ConstantColor.colorBlue : Colors.grey.shade100),
                 ),
                 child: Text(
                   "Selfie Photo is Required to Check In / Out",

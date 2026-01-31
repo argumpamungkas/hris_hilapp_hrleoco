@@ -96,7 +96,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
     var format = widget.args['news'].attachment.split(".").last;
 
     return Scaffold(
-      appBar: appBarCustom(context, title: "News Detail", leadingBack: true),
+      appBar: AppbarCustom.appbar(context, title: "News Detail", leadingBack: true),
       body: ListView(
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
         children: [

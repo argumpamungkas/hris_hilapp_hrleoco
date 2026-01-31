@@ -22,7 +22,7 @@ class TeamsDetailScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => TeamsDetailProvider(dataEmployee),
       child: Scaffold(
-        appBar: appBarCustom(
+        appBar: AppbarCustom.appbar(
           context,
           title: "Attendance Teams",
           leadingBack: true,

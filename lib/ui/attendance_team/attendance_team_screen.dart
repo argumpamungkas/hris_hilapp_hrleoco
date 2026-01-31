@@ -16,7 +16,7 @@ class AttendanceTeam extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarCustom(
+      appBar: AppbarCustom.appbar(
         context,
         title: "Attendance Team",
         leadingBack: true,

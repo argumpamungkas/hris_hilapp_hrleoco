@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:camera/camera.dart';
+import 'package:easy_hris/data/models/response/permit_model.dart';
 import 'package:easy_hris/ui/attendance/camera_face_detection_screen.dart';
 import 'package:easy_hris/ui/employee/add/add_career_screen.dart';
 import 'package:easy_hris/ui/employee/add/add_education_screen.dart';
@@ -39,7 +40,7 @@ import '../ui/overtime/overtime_added_screen.dart';
 import '../ui/overtime/overtime_detail_screen.dart';
 import '../ui/pay_slip_page/pay_slip/pay_slip_screen.dart';
 import '../ui/pay_slip_page/pay_slip_detail/pay_slip_detail_screen.dart';
-import '../ui/permit/permit_added_screen.dart';
+import '../ui/permit/permit_add_screen.dart';
 import '../ui/permit/permit_detail_screen.dart';
 import '../ui/permit/permit_screen.dart';
 import '../ui/profile/profile_change_password_screen.dart';
@@ -96,7 +97,7 @@ class Routes {
 
   // PERMITS
   static const permitScreen = "/permit_screen";
-  static const permitAddedScreen = "/permit_added_screen";
+  static const permitAddScreen = "/permit_add_screen";
   static const permitDetailScreen = "/permit_detail";
 
   static Map<String, Widget Function(BuildContext)> routesPage = {
@@ -144,8 +145,8 @@ class Routes {
 
     // Permits
     permitScreen: (context) => const PermitScreen(),
-    permitAddedScreen: (context) => const PermitAddedScreen(),
-    permitDetailScreen: (context) => PermitDetailScreen(resultPermit: ModalRoute.of(context)?.settings.arguments as ResultPermit),
+    permitAddScreen: (context) => const PermitAddScreen(),
+    permitDetailScreen: (context) => PermitDetailScreen(resultPermit: ModalRoute.of(context)?.settings.arguments as ResultPermitModel),
 
     teamsDetailScreen: (context) => TeamsDetailScreen(dataEmployee: ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>),
 

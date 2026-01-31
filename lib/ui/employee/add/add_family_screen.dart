@@ -19,7 +19,7 @@ class AddFamilyScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => AddFamilyProvider(),
       child: Scaffold(
-        appBar: appBarCustom(context, title: "Add Family", leadingBack: true),
+        appBar: AppbarCustom.appbar(context, title: "Add Family", leadingBack: true),
         body: SafeArea(
           child: Consumer<AddFamilyProvider>(
             builder: (context, prov, _) {
@@ -179,7 +179,7 @@ class AddFamilyScreen extends StatelessWidget {
                             }
                           },
                           title: "ADD",
-                          backgroundColor: colorPurpleAccent,
+                          backgroundColor: ConstantColor.colorBlue,
                         ),
                       ),
                     ],

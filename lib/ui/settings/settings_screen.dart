@@ -11,7 +11,7 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarCustom(context, title: "Settings", leadingBack: true),
+      appBar: AppbarCustom.appbar(context, title: "Settings", leadingBack: true),
       body: Consumer<PreferencesProvider>(
         builder: (context, prov, _) {
           return ListView(

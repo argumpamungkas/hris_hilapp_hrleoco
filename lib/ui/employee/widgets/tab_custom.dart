@@ -21,12 +21,12 @@ class TabCustom extends StatelessWidget {
           return Container(
             decoration: BoxDecoration(
               color: isNowTab
-                  ? colorPurpleAccent
+                  ? ConstantColor.colorBlue
                   : prov.isDarkTheme
                   ? Colors.black
                   : Colors.white,
               // borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: colorPurpleAccent, width: 1),
+              border: Border.all(color: ConstantColor.colorBlue, width: 1),
             ),
             padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
             width: 0.3.sw,

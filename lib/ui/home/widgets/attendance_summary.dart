@@ -55,7 +55,7 @@ class AttendanceSummaryContainer extends StatelessWidget {
                         },
                         child: Text(
                           "View All",
-                          style: TextStyle(color: ConstantColor.colorPurpleAccent, fontSize: 12.sp),
+                          style: TextStyle(color: ConstantColor.colorBlue, fontSize: 12.sp),
                         ),
                       ),
                       // TextButton(

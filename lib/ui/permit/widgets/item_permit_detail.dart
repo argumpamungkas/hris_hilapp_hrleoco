@@ -13,24 +13,15 @@ class ItemPermitDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     PreferencesProvider prov = Provider.of<PreferencesProvider>(context);
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: Text(
-                titleItem,
-                style: TextStyle(color: prov.isDarkTheme ? Colors.white : Colors.grey.shade700, fontSize: 10.sp),
-              ),
-            ),
-            Expanded(
-              child: Text(
-                dataItem,
-                textAlign: TextAlign.end,
-                style: TextStyle(color: prov.isDarkTheme ? Colors.white : Colors.grey.shade700, fontWeight: FontWeight.bold, fontSize: 10.sp),
-              ),
-            ),
-          ],
+        Text(
+          titleItem,
+          style: TextStyle(color: prov.isDarkTheme ? Colors.white : Colors.grey.shade700, fontSize: 11.sp),
+        ),
+        Text(
+          dataItem,
+          style: TextStyle(color: prov.isDarkTheme ? Colors.white : Colors.grey.shade700, fontWeight: FontWeight.bold, fontSize: 13.sp),
         ),
         SizedBox(height: 4.h),
         Divider(thickness: 1, height: 0, color: Colors.grey.shade300),

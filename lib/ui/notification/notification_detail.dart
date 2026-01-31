@@ -20,7 +20,7 @@ class NotificationDetail extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => NotificationDetailProvider(dataNotif: dataNotif),
       child: Scaffold(
-        appBar: appBarCustom(
+        appBar: AppbarCustom.appbar(
           context,
           title: "Approval",
           leadingBack: true,

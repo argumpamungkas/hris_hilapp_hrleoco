@@ -17,7 +17,7 @@ class UserLocation extends StatelessWidget {
       decoration: BoxDecoration(
         color: provPref.isDarkTheme ? Colors.black : Colors.grey.shade100,
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: provPref.isDarkTheme ? colorPurpleAccent : Colors.grey.shade100),
+        border: Border.all(color: provPref.isDarkTheme ? ConstantColor.colorBlue : Colors.grey.shade100),
       ),
       child: Consumer<AttendanceController>(
         builder: (context, prov, _) {

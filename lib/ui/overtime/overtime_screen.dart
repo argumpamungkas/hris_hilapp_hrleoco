@@ -38,7 +38,7 @@ class _OvertimeScreenState extends State<OvertimeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarCustom(
+      appBar: AppbarCustom.appbar(
         context,
         title: "Overtime",
         leadingBack: true,

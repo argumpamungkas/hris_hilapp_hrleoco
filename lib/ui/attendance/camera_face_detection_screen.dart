@@ -46,7 +46,7 @@
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(
-//       appBar: appBarCustom(context, title: "Check In", leadingBack: true),
+//       appBar: AppbarCustom.appbar(context, title: "Check In", leadingBack: true),
 //       body: SafeArea(
 //         child: Builder(
 //           builder: (context) {

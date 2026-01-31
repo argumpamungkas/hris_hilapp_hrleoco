@@ -85,11 +85,11 @@ class TextFieldCustom extends StatelessWidget {
             ),
             enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.0),
-              borderSide: BorderSide(color: prov.isDarkTheme ? ConstantColor.colorPurpleAccent : Colors.black), // aktif
+              borderSide: BorderSide(color: prov.isDarkTheme ? ConstantColor.colorBlue : Colors.black), // aktif
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.0),
-              borderSide: BorderSide(color: prov.isDarkTheme ? ConstantColor.colorPurpleAccent : Colors.black, width: 2), // fokus
+              borderSide: BorderSide(color: prov.isDarkTheme ? ConstantColor.colorBlue : Colors.black, width: 2), // fokus
             ),
             disabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12.0),

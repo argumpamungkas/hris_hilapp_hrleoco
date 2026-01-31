@@ -20,7 +20,7 @@ class ViewImageNetwork extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => ViewImageNetworkProvider(),
       child: Scaffold(
-        appBar: appBarCustom(
+        appBar: AppbarCustom.appbar(
           context,
           title: "",
           leadingBack: true,

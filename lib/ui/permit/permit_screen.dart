@@ -1,160 +1,198 @@
-import 'package:animate_do/animate_do.dart';
-import 'package:easy_hris/ui/permit/widgets/item_permit.dart';
+import 'package:easy_hris/constant/constant.dart';
+import 'package:easy_hris/constant/exports.dart';
+import 'package:easy_hris/constant/routes.dart';
+import 'package:easy_hris/providers/permits/permit_provider.dart';
+import 'package:easy_hris/ui/permit/widgets/action_button_custom.dart';
+import 'package:easy_hris/ui/util/widgets/app_bar_custom.dart';
+import 'package:easy_hris/ui/util/widgets/data_not_found.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
-import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
-import '../../constant/constant.dart';
-import '../../constant/routes.dart';
-import '../../data/models/permit.dart';
-import '../../providers/permits/permit_provider.dart';
-import '../../providers/preferences_provider.dart';
 import '../util/utils.dart';
-import '../util/widgets/app_bar_custom.dart';
-import '../util/widgets/card_info.dart';
-import '../util/widgets/data_not_found.dart';
-import '../util/widgets/shimmer_list_load_data.dart';
-import '../util/widgets/show_dialog_picker_year.dart';
 
-class PermitScreen extends StatefulWidget {
+class PermitScreen extends StatelessWidget {
   const PermitScreen({super.key});
 
   @override
-  State<PermitScreen> createState() => _PermitScreenState();
-}
-
-class _PermitScreenState extends State<PermitScreen> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      final date = Provider.of<PermitProvider>(context, listen: false).initDate;
-      Provider.of<PermitProvider>(context, listen: false).fetchPermit(date.year);
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: appBarCustom(
-        context,
-        title: "Permit",
-        leadingBack: true,
-        action: [
-          Consumer2<PermitProvider, PreferencesProvider>(
-            builder: (context, provPermit, provPref, _) {
-              return Padding(
-                padding: EdgeInsets.only(right: 8.w),
-                child: Material(
-                  color: provPref.isDarkTheme ? Colors.black : Colors.grey.shade100,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                    side: BorderSide(color: provPref.isDarkTheme ? ConstantColor.colorPurpleAccent : Colors.grey.shade100),
-                  ),
-                  child: provPermit.resultStatus == ResultStatus.loading
-                      ? Container()
-                      : Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-                          child: InkWell(
-                            onTap: () async {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return ShowDialogPickerYear(
-                                    selectDate: provPermit.initDate,
-                                    onChanged: (value) async {
-                                      provPermit.onChangeYear(value).then((value) async {
-                                        if (!context.mounted) return;
-                                        Navigator.pop(context);
-                                        await provPermit.fetchPermit(provPermit.initDate.year);
-                                      });
-                                    },
-                                  );
-                                },
-                              );
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text(provPermit.initDate.year.toString(), style: TextStyle(fontSize: 9.sp)),
-                                SizedBox(width: 4.w),
-                                Icon(Iconsax.calendar_1_outline, size: 12.w),
-                              ],
-                            ),
-                          ),
-                        ),
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-      body: Consumer<PermitProvider>(
-        builder: (context, prov, child) {
-          switch (prov.resultStatus) {
-            case ResultStatus.loading:
-              return const ShimmerListLoadData();
-            case ResultStatus.noData:
-              return const DataEmpty(dataName: "Permit");
-            case ResultStatus.error:
-              return FadeInUp(
-                child: Center(
-                  child: CardInfo(
-                    iconData: Iconsax.info_circle_outline,
-                    colorIcon: Colors.red,
-                    title: "Error",
-                    description: prov.message,
+    return ChangeNotifierProvider(
+      create: (context) => PermitProvider(),
+      child: Scaffold(
+        appBar: AppbarCustom.appbar(
+          context,
+          title: "Permits",
+          leadingBack: true,
+          action: [
+            Consumer<PermitProvider>(
+              builder: (context, prov, _) {
+                if (prov.resultStatus == ResultStatus.hasData || prov.resultStatus == ResultStatus.noData) {
+                  return IconButton(
                     onPressed: () {
-                      prov.fetchPermit(prov.initDate.year);
+                      Navigator.pushNamed(context, Routes.permitAddScreen).then((value) {
+                        prov.fetchPermit(prov.year);
+                      });
                     },
-                    titleButton: "Refresh",
-                    colorTitle: Colors.red,
-                    buttonStyle: ElevatedButton.styleFrom(backgroundColor: ConstantColor.colorBlueDark, foregroundColor: Colors.white),
-                  ),
+                    icon: Icon(Icons.add_box_rounded),
+                  );
+                } else {
+                  return SizedBox.shrink();
+                }
+              },
+            ),
+          ],
+        ),
+        body: SafeArea(
+          child: Column(
+            children: [
+              Consumer<PermitProvider>(
+                builder: (context, prov, _) {
+                  return Padding(
+                    padding: EdgeInsets.all(12.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ActionButtonCustom(
+                          onTap: () {
+                            prov.onChangeYear(false);
+                          },
+                          iconData: Icons.arrow_back_ios_new,
+                        ),
+                        Text(
+                          prov.year.toString(),
+                          style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
+                        ),
+                        ActionButtonCustom(
+                          onTap: () {
+                            prov.onChangeYear(true);
+                          },
+                          iconData: Icons.arrow_forward_ios,
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+
+              // Remaining
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 16.w),
+                padding: EdgeInsets.all(10.w),
+                decoration: BoxDecoration(color: ConstantColor.bgIcon, borderRadius: BorderRadius.circular(8.w)),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        "Remaining Leave",
+                        style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w700),
+                      ),
+                    ),
+                    Consumer<PermitProvider>(
+                      builder: (context, prov, _) {
+                        if (prov.resultStatus == ResultStatus.loading) {
+                          return CupertinoActivityIndicator();
+                        }
+
+                        if (prov.resultStatus == ResultStatus.error || prov.resultStatus == ResultStatus.noData) {
+                          return Text(
+                            // "11 Days",
+                            "0 Days",
+                            style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w700),
+                          );
+                        }
+
+                        return Text(
+                          "${prov.remaining} Days",
+                          style: TextStyle(fontSize: 12.sp, fontWeight: FontWeight.w700),
+                        );
+                      },
+                    ),
+                  ],
                 ),
-              );
-            case ResultStatus.hasData:
-              return RefreshIndicator(
-                onRefresh: () => prov.fetchPermit(prov.initDate.year),
-                child: ListView.builder(
-                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                  padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.h),
-                  itemCount: prov.lisPermit.length,
-                  itemBuilder: (context, index) {
-                    ResultPermit resultPermit = prov.lisPermit[index];
+              ),
 
-                    var permitDate = '';
-                    if (resultPermit.permitDate != null) {
-                      var dateFormatDefault = DateFormat("yyyy-MM-dd").parse(resultPermit.permitDate!);
-                      permitDate = formatDateWithNameMonth(dateFormatDefault);
+              SizedBox(height: 8.h),
+
+              // List
+              Expanded(
+                child: Consumer<PermitProvider>(
+                  builder: (context, prov, _) {
+                    switch (prov.resultStatus) {
+                      case ResultStatus.loading:
+                        return Center(child: CupertinoActivityIndicator());
+                      case ResultStatus.noData:
+                        return Center(child: DataEmpty(dataName: "Permit"));
+                      case ResultStatus.error:
+                        return Center(child: Text(prov.message));
+                      case ResultStatus.hasData:
+                        return ListView.builder(
+                          padding: EdgeInsets.all(10.w),
+                          itemCount: prov.listPermit.length,
+                          itemBuilder: (context, index) {
+                            final item = prov.listPermit[index];
+                            return Padding(
+                              padding: EdgeInsets.symmetric(vertical: 2.h),
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.pushNamed(context, Routes.permitDetailScreen, arguments: item);
+                                },
+                                child: Card(
+                                  surfaceTintColor: Colors.white,
+                                  color: Colors.white,
+                                  child: ListTile(
+                                    leading: Container(
+                                      padding: EdgeInsets.all(4.w),
+                                      decoration: BoxDecoration(color: ConstantColor.bgIcon, borderRadius: BorderRadius.circular(8.w)),
+                                      child: Icon(Icons.file_present_outlined),
+                                    ),
+                                    title: Column(
+                                      spacing: 3.h,
+                                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                                      children: [
+                                        Text(
+                                          item.permitTypeName ?? "",
+                                          style: TextStyle(fontSize: 14.sp, color: Colors.black),
+                                        ),
+                                        Text(
+                                          formatDateReq(DateTime.parse(item.permitDate!)),
+                                          style: TextStyle(fontSize: 10.sp, color: Colors.black, fontWeight: FontWeight.normal),
+                                        ),
+                                      ],
+                                    ),
+                                    // subtitle: Text("30 December 2026"),
+                                    trailing: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.end,
+                                      children: [
+                                        Text(
+                                          item.status == '0' ? "CHECKING" : "APPROVED",
+                                          style: TextStyle(
+                                            fontSize: 12.sp,
+                                            color: item.status!.toUpperCase() == "0" ? Colors.red : Colors.green,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Text(
+                                          item.status!.toUpperCase() == "0" ? item.approvedTo! : item.approvedBy!,
+                                          style: TextStyle(fontSize: 10.sp, color: Colors.black),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        );
+
+                      default:
+                        return SizedBox.shrink();
                     }
-
-                    return ItemPermit(resultPermit: resultPermit, permitDate: permitDate);
                   },
                 ),
-              );
-            default:
-              return Container();
-          }
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(50),
-          side: BorderSide(color: Colors.grey.shade100),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        onPressed: () async {
-          Navigator.pushNamed(context, Routes.permitAddedScreen);
-        },
-        child: Container(
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            shape: BoxShape.circle,
-            image: DecorationImage(image: AssetImage("assets/images/plus.png")),
+              ),
+            ],
           ),
         ),
       ),

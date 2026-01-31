@@ -175,7 +175,7 @@ class AttendanceWidget extends StatelessWidget {
                         //         if (homeProv.resultStatusLocation == ResultStatus.loading) {
                         //           return Shimmer.fromColors(
                         //             baseColor: provPref.isDarkTheme ? ConstantColor.colorBlueDark : Colors.grey.shade300,
-                        //             highlightColor: provPref.isDarkTheme ? ConstantColor.colorPurpleAccent : Colors.grey.shade100,
+                        //             highlightColor: provPref.isDarkTheme ? ConstantColor.ConstantColor.colorBlue : Colors.grey.shade100,
                         //             child: Container(
                         //               width: 0.7.sw,
                         //               height: 30.h,

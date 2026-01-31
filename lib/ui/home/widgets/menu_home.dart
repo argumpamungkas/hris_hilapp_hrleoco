@@ -58,7 +58,9 @@ class MenuHome extends StatelessWidget {
                   itemMenu(
                     context,
                     // onTap: () => Navigator.pushNamed(context, Routes.permitScreen),
-                    onTap: () => showInfoSnackbar(context, "Feature on Progress"),
+                    onTap: () {
+                      Navigator.pushNamed(context, Routes.permitScreen);
+                    },
                     // assetImage: "assets/images/pen.png",
                     icon: Icons.person_pin_outlined,
                     backgroundIcon: Colors.red.shade200,

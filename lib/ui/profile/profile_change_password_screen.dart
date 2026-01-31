@@ -13,7 +13,7 @@ class ProfileChangePasswordScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => ProfileChangePasswordProvider(),
       child: Scaffold(
-        appBar: appBarCustom(context, title: "Change Password", leadingBack: true),
+        appBar: AppbarCustom.appbar(context, title: "Change Password", leadingBack: true),
         body: const FormChangePassword(),
       ),
     );

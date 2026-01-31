@@ -19,9 +19,9 @@ class AttendanceHistoryScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => AttendanceHistoryProvider(),
       child: Scaffold(
-        appBar: appBarCustom(
+        appBar: AppbarCustom.appbar(
           context,
-          title: "History Attendance",
+          title: "Attendance History",
           leadingBack: false,
           action: [
             Consumer2<AttendanceHistoryProvider, PreferencesProvider>(
@@ -36,16 +36,14 @@ class AttendanceHistoryScreen extends StatelessWidget {
                       lastDate: DateTime.now().toLocal(),
                       // monthPickerDialogSettings: ,
                       monthPickerDialogSettings: MonthPickerDialogSettings(
-                        headerSettings: PickerHeaderSettings(
-                          headerBackgroundColor: provPref.isDarkTheme ? Colors.black : ConstantColor.colorPurpleAccent,
-                        ),
+                        headerSettings: PickerHeaderSettings(headerBackgroundColor: provPref.isDarkTheme ? Colors.black : ConstantColor.colorBlue),
                         dateButtonsSettings: PickerDateButtonsSettings(
                           selectedDateRadius: 8.w,
-                          selectedMonthBackgroundColor: ConstantColor.colorPurpleAccent,
+                          selectedMonthBackgroundColor: ConstantColor.colorBlue,
                         ),
                         dialogSettings: PickerDialogSettings(
                           dialogRoundedCornersRadius: 16.w,
-                          dialogBorderSide: BorderSide(color: provPref.isDarkTheme ? ConstantColor.colorPurpleAccent : Colors.transparent),
+                          dialogBorderSide: BorderSide(color: provPref.isDarkTheme ? ConstantColor.colorBlue : Colors.transparent),
                         ),
                       ),
                     ).then((value) {
@@ -60,7 +58,7 @@ class AttendanceHistoryScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       color: provPref.isDarkTheme ? Colors.black : Colors.grey.shade200,
                       borderRadius: BorderRadius.circular(8.w),
-                      border: Border.all(color: provPref.isDarkTheme ? ConstantColor.colorPurpleAccent : Colors.grey.shade200),
+                      border: Border.all(color: provPref.isDarkTheme ? ConstantColor.colorBlue : Colors.grey.shade200),
                     ),
                     child: Row(
                       spacing: 4.w,

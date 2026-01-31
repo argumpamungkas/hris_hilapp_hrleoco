@@ -16,8 +16,6 @@ import 'constant/routes.dart';
 import 'data/services/notification_services.dart';
 import 'data/network/api/firebase_api.dart';
 
-// final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   await Firebase.initializeApp();
@@ -27,7 +25,6 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Injection().initialize();
-  // await FaceCamera.initialize();
   await dotenv.load(fileName: '.env');
 
   /// GET URL FORM SUPABASE

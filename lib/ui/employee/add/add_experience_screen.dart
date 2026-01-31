@@ -20,7 +20,7 @@ class AddExperienceScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => AddExperienceProvider(),
       child: Scaffold(
-        appBar: appBarCustom(context, title: "Add Experience", leadingBack: true),
+        appBar: AppbarCustom.appbar(context, title: "Add Experience", leadingBack: true),
         body: SafeArea(
           child: Consumer<AddExperienceProvider>(
             builder: (context, prov, _) {
@@ -183,7 +183,7 @@ class AddExperienceScreen extends StatelessWidget {
                             }
                           },
                           title: "ADD",
-                          backgroundColor: colorPurpleAccent,
+                          backgroundColor: ConstantColor.colorBlue,
                         ),
                       ),
                     ],

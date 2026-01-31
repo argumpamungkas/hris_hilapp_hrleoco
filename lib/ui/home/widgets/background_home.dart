@@ -11,8 +11,8 @@ class BackgroundHome extends StatelessWidget {
     return Container(
       width: 1.sw,
       height: 150.h,
-      decoration: const BoxDecoration(
-        color: colorPurpleAccent,
+      decoration: BoxDecoration(
+        color: ConstantColor.colorBlue,
         // borderRadius: BorderRadius.vertical(bottom: Radius.circular(50)),
       ),
     );

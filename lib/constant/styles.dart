@@ -6,12 +6,13 @@ import 'constant.dart';
 final ThemeData lightTheme = ThemeData(
   useMaterial3: true,
   textTheme: ThemeData.light().textTheme.apply(fontFamily: 'Poppins'),
-  colorScheme: ThemeData.light().colorScheme.copyWith(secondary: ConstantColor.colorPurpleAccent, onPrimary: Colors.black),
+  colorScheme: ThemeData.light().colorScheme.copyWith(secondary: ConstantColor.colorBlue, onPrimary: Colors.black),
   visualDensity: VisualDensity.adaptivePlatformDensity,
-  scaffoldBackgroundColor: Colors.grey[50],
+  // scaffoldBackgroundColor: Colors.grey[50],
+  scaffoldBackgroundColor: ConstantColor.bgColorWhite,
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: Colors.white,
-    selectedItemColor: ConstantColor.colorPurpleAccent,
+    selectedItemColor: ConstantColor.colorBlue,
     unselectedItemColor: Colors.grey,
     showUnselectedLabels: true,
     showSelectedLabels: true,
@@ -42,18 +43,18 @@ final ThemeData lightTheme = ThemeData(
     hintStyle: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey, fontSize: 10.sp),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(8),
-      borderSide: BorderSide(color: Colors.blueGrey.shade50),
+      borderSide: BorderSide(color: Colors.grey),
     ),
     contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8.h),
     filled: true,
-    fillColor: Colors.blueGrey.shade50,
+    fillColor: Colors.white,
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(8),
-      borderSide: BorderSide(color: Colors.blueGrey.shade50),
+      borderSide: BorderSide(color: Colors.grey),
     ),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(8),
-      borderSide: BorderSide(color: Colors.blueGrey.shade50),
+      borderSide: BorderSide(color: Colors.grey),
     ),
   ),
   checkboxTheme: CheckboxThemeData(
@@ -67,7 +68,7 @@ final ThemeData lightTheme = ThemeData(
 final ThemeData darkTheme = ThemeData.dark().copyWith(
   scaffoldBackgroundColor: Colors.black,
   textTheme: ThemeData.dark().textTheme.apply(fontFamily: 'Poppins', bodyColor: Colors.white),
-  colorScheme: ThemeData.dark().colorScheme.copyWith(secondary: colorBlueDark, onPrimary: Colors.black),
+  colorScheme: ThemeData.dark().colorScheme.copyWith(secondary: ConstantColor.colorBlue, onPrimary: Colors.black),
   visualDensity: VisualDensity.adaptivePlatformDensity,
   appBarTheme: AppBarTheme(
     backgroundColor: Colors.black,
@@ -77,7 +78,7 @@ final ThemeData darkTheme = ThemeData.dark().copyWith(
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: Colors.black,
-    selectedItemColor: ConstantColor.colorPurpleAccent,
+    selectedItemColor: ConstantColor.colorBlue,
     unselectedItemColor: Colors.grey,
     showUnselectedLabels: true,
     showSelectedLabels: true,
@@ -97,18 +98,18 @@ final ThemeData darkTheme = ThemeData.dark().copyWith(
     hintStyle: TextStyle(fontWeight: FontWeight.bold, color: Colors.grey.shade700, fontSize: 12.sp),
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(8),
-      borderSide: BorderSide(color: ConstantColor.colorPurpleAccent),
+      borderSide: BorderSide(color: ConstantColor.colorBlue),
     ),
     contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 8..h),
     filled: true,
     fillColor: Colors.black,
     focusedBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(8),
-      borderSide: BorderSide(color: ConstantColor.colorPurpleAccent),
+      borderSide: BorderSide(color: ConstantColor.colorBlue),
     ),
     enabledBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(8),
-      borderSide: BorderSide(color: ConstantColor.colorPurpleAccent),
+      borderSide: BorderSide(color: ConstantColor.colorBlue),
     ),
     errorBorder: OutlineInputBorder(
       borderRadius: BorderRadius.circular(8),
@@ -125,7 +126,7 @@ final ThemeData darkTheme = ThemeData.dark().copyWith(
     surfaceTintColor: Colors.black,
     color: Colors.black,
     shape: RoundedRectangleBorder(
-      side: BorderSide(color: ConstantColor.colorPurpleAccent),
+      side: BorderSide(color: ConstantColor.colorBlue),
       borderRadius: BorderRadius.circular(16),
     ),
   ),
@@ -133,7 +134,7 @@ final ThemeData darkTheme = ThemeData.dark().copyWith(
     surfaceTintColor: Colors.black,
     backgroundColor: Colors.black,
     shape: RoundedRectangleBorder(
-      side: BorderSide(color: ConstantColor.colorPurpleAccent),
+      side: BorderSide(color: ConstantColor.colorBlue),
       borderRadius: BorderRadius.circular(16),
     ),
   ),

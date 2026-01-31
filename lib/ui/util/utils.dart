@@ -10,6 +10,8 @@ NumberFormat idrFormat = NumberFormat.currency(locale: 'id', symbol: '', decimal
 
 String formatDateNow(DateTime date) => DateFormat("EEEE, dd MMMM yyyy").format(date);
 
+String formatDateReq(DateTime date) => DateFormat("dd MMMM yyyy").format(date);
+
 String formatCreated(DateTime date) => DateFormat("EE, dd MMMM yyyy").format(date);
 
 String formatCreatedDate(DateTime date) => DateFormat("EEEE, dd MMMM yyyy hh:mm").format(date);

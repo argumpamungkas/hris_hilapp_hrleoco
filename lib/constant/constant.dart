@@ -52,6 +52,9 @@ class ConstantColor {
   // static Color colorPurpleAccent = Color(0xFF6d80ff);
   static Color colorPurpleAccent = Color(0xFFBB8ED0);
   static Color colorBlueDark = Color(0xFF23265A);
+  static Color colorBlue = Color(0xFF4A5AE5);
+  static Color bgColorWhite = Color(0xFFE8EAFF);
+  static Color bgIcon = Colors.deepPurple.withAlpha(80);
 }
 
 enum ResultStatus { init, loading, noData, hasData, error }

@@ -15,7 +15,7 @@ class CardCustomIcon extends StatelessWidget {
       child: ListTile(
         leading: Container(
           padding: EdgeInsets.all(8),
-          decoration: BoxDecoration(shape: BoxShape.circle, color: colorPurpleAccent),
+          decoration: BoxDecoration(shape: BoxShape.circle, color: ConstantColor.colorBlue),
           child: Icon(iconData, color: Colors.white),
         ),
         title: Text(

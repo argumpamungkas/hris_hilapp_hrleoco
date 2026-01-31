@@ -1,85 +1,87 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:easy_hris/data/models/response/permit_model.dart';
+import 'package:easy_hris/data/models/response/permit_type_model.dart';
+import 'package:easy_hris/data/models/response/reason_model.dart';
+import 'package:easy_hris/data/services/url_services.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../constant/constant.dart';
+import '../../../injection.dart';
+import '../../models/response/api_response.dart';
 
 class ApiPermit {
-  Future<Map<String, dynamic>> fetchPermit(int year) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    late String link;
-    late String apiKey;
-    if (prefs.getString("apiKey") != null && prefs.getString("linkServer") != null) {
-      link = prefs.getString("linkServer")!;
-      apiKey = prefs.getString("apiKey")!;
-    }
+  final _urlService = sl<UrlServices>();
 
-    // Uri url = Uri.parse("${link}api/permits/reads/$apiKey");
-    Uri url = Uri.parse("${link}api/permits/list/$apiKey/$year");
+  Future<PermitModel> fetchPermit(String number, int year) async {
+    final baseUrl = await _urlService.getUrlModel();
+
+    Uri url = Uri.parse("${baseUrl!.link}/api/permits/reads?number=$number&year=$year");
 
     try {
       var response = await http.get(url);
-      var responseBody = jsonDecode(response.body);
-      if (response.statusCode == 200) {
-        if (responseBody["theme"] == "success") {
-          return responseBody;
-        } else {
-          return responseBody;
-        }
-      } else {
-        return responseBody;
-      }
-    } catch (e) {
-      throw errMessage;
+
+      Map<String, dynamic> result = jsonDecode(response.body);
+
+      print("result => $result");
+
+      return PermitModel.fromJson(result);
+    } on TimeoutException catch (_) {
+      throw Exception(ConstantMessage.errMsgTimeOut);
+    } on SocketException catch (_) {
+      throw Exception(ConstantMessage.errMsgNoInternet);
+    } catch (e, trace) {
+      throw Exception("${ConstantMessage.errMsg} $e");
     }
   }
 
-  Future<List<dynamic>> fetchPermitType() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    late String link;
-    if (prefs.getString("linkServer") != null) {
-      link = prefs.getString("linkServer")!;
-    }
+  Future<ApiResponse<List<PermitTypeModel>>> fetchPermitTypes() async {
+    final baseUrl = await _urlService.getUrlModel();
 
-    Uri url = Uri.parse("${link}api/permits/readTypes");
+    Uri url = Uri.parse("${baseUrl!.link}/api/master/readPermitTypes");
 
     try {
       var response = await http.get(url);
-      var responseBody = jsonDecode(response.body);
-      if (response.statusCode == 200) {
-        return responseBody;
-      } else {
-        return responseBody;
-      }
-    } catch (e) {
-      throw errMessage;
+
+      Map<String, dynamic> result = jsonDecode(response.body);
+
+      // print("result => $result");
+
+      return ApiResponse.fromJson(result, onDataSerialized: (_) => null, onDataDeserialized: (json) => PermitTypeModel.fromJsonList(json));
+    } on TimeoutException catch (_) {
+      throw Exception(ConstantMessage.errMsgTimeOut);
+    } on SocketException catch (_) {
+      throw Exception(ConstantMessage.errMsgNoInternet);
+    } catch (e, trace) {
+      // print("traceee $trace");
+      throw Exception("${ConstantMessage.errMsg} $e");
     }
   }
 
-  Future<List<dynamic>> fetchPermitReason(String id) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    late String link;
-    if (prefs.getString("linkServer") != null) {
-      link = prefs.getString("linkServer")!;
-    }
+  Future<ApiResponse<List<ReasonModel>>> fetchReason({required String permitTypeId}) async {
+    final baseUrl = await _urlService.getUrlModel();
 
-    Uri url = Uri.parse("${link}api/permits/readReason/$id");
+    Uri url = Uri.parse("${baseUrl!.link}/api/master/readReasons?permit_type_id=$permitTypeId");
 
     try {
       var response = await http.get(url);
-      var responseBody = jsonDecode(response.body);
 
-      // print("RESPONSE BODY $responseBody");
+      Map<String, dynamic> result = jsonDecode(response.body);
 
-      if (response.statusCode == 200) {
-        return responseBody;
-      } else {
-        return responseBody;
-      }
-    } catch (e) {
-      throw errMessage;
+      print("result => $result");
+
+      return ApiResponse.fromJson(result, onDataSerialized: (_) => null, onDataDeserialized: (json) => ReasonModel.fromJsonList(json));
+    } on TimeoutException catch (_) {
+      throw Exception(ConstantMessage.errMsgTimeOut);
+    } on SocketException catch (_) {
+      throw Exception(ConstantMessage.errMsgNoInternet);
+    } catch (e, trace) {
+      debugPrint("traceee $trace");
+      throw Exception("${ConstantMessage.errMsg} $e");
     }
   }
 

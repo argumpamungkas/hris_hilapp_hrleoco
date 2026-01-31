@@ -15,9 +15,9 @@ class ChangeDayAddingScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     PreferencesProvider prov = Provider.of<PreferencesProvider>(context);
     return Scaffold(
-      backgroundColor: prov.isDarkTheme ? Theme.of(context).scaffoldBackgroundColor : colorPurpleAccent,
+      backgroundColor: prov.isDarkTheme ? Theme.of(context).scaffoldBackgroundColor : ConstantColor.colorBlue,
       appBar: AppBar(
-        backgroundColor: prov.isDarkTheme ? Theme.of(context).scaffoldBackgroundColor : colorPurpleAccent,
+        backgroundColor: prov.isDarkTheme ? Theme.of(context).scaffoldBackgroundColor : ConstantColor.colorBlue,
         foregroundColor: Colors.white,
         title: const Text(
           "Add Change Day",

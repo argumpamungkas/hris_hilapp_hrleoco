@@ -19,7 +19,7 @@ class NewsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: appBarCustom(context, title: "News", leadingBack: false),
+      appBar: AppbarCustom.appbar(context, title: "News", leadingBack: false),
       body: Center(child: Text("Feature on Progress")),
       // body: SafeArea(
       //   child: Consumer<NewsProvider>(

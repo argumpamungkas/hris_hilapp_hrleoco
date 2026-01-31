@@ -43,7 +43,7 @@ class EmployeeScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => EmployeeProvider(),
       child: Scaffold(
-        appBar: appBarCustom(context, title: "Employee", leadingBack: true),
+        appBar: AppbarCustom.appbar(context, title: "Employee", leadingBack: true),
         body: Consumer<EmployeeProvider>(
           builder: (context, prov, _) {
             switch (prov.resultStatus) {

@@ -15,7 +15,7 @@ class ProfilePersonalDataScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => PersonalDataProvider(),
       child: Scaffold(
-        appBar: appBarCustom(context, title: "Personal Data", leadingBack: true),
+        appBar: AppbarCustom.appbar(context, title: "Personal Data", leadingBack: true),
         body: Consumer<PersonalDataProvider>(
           builder: (context, prov, _) {
             if (prov.resultStatus == ResultStatus.loading) {
