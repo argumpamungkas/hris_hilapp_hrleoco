@@ -6,7 +6,7 @@ import 'package:shimmer/shimmer.dart';
 import '../../../providers/home_provider.dart';
 import '../../../providers/notifications/notification_provider.dart';
 import '../../../providers/preferences_provider.dart';
-import 'background_home.dart';
+import '../../util/widgets/background_home.dart';
 import 'notification_widget.dart';
 
 class LoadingHome extends StatelessWidget {

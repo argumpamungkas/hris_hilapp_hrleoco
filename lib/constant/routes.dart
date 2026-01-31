@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:camera/camera.dart';
 import 'package:easy_hris/data/models/response/permit_model.dart';
+import 'package:easy_hris/providers/attendances/attendance_history_provider.dart';
+import 'package:easy_hris/ui/attendance/attendance_history_screen.dart';
 import 'package:easy_hris/ui/attendance/camera_face_detection_screen.dart';
 import 'package:easy_hris/ui/employee/add/add_career_screen.dart';
 import 'package:easy_hris/ui/employee/add/add_education_screen.dart';
@@ -89,6 +91,7 @@ class Routes {
   static const picturePreviewScreen = '/picture_preview_screen';
   static const attendanceSummaryScreen = '/attendance_summary_screen';
   static const attendanceTeamScreen = '/attendance_team_screen';
+  static const attendanceHistory = '/attendance_history';
 
   // OVERTIME
   static const overtimeScreen = "/overtime_screen";
@@ -137,6 +140,7 @@ class Routes {
     picturePreviewScreen: (context) => PicturePreview(args: ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>),
     attendanceSummaryScreen: (context) => AttendanceSummaryScreen(result: ModalRoute.of(context)?.settings.arguments as AttendanceSummary),
     attendanceTeamScreen: (context) => const AttendanceTeam(),
+    attendanceHistory: (context) => const AttendanceHistoryScreen(),
 
     // Permits
     overtimeScreen: (context) => const OvertimeScreen(),

@@ -1,10 +1,17 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:easy_hris/ui/home/widgets/announcement_container.dart';
 import 'package:easy_hris/ui/home/widgets/attendance_summary.dart';
 import 'package:easy_hris/ui/home/widgets/attendance_widget.dart';
-import 'package:easy_hris/ui/home/widgets/background_home.dart';
-import 'package:easy_hris/ui/home/widgets/container_user_action.dart';
+import 'package:easy_hris/ui/util/widgets/background_home.dart';
+import 'package:easy_hris/ui/home/widgets/card_home_custom.dart';
+import 'package:easy_hris/ui/home/widgets/container_history_attendance.dart';
 import 'package:easy_hris/ui/home/widgets/loading_home.dart';
+import 'package:easy_hris/ui/home/widgets/menu_home.dart';
 import 'package:easy_hris/ui/home/widgets/notification_widget.dart';
+import 'package:easy_hris/ui/home/widgets/permission_container.dart';
+import 'package:easy_hris/ui/home/widgets/user_widget.dart';
+import 'package:easy_hris/ui/util/widgets/card_custom_icon.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -15,6 +22,7 @@ import '../../providers/home_provider.dart';
 import '../../providers/notifications/notification_provider.dart';
 import '../../providers/preferences_provider.dart';
 import '../util/widgets/card_info.dart';
+import '../util/widgets/image_network_custom.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -72,52 +80,32 @@ class _HomeScreenState extends State<HomeScreen> {
                       children: [
                         provPref.isDarkTheme ? Container() : const BackgroundHome(),
                         SafeArea(
-                          child: Container(
-                            margin: EdgeInsets.symmetric(horizontal: 16.w),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                // jangan lupa update version disini
-                                const NotificationWidget(),
-                                SizedBox(height: 12.h),
-                                ContainerUserAction(),
-                                AttendanceWidget(),
-                                SizedBox(height: 8.h),
-                                AttendanceSummaryContainer(),
-                                // const MenuHome(),
-                                // Column(
-                                //   crossAxisAlignment: CrossAxisAlignment.start,
-                                //   children: [
-                                //     SizedBox(height: 4.h),
-                                //     AttendanceWidget(),
-                                //     SizedBox(height: 10.h),
-                                //     const AttendanceSummaryContainer(),
-                                //     //  Ceking dayoff (attendance Team)
-                                //     Consumer<ProfileProvider>(
-                                //       builder: (context, prov, _) {
-                                //         switch (prov.resultStatus) {
-                                //           case ResultStatus.loading:
-                                //             return Container();
-                                //           case ResultStatus.hasData:
-                                //             return Visibility(
-                                //               visible: prov.userProfile!.access == "LIMITED" ? false : true,
-                                //               child: Container(
-                                //                 margin: EdgeInsets.only(top: 10.h),
-                                //                 child: ListViewAttendanceTeam(access: prov.userProfile!.access!),
-                                //               ),
-                                //             );
-                                //           default:
-                                //             return Container();
-                                //         }
-                                //       },
-                                //     ),
-                                //     const SizedBox(height: 16),
-                                //     const ListViewLatestNews(),
-                                //     const SizedBox(height: 16),
-                                //   ],
-                                // ),
-                              ],
-                            ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              // jangan lupa update version disini
+                              const NotificationWidget(),
+                              SizedBox(height: 12.h),
+                              UserWidget(),
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 4.w),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.vertical(top: Radius.circular(16.w)),
+                                ),
+                                child: Column(
+                                  spacing: 8.h,
+                                  children: [
+                                    MenuHome(),
+                                    AttendanceWidget(),
+                                    ContainerHistoryAttendance(),
+                                    AttendanceSummaryContainer(),
+                                    PermissionContainer(),
+                                    AnnouncementContainer(),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],

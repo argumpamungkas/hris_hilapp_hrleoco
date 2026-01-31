@@ -77,13 +77,13 @@ class AttendanceWidget extends StatelessWidget {
                                     style: TextStyle(
                                       fontSize: 14.sp,
                                       fontWeight: FontWeight.bold,
-                                      color: provPref.isDarkTheme ? Colors.white : Colors.grey.shade600,
+                                      color: provPref.isDarkTheme ? Colors.white : Colors.black,
                                     ),
                                   ),
 
                                   Text(
                                     formatDateNow(_now),
-                                    style: TextStyle(color: provPref.isDarkTheme ? Colors.white : Colors.grey.shade600, fontSize: 10.sp),
+                                    style: TextStyle(color: provPref.isDarkTheme ? Colors.white : Colors.black, fontSize: 10.sp),
                                   ),
                                 ],
                               ),
@@ -116,7 +116,11 @@ class AttendanceWidget extends StatelessWidget {
                             children: [
                               Text(
                                 homeProv.shiftUserModel!.shiftName!.isEmpty ? "Shift Not Found" : homeProv.shiftUserModel!.shiftName!,
-                                style: TextStyle(fontSize: 16.sp, color: provPref.isDarkTheme ? Colors.white : Colors.grey.shade700),
+                                style: TextStyle(
+                                  fontSize: 16.sp,
+                                  color: provPref.isDarkTheme ? Colors.white : Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                               Text(
                                 homeProv.shiftUserModel!.shiftName!.isEmpty
@@ -124,167 +128,16 @@ class AttendanceWidget extends StatelessWidget {
                                     : "${homeProv.shiftUserModel?.shiftStart?.substring(0, 5)} - ${homeProv.shiftUserModel?.shiftEnd?.substring(0, 5)}",
                                 style: TextStyle(
                                   fontSize: homeProv.shiftUserModel!.shiftName!.isEmpty ? 13.sp : 16.sp,
-                                  color: provPref.isDarkTheme ? Colors.white : Colors.grey.shade700,
+                                  color: provPref.isDarkTheme ? Colors.white : Colors.black,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ],
                           ),
                         ),
 
-                        // Column(
-                        //   crossAxisAlignment: CrossAxisAlignment.stretch,
-                        //   spacing: 4.h,
-                        //   children: [
-                        //     Row(
-                        //       mainAxisAlignment: MainAxisAlignment.center,
-                        //       mainAxisSize: MainAxisSize.max,
-                        //       spacing: 4.w,
-                        //       children: [
-                        //         Flexible(
-                        //           child: homeProv.resultStatusLocation == ResultStatus.loading
-                        //               ? Text(
-                        //                   "Loading get your Location...",
-                        //                   maxLines: 1,
-                        //                   style: TextStyle(fontSize: 9.sp, color: Colors.grey),
-                        //                 )
-                        //               : RichText(
-                        //                   text: TextSpan(
-                        //                     text: "Your current Location ",
-                        //                     children: [TextSpan(text: homeProv.canAttendance ? 'can do Attendance' : "can't do Attendance")],
-                        //                     style: TextStyle(fontSize: 9.sp, color: Colors.grey),
-                        //                   ),
-                        //                   maxLines: 1,
-                        //                 ),
-                        //           // child: Text(
-                        //           //   "Your current Location ${homeProv.canAttendance ? 'can check in' : 'can not check in'}",
-                        //           //   maxLines: 1,
-                        //           //   style: TextStyle(fontSize: 10.sp, color: Colors.grey.shade700),
-                        //           // ),
-                        //         ),
-                        //         homeProv.resultStatusLocation == ResultStatus.loading
-                        //             ? CupertinoActivityIndicator()
-                        //             : Icon(
-                        //                 homeProv.canAttendance ? Icons.check_circle_outline : Iconsax.close_circle_outline,
-                        //                 size: 16.w,
-                        //                 color: homeProv.canAttendance ? Colors.green : Colors.red.shade900,
-                        //               ),
-                        //       ],
-                        //     ),
-                        //     Builder(
-                        //       builder: (context_) {
-                        //         if (homeProv.resultStatusLocation == ResultStatus.loading) {
-                        //           return Shimmer.fromColors(
-                        //             baseColor: provPref.isDarkTheme ? ConstantColor.colorBlueDark : Colors.grey.shade300,
-                        //             highlightColor: provPref.isDarkTheme ? ConstantColor.ConstantColor.colorBlue : Colors.grey.shade100,
-                        //             child: Container(
-                        //               width: 0.7.sw,
-                        //               height: 30.h,
-                        //               padding: EdgeInsets.all(8),
-                        //               decoration: BoxDecoration(
-                        //                 color: provPref.isDarkTheme ? Colors.transparent : Colors.grey.shade200,
-                        //                 borderRadius: BorderRadius.circular(8),
-                        //                 border: Border.all(color: provPref.isDarkTheme ? colorBlueDark : Colors.grey.shade300),
-                        //               ),
-                        //             ),
-                        //           );
-                        //         }
-                        //
-                        //         if (homeProv.resultStatusLocation == ResultStatus.error) {
-                        //           return Container(
-                        //             margin: EdgeInsets.symmetric(horizontal: 8.w),
-                        //             width: 0.7.sw,
-                        //             height: 30.h,
-                        //             padding: EdgeInsets.all(8),
-                        //             decoration: BoxDecoration(
-                        //               color: provPref.isDarkTheme ? Colors.transparent : Colors.grey.shade200,
-                        //               borderRadius: BorderRadius.circular(8),
-                        //               border: Border.all(color: provPref.isDarkTheme ? colorBlueDark : Colors.grey.shade300),
-                        //             ),
-                        //             child: Marquee(
-                        //               text: homeProv.message,
-                        //               style: TextStyle(fontSize: 10.sp, color: Colors.red),
-                        //               scrollAxis: Axis.horizontal,
-                        //               crossAxisAlignment: CrossAxisAlignment.center,
-                        //               blankSpace: 20,
-                        //               velocity: 50,
-                        //               pauseAfterRound: const Duration(seconds: 1),
-                        //               accelerationDuration: const Duration(seconds: 1),
-                        //               accelerationCurve: Curves.linear,
-                        //               decelerationDuration: const Duration(seconds: 1),
-                        //               decelerationCurve: Curves.easeOut,
-                        //             ),
-                        //           );
-                        //         }
-                        //
-                        //         return Container(
-                        //           margin: EdgeInsets.symmetric(horizontal: 8.w),
-                        //           width: 0.7.sw,
-                        //           height: 30.h,
-                        //           padding: EdgeInsets.all(8),
-                        //           decoration: BoxDecoration(
-                        //             color: provPref.isDarkTheme ? Colors.transparent : Colors.grey.shade200,
-                        //             borderRadius: BorderRadius.circular(8),
-                        //             border: Border.all(color: provPref.isDarkTheme ? colorBlueDark : Colors.grey.shade300),
-                        //           ),
-                        //           child: Row(
-                        //             spacing: 4.w,
-                        //             children: [
-                        //               Icon(Iconsax.location_outline, color: Colors.red.shade700, size: 16.w),
-                        //               Expanded(
-                        //                 child: Marquee(
-                        //                   text: homeProv.address,
-                        //                   style: TextStyle(fontSize: 10.sp, color: provPref.isDarkTheme ? Colors.white : Colors.grey),
-                        //                   scrollAxis: Axis.horizontal,
-                        //                   crossAxisAlignment: CrossAxisAlignment.center,
-                        //                   blankSpace: 20,
-                        //                   velocity: 50,
-                        //                   pauseAfterRound: const Duration(seconds: 1),
-                        //                   accelerationDuration: const Duration(seconds: 1),
-                        //                   accelerationCurve: Curves.linear,
-                        //                   decelerationDuration: const Duration(seconds: 1),
-                        //                   decelerationCurve: Curves.easeOut,
-                        //                 ),
-                        //               ),
-                        //             ],
-                        //           ),
-                        //         );
-                        //       },
-                        //     ),
-                        //   ],
-                        // ),
-                        // Visibility(
-                        //   visible: homeProv.resultStatusLocation == ResultStatus.loading
-                        //       ? false
-                        //       : homeProv.resultStatusLocation == ResultStatus.hasData && homeProv.canAttendance
-                        //       ? false
-                        //       : true,
-                        //   child: Center(
-                        //     child: Column(
-                        //       children: [
-                        //         SizedBox(height: 8.h),
-                        //         ElevatedButton.icon(
-                        //           onPressed: () {
-                        //             homeProv.fetchCurrentLocation(provPref.configModel!);
-                        //           },
-                        //           style: ElevatedButton.styleFrom(
-                        //             fixedSize: Size(0.3.sw, 20.h),
-                        //             padding: EdgeInsets.symmetric(horizontal: 2.w),
-                        //             backgroundColor: Colors.orange.shade700,
-                        //             foregroundColor: Colors.white,
-                        //             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.w)),
-                        //           ),
-                        //           label: Text("Sync Location", style: TextStyle(fontSize: 10.sp), maxLines: 1),
-                        //           icon: Icon(Icons.refresh),
-                        //           iconAlignment: IconAlignment.end,
-                        //         ),
-                        //         SizedBox(height: 4.h),
-                        //       ],
-                        //     ),
-                        //   ),
-                        // ),
-
-                        // Text("Your")
                         SizedBox(height: 8.h),
+
                         Padding(
                           padding: EdgeInsets.symmetric(horizontal: 12.w),
                           child: Row(
@@ -322,7 +175,6 @@ class AttendanceWidget extends StatelessWidget {
                                   title: "Check In",
                                   icon: Icons.arrow_circle_down,
                                   background: Colors.green,
-                                  iconAlignment: IconAlignment.end,
                                   onPressed: homeProv.checkIn == "00:00"
                                       ? () async {
                                           DialogHelper.showLoadingDialog(context, message: "Loading validate location...");
@@ -367,7 +219,6 @@ class AttendanceWidget extends StatelessWidget {
                                   title: "Check Out",
                                   icon: Icons.arrow_circle_up,
                                   background: Colors.red,
-                                  iconAlignment: IconAlignment.start,
                                   onPressed: homeProv.checkIn != "00:00" && homeProv.checkOut == "00:00"
                                       ? () async {
                                           DialogHelper.showLoadingDialog(context, message: "Loading validate location...");
@@ -452,20 +303,14 @@ class AttendanceWidget extends StatelessWidget {
     );
   }
 
-  Widget _buttonAttendance({
-    required String title,
-    required IconData icon,
-    required Color background,
-    required IconAlignment? iconAlignment,
-    required void Function()? onPressed,
-  }) {
+  Widget _buttonAttendance({required String title, required IconData icon, required Color background, required void Function()? onPressed}) {
     return Expanded(
       child: ElevatedButton.icon(
         onPressed: onPressed,
         // onPressed: null,
         label: Text(title, style: TextStyle(fontSize: 12.sp)),
         icon: Icon(icon, size: 16.w),
-        iconAlignment: iconAlignment,
+        iconAlignment: IconAlignment.start,
         style: ElevatedButton.styleFrom(
           foregroundColor: Colors.white,
           backgroundColor: background,

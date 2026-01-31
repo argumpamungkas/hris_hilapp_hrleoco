@@ -12,49 +12,52 @@ class NotificationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          spacing: 4.w,
-          children: [
-            Image.asset(Constant.logo, filterQuality: FilterQuality.high, width: 0.3.sw, color: Colors.white),
-            Text(
-              Constant.appVersion,
-              style: TextStyle(fontSize: 9.sp, color: Colors.grey.shade200, fontWeight: FontWeight.w700),
-            ),
-          ],
-        ),
-        Stack(
-          alignment: Alignment.topCenter,
-          children: [
-            IconButton(
-              onPressed: () async {
-                // Navigator.pushNamed(context, Routes.notificationScreen);
-                showInfoSnackbar(context, "Feature on Progress");
-              },
-              icon: const Icon(Icons.notifications_none_outlined),
-              color: Colors.white,
-              iconSize: 22.w.h,
-            ),
-            Consumer<NotificationProvider>(
-              builder: (context, prov, _) {
-                switch (prov.resultStatus) {
-                  case ResultStatus.loading:
-                    return Container();
-                  case ResultStatus.noData:
-                    return valueNotification(prov.total);
-                  case ResultStatus.hasData:
-                    return valueNotification(prov.total);
-                  default:
-                    return Container();
-                }
-              },
-            ),
-          ],
-        ),
-      ],
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 12.w),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            spacing: 4.w,
+            children: [
+              Image.asset(Constant.logo, filterQuality: FilterQuality.high, width: 0.3.sw, color: Colors.white),
+              Text(
+                Constant.appVersion,
+                style: TextStyle(fontSize: 9.sp, color: Colors.grey.shade200, fontWeight: FontWeight.w700),
+              ),
+            ],
+          ),
+          Stack(
+            alignment: Alignment.topCenter,
+            children: [
+              IconButton(
+                onPressed: () async {
+                  // Navigator.pushNamed(context, Routes.notificationScreen);
+                  showInfoSnackbar(context, "Feature on Progress");
+                },
+                icon: const Icon(Icons.notifications_none_outlined),
+                color: Colors.white,
+                iconSize: 22.w.h,
+              ),
+              Consumer<NotificationProvider>(
+                builder: (context, prov, _) {
+                  switch (prov.resultStatus) {
+                    case ResultStatus.loading:
+                      return Container();
+                    case ResultStatus.noData:
+                      return valueNotification(prov.total);
+                    case ResultStatus.hasData:
+                      return valueNotification(prov.total);
+                    default:
+                      return Container();
+                  }
+                },
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 

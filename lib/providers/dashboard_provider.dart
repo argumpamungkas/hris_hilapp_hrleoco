@@ -10,7 +10,7 @@ class DashboardProvider extends ChangeNotifier {
   int _currentIndex = 0;
   late String linkServer = "";
 
-  final List _widgetScreenLead = [HomeScreen(), const AttendanceHistoryScreen(), const NewsScreen(), const TeamScreen(), const ProfileScreen()];
+  final List _widgetScreenLead = [HomeScreen(), const NewsScreen(), const TeamScreen(), const ProfileScreen()];
 
   final List _widgetScreenNonLead = [
     HomeScreen(
@@ -22,7 +22,7 @@ class DashboardProvider extends ChangeNotifier {
 
   final List<BottomNavigationBarItem> _bottomNavBarLead = [
     const BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-    const BottomNavigationBarItem(icon: Icon(Icons.history_outlined), label: "Attendance History"),
+    // const BottomNavigationBarItem(icon: Icon(Icons.history_outlined), label: "Attendance History"),
     const BottomNavigationBarItem(icon: Icon(Icons.newspaper), label: "News"),
     const BottomNavigationBarItem(icon: Icon(Icons.people_outline_outlined), label: "Team"),
     const BottomNavigationBarItem(icon: Icon(Icons.person_2_outlined), label: "Profile"),

@@ -18,52 +18,45 @@ class UserWidget extends StatelessWidget {
     return Consumer2<ProfileProvider, PreferencesProvider>(
       builder: (context, prov, provPref, _) {
         return Container(
-          padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 16.w),
+          padding: EdgeInsets.symmetric(vertical: 12.h, horizontal: 24.w),
           child: Row(
-            spacing: 12,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Hi, ${prov.userModel?.name?.toUpperCase()}",
+                      style: TextStyle(fontWeight: FontWeight.normal, color: Colors.white, fontSize: 12.sp),
+                    ),
+                    Text(
+                      prov.greetingCondition,
+                      style: TextStyle(fontWeight: FontWeight.bold, color: Colors.white, fontSize: 20.sp),
+                    ),
+                  ],
+                ),
+              ),
+
               Consumer<HomeProvider>(
                 builder: (context, homeProv, _) {
                   if (homeProv.resultStatusAttendanceToday == ResultStatus.loading) {
                     return CupertinoActivityIndicator();
                   }
 
-                  return Flexible(
-                    flex: 1,
-                    child: SizedBox(
-                      height: 42,
-                      width: 42,
-                      child: ClipOval(
-                        child: ImageNetworkCustom(
-                          isFit: true,
-                          url: homeProv.shiftUserModel?.imageProfile != null && homeProv.shiftUserModel!.imageProfile!.isNotEmpty
-                              ? "${provPref.baseUrl}/${Constant.urlProfileImage}/${homeProv.shiftUserModel!.imageProfile}"
-                              : "${provPref.baseUrl}/${Constant.urlDefaultImage}",
-                        ),
+                  return SizedBox(
+                    height: 54.h,
+                    width: 54.w,
+                    child: ClipOval(
+                      child: ImageNetworkCustom(
+                        isFit: true,
+                        url: homeProv.shiftUserModel?.imageProfile != null && homeProv.shiftUserModel!.imageProfile!.isNotEmpty
+                            ? "${provPref.baseUrl}/${Constant.urlProfileImage}/${homeProv.shiftUserModel!.imageProfile}"
+                            : "${provPref.baseUrl}/${Constant.urlDefaultImage}",
                       ),
                     ),
                   );
                 },
-              ),
-              Flexible(
-                flex: 3,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "${prov.greetingCondition},",
-                      style: TextStyle(fontWeight: FontWeight.bold, color: provPref.isDarkTheme ? Colors.white : Colors.grey, fontSize: 10.sp),
-                    ),
-                    Text(
-                      prov.userModel?.name?.toUpperCase() ?? "",
-                      style: TextStyle(fontWeight: FontWeight.bold, color: provPref.isDarkTheme ? Colors.white : Colors.black, fontSize: 12.sp),
-                    ),
-                    Text(
-                      prov.userModel?.position?.toUpperCase() ?? "",
-                      style: TextStyle(fontSize: 9.sp, color: provPref.isDarkTheme ? Colors.white : Colors.black),
-                    ),
-                  ],
-                ),
               ),
             ],
           ),
