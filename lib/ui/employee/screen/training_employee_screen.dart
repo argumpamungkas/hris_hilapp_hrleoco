@@ -9,7 +9,7 @@ import '../../../constant/routes.dart';
 import '../../../providers/employee/employee_provider.dart';
 import '../../util/utils.dart';
 import '../../util/widgets/dialog_helpers.dart';
-import '../widgets/card_info_custom.dart';
+import '../../util/widgets/card_info_custom.dart';
 import '../widgets/header_employee_action.dart';
 
 class TrainingEmployeeScreen extends StatelessWidget {

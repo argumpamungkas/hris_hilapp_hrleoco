@@ -5,7 +5,7 @@ import 'package:easy_hris/data/models/response/employee_response_model.dart';
 import 'package:easy_hris/providers/employee/employee_provider.dart';
 import 'package:easy_hris/providers/employee/personal_provider.dart';
 import 'package:easy_hris/providers/preferences_provider.dart';
-import 'package:easy_hris/ui/employee/widgets/card_info_custom.dart';
+import 'package:easy_hris/ui/util/widgets/card_info_custom.dart';
 import 'package:easy_hris/ui/util/utils.dart';
 import 'package:easy_hris/ui/util/widgets/build_upload_card_image.dart';
 import 'package:easy_hris/ui/util/widgets/dialog_helpers.dart';

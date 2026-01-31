@@ -11,7 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../constant/constant.dart';
 import '../../util/widgets/dialog_helpers.dart';
-import '../widgets/card_info_custom.dart';
+import '../../util/widgets/card_info_custom.dart';
 
 class FamilyEmployeeScreen extends StatelessWidget {
   const FamilyEmployeeScreen({super.key});

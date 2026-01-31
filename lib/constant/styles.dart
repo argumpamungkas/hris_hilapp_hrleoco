@@ -9,7 +9,7 @@ final ThemeData lightTheme = ThemeData(
   colorScheme: ThemeData.light().colorScheme.copyWith(secondary: ConstantColor.colorBlue, onPrimary: Colors.black),
   visualDensity: VisualDensity.adaptivePlatformDensity,
   // scaffoldBackgroundColor: Colors.grey[50],
-  scaffoldBackgroundColor: ConstantColor.bgColorWhite,
+  scaffoldBackgroundColor: Colors.white,
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: Colors.white,
     selectedItemColor: ConstantColor.colorBlue,

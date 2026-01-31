@@ -73,14 +73,12 @@ class ProfileScreen extends StatelessWidget {
                             ItemListTile(
                               iconLeading: Icons.privacy_tip,
                               title: "Privacy Policy",
-                              // onTap: () => Navigator.pushNamed(context, Routes.profileChangePasswordScreen),
-                              onTap: () {},
+                              onTap: () => Navigator.pushNamed(context, Routes.privacyPolicyScreen),
                             ),
                             ItemListTile(
                               iconLeading: Icons.send,
                               title: "Help Center",
-                              // onTap: () => Navigator.pushNamed(context, Routes.profileChangePasswordScreen),
-                              onTap: () {},
+                              onTap: () => Navigator.pushNamed(context, Routes.helpCenterScreen),
                             ),
 
                             SizedBox(height: 24.h),

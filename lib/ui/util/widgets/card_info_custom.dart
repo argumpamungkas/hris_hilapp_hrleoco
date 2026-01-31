@@ -10,12 +10,12 @@ class CardInfoCustom extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Container(
-        decoration: BoxDecoration(color: Colors.amber, borderRadius: BorderRadius.circular(12.w)),
+        decoration: BoxDecoration(color: Colors.amber.shade100, borderRadius: BorderRadius.circular(12.w)),
         padding: EdgeInsets.all(16.w),
         child: Row(
           spacing: 8.w,
           children: [
-            Icon(Icons.info_outline),
+            Icon(Icons.info),
             Expanded(child: Text(value)),
           ],
         ),

@@ -4,10 +4,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../constant/constant.dart';
 
 class CardCustomIcon extends StatelessWidget {
-  const CardCustomIcon({super.key, required this.title, required this.subtitle, required this.iconData});
+  const CardCustomIcon({super.key, required this.title, required this.subtitle, required this.iconData, this.trailing});
 
   final String title, subtitle;
   final IconData? iconData;
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +27,7 @@ class CardCustomIcon extends StatelessWidget {
           subtitle,
           style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
         ),
+        trailing: trailing,
       ),
     );
   }

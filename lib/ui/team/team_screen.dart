@@ -1,5 +1,9 @@
 import 'package:animate_do/animate_do.dart';
+import 'package:easy_hris/providers/auth/profile_provider.dart';
 import 'package:easy_hris/ui/team/widgets/item_team.dart';
+import 'package:easy_hris/ui/util/widgets/card_custom_icon.dart';
+import 'package:easy_hris/ui/util/widgets/card_employee_custom.dart';
+import 'package:easy_hris/ui/util/widgets/card_info_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:icons_plus/icons_plus.dart';
@@ -12,6 +16,7 @@ import '../../providers/team_provider.dart';
 import '../util/widgets/app_bar_custom.dart';
 import '../util/widgets/card_info.dart';
 import '../util/widgets/data_not_found.dart';
+import '../util/widgets/image_network_custom.dart';
 import '../util/widgets/shimmer_list_load_data.dart';
 
 class TeamScreen extends StatelessWidget {
@@ -20,83 +25,49 @@ class TeamScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppbarCustom.appbar(context, title: "Teams", leadingBack: false),
-      body: Center(child: Text("Feature on Progress")),
-      // body: Consumer2<TeamProvider, PreferencesProvider>(
-      //   builder: (context, provTeam, provPref, _) {
-      //     switch (provTeam.resultStatus) {
-      //       case ResultStatus.loading:
-      //         return const ShimmerListLoadData();
-      //       case ResultStatus.noData:
-      //         return const DataEmpty(dataName: "Teams");
-      //       case ResultStatus.error:
-      //         return FadeInUp(
-      //           child: Center(
-      //             child: CardInfo(
-      //               iconData: Iconsax.info_circle_outline,
-      //               colorIcon: Colors.red,
-      //               title: "Error",
-      //               description: provTeam.message,
-      //               onPressed: () {
-      //                 provTeam.fetchTeams();
-      //               },
-      //               titleButton: "Refresh",
-      //               colorTitle: Colors.red,
-      //               buttonStyle: ElevatedButton.styleFrom(backgroundColor: ConstantColor.colorBlueDark, foregroundColor: Colors.white),
-      //             ),
-      //           ),
-      //         );
-      //       case ResultStatus.hasData:
-      //         return RefreshIndicator(
-      //           onRefresh: () async {
-      //             provTeam.fetchTeams();
-      //           },
-      //           child: ListView.builder(
-      //             itemCount: provTeam.listTeam.length,
-      //             padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
-      //             itemBuilder: (context, index) {
-      //               ResultTeams teams = provTeam.listTeam[index];
-      //               return Column(
-      //                 crossAxisAlignment: CrossAxisAlignment.start,
-      //                 children: [
-      //                   Padding(
-      //                     padding: EdgeInsets.only(left: 4.w),
-      //                     child: Text(
-      //                       teams.position,
-      //                       style: TextStyle(
-      //                         color: provPref.isDarkTheme ? Colors.white : Colors.grey.shade700,
-      //                         fontWeight: FontWeight.bold,
-      //                         fontSize: 14.sp,
-      //                       ),
-      //                     ),
-      //                   ),
-      //                   SizedBox(height: 4.h),
-      //                   Column(
-      //                     crossAxisAlignment: CrossAxisAlignment.start,
-      //                     children: teams.details
-      //                         .map(
-      //                           (detail) => ItemTeam(
-      //                             name: detail.name,
-      //                             telp: detail.telp,
-      //                             yearsWork: detail.services,
-      //                             employeeId: detail.employeeId,
-      //                             imgUrl: "${provTeam.linkServer}${detail.avatar}",
-      //                             dateSign: detail.dateSign,
-      //                           ),
-      //                         )
-      //                         .toList(),
-      //                   ),
-      //                   SizedBox(height: 8.h),
-      //                 ],
-      //               );
-      //             },
-      //           ),
-      //         );
-      //       default:
-      //         return Container();
-      //     }
-      //   },
-      // ),
+      appBar: AppbarCustom.appbar(context, title: "My Teams", leadingBack: false),
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+          child: Column(
+            spacing: 8.h,
+            children: [
+              CardInfoCustom(value: "The data below is employee data with some department"),
+              Card(
+                child: TextField(
+                  decoration: InputDecoration(hintText: "Search Employee Name", suffixIcon: Icon(Icons.filter_alt)),
+                ),
+              ),
+
+              Consumer<PreferencesProvider>(
+                builder: (context, provPref, _) {
+                  return Expanded(
+                    child: ListView.builder(
+                      itemCount: 8,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          child: Padding(
+                            padding: EdgeInsets.all(8.w),
+                            child: CardEmployeeCustom(
+                              imageUrl: "${provPref.baseUrl}/${Constant.urlDefaultImage}",
+                              title: "Agung Gumilar",
+                              subtitle: "STAFF",
+                              trailing: InkWell(
+                                onTap: () {},
+                                child: Icon(Iconsax.more_circle_bold, color: ConstantColor.colorBlue),
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

@@ -205,41 +205,4 @@ class HomeProvider extends ChangeNotifier {
       return false;
     }
   }
-
-  // Future<void> fetchHome() async {
-  //   // print("CALL");
-  //   _resultStatus = ResultStatus.loading;
-  //   notifyListeners();
-  //   _linkServer = await getLink();
-  //
-  //   try {
-  //     var response = await _api.fetchHomeApi();
-  //     Attendance attendance = Attendance.fromJson(jsonDecode(response[0].body));
-  //     _attendanceToday = attendance.results;
-  //     // =================
-  //     _attendanceSummary = AttendanceSummary.fromJson(jsonDecode(response[1].body));
-  //
-  //     // print("aattendance summary ${_attendanceSummary.toJson()}");
-  //
-  //     // =================
-  //     News news = News.fromJson(jsonDecode(response[2].body));
-  //     _listNews = news.results;
-  //     _resultStatus = ResultStatus.hasData;
-  //     notifyListeners();
-  //   } on TimeoutException catch (_) {
-  //     _resultStatus = ResultStatus.error;
-  //     _message = errTimeOutMsg;
-  //     notifyListeners();
-  //   } on SocketException catch (_) {
-  //     _resultStatus = ResultStatus.error;
-  //     _message = errMessageNoInternet;
-  //     notifyListeners();
-  //   } catch (e, trace) {
-  //     print("ERROR $e");
-  //     print("ERROR $trace");
-  //     _resultStatus = ResultStatus.error;
-  //     _message = "$errMessage. $e";
-  //     notifyListeners();
-  //   }
-  // }
 }

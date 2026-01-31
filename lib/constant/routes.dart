@@ -11,10 +11,13 @@ import 'package:easy_hris/ui/employee/add/add_experience_screen.dart';
 import 'package:easy_hris/ui/employee/add/add_family_screen.dart';
 import 'package:easy_hris/ui/employee/add/add_training_screen.dart';
 import 'package:easy_hris/ui/employee/employee_screen.dart';
+import 'package:easy_hris/ui/profile/help_center_screen.dart';
+import 'package:easy_hris/ui/profile/privacy_policy_screen.dart';
 import 'package:easy_hris/ui/profile/id_card_screen.dart';
 import 'package:easy_hris/ui/util/widgets/view_image.dart';
 import 'package:easy_hris/ui/util/widgets/view_image_network.dart';
 import 'package:flutter/material.dart';
+import 'package:path/path.dart';
 
 import '../data/models/attendance_summary.dart';
 import '../data/models/change_days.dart';
@@ -103,6 +106,10 @@ class Routes {
   static const permitAddScreen = "/permit_add_screen";
   static const permitDetailScreen = "/permit_detail";
 
+  // Privacy policy
+  static const privacyPolicyScreen = "/privacy_policy_screen";
+  static const helpCenterScreen = "/help_center_screen";
+
   static Map<String, Widget Function(BuildContext)> routesPage = {
     // Splash Screen
     splashScreen: (context) => const SplashScreen(),
@@ -119,6 +126,8 @@ class Routes {
     profileChangePasswordScreen: (context) => const ProfileChangePasswordScreen(),
     settingScreen: (context) => const SettingsScreen(),
     idCardScreen: (context) => const IdCardScreen(),
+    privacyPolicyScreen: (context) => const PrivacyPolicyScreen(),
+    helpCenterScreen: (context) => const HelpCenterScreen(),
 
     // Notification
     notificationScreen: (context) => const NotificationScreen(),

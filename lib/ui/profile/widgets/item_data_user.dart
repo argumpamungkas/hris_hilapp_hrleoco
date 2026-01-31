@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 import '../../../providers/preferences_provider.dart';
 
 class ItemDataUser extends StatelessWidget {
-  ItemDataUser({super.key, required this.title, required this.value, this.filePhoto = '', this.hasPhoto = false});
+  const ItemDataUser({super.key, required this.title, required this.value, this.filePhoto = '', this.hasPhoto = false});
 
   final String title, value, filePhoto;
   // final File? filePhoto;

@@ -3,14 +3,11 @@ import 'package:easy_hris/ui/home/widgets/announcement_container.dart';
 import 'package:easy_hris/ui/home/widgets/attendance_summary.dart';
 import 'package:easy_hris/ui/home/widgets/attendance_widget.dart';
 import 'package:easy_hris/ui/util/widgets/background_home.dart';
-import 'package:easy_hris/ui/home/widgets/card_home_custom.dart';
 import 'package:easy_hris/ui/home/widgets/container_history_attendance.dart';
-import 'package:easy_hris/ui/home/widgets/loading_home.dart';
 import 'package:easy_hris/ui/home/widgets/menu_home.dart';
 import 'package:easy_hris/ui/home/widgets/notification_widget.dart';
 import 'package:easy_hris/ui/home/widgets/permission_container.dart';
 import 'package:easy_hris/ui/home/widgets/user_widget.dart';
-import 'package:easy_hris/ui/util/widgets/card_custom_icon.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,7 +19,6 @@ import '../../providers/home_provider.dart';
 import '../../providers/notifications/notification_provider.dart';
 import '../../providers/preferences_provider.dart';
 import '../util/widgets/card_info.dart';
-import '../util/widgets/image_network_custom.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -49,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
           builder: (context, provHome, provPref, _) {
             switch (provHome.resultStatus) {
               case ResultStatus.loading:
-                return const LoadingHome();
+                return SizedBox();
               case ResultStatus.error:
                 return FadeInUp(
                   child: Center(
