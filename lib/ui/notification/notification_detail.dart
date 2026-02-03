@@ -8,7 +8,7 @@ import '../../constant/constant.dart';
 import '../../data/models/notifications/notification_response.dart';
 import '../../providers/notifications/notification_detail_provider.dart';
 import '../util/widgets/app_bar_custom.dart';
-import '../util/widgets/data_not_found.dart';
+import '../util/widgets/data_empty.dart';
 
 class NotificationDetail extends StatelessWidget {
   const NotificationDetail({super.key, required this.dataNotif});

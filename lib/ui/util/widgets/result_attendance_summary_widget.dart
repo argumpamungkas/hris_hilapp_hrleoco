@@ -4,10 +4,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../constant/exports.dart';
 import '../../../data/models/attendance_summary.dart';
 import '../../../providers/preferences_provider.dart';
-import '../../attendance_summary/widgets/item_attendance_summary.dart';
-import '../../attendance_summary/widgets/item_info_attendance.dart';
+import '../../attendance/widgets/item_attendance_summary.dart';
+import '../../attendance/widgets/item_info_attendance.dart';
 import '../utils.dart';
-import 'data_not_found.dart';
+import 'data_empty.dart';
 
 class ResultAttendanceSummaryWidget extends StatelessWidget {
   const ResultAttendanceSummaryWidget({super.key, required this.date, required this.attendanceSummary, required this.listAttendanceSummary});

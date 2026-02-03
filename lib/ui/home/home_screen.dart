@@ -67,8 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
               case ResultStatus.hasData:
                 return RefreshIndicator(
                   onRefresh: () async {
-                    provHome.init();
-                    provHome.fetchCurrentLocation(provPref.configModel!);
+                    provHome.fetching(provPref.configModel!);
                   },
                   child: SingleChildScrollView(
                     physics: AlwaysScrollableScrollPhysics(),

@@ -1,8 +1,10 @@
 import 'package:easy_hris/providers/preferences_provider.dart';
 import 'package:easy_hris/ui/home/widgets/card_home_custom.dart';
+import 'package:easy_hris/ui/home/widgets/error_home_custom.dart';
 import 'package:easy_hris/ui/util/widgets/loading_shimmer_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../constant/constant.dart';
@@ -24,12 +26,26 @@ class AnnouncementContainer extends StatelessWidget {
           switch (homeProv.resultStatusAttendanceToday) {
             case ResultStatus.loading:
               return LoadingShimmerCard();
+            case ResultStatus.error:
+              return SizedBox(
+                width: 1.w,
+                child: ErrorHomeCustom(
+                  message: homeProv.messageAnnouncement,
+                  onPressed: () {
+                    homeProv.fetchAnnouncement();
+                  },
+                ),
+              );
+            case ResultStatus.noData:
+              return ErrorHomeCustom(message: homeProv.messageAnnouncement, onPressed: null, isRefresh: false);
             case ResultStatus.hasData:
               return ListView.builder(
                 shrinkWrap: true,
-                itemCount: 3,
+                itemCount: homeProv.listAnnouncement.length,
                 physics: NeverScrollableScrollPhysics(),
                 itemBuilder: (context, index) {
+                  final item = homeProv.listAnnouncement[index];
+
                   return Container(
                     padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 2.h),
                     child: Column(
@@ -55,10 +71,10 @@ class AnnouncementContainer extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    "Agung Gumilar",
+                                    item.name ?? '',
                                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13.sp),
                                   ),
-                                  Text("CUTI - Acara Keluarga", style: TextStyle(fontSize: 11.sp)),
+                                  Text(item.positionName ?? '', style: TextStyle(fontSize: 11.sp)),
                                 ],
                               ),
                             ),
@@ -66,15 +82,32 @@ class AnnouncementContainer extends StatelessWidget {
                         ),
                         SizedBox(height: 8.h),
                         Text(
-                          "Office Closure - Imlek Days",
+                          item.title ?? '',
                           style: TextStyle(fontSize: 14.sp, fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(height: 4.h),
                         Text(
-                          ConstantMessage.loremIpsumText,
-                          maxLines: 3,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(fontSize: 12.sp),
+                          item.displayDate ?? '',
+                          style: TextStyle(fontSize: 10.sp, color: Colors.grey),
+                        ),
+                        SizedBox(height: 4.h),
+
+                        // Text(
+                        //   item.description ?? '',
+                        //   maxLines: 3,
+                        //   overflow: TextOverflow.ellipsis,
+                        //   style: TextStyle(fontSize: 12.sp),
+                        // ),
+                        Html(
+                          data: item.description ?? '',
+                          style: {
+                            "body": Style(
+                              margin: Margins.zero,
+                              padding: HtmlPaddings.zero,
+                              fontSize: FontSize(12.sp),
+                              maxLines: 3,
+                              textOverflow: TextOverflow.ellipsis,
+                            ),
+                          },
                         ),
 
                         SizedBox(height: 8.h),

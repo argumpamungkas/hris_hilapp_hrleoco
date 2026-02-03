@@ -10,7 +10,7 @@ import '../../data/models/news.dart';
 import '../../providers/news/news_provider.dart';
 import '../util/widgets/app_bar_custom.dart';
 import '../util/widgets/card_info.dart';
-import '../util/widgets/data_not_found.dart';
+import '../util/widgets/data_empty.dart';
 import '../util/widgets/shimmer_list_load_data.dart';
 
 class NewsScreen extends StatelessWidget {

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:easy_hris/data/services/images_services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 
 class BottomSheetHelper {
@@ -54,6 +55,45 @@ class BottomSheetHelper {
                   // Navigator.pop(ctx);
                 },
               ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  static Future<void> showModalDetail(BuildContext context, {required String title, required Widget columnList}) {
+    return showModalBottomSheet(
+      context: context,
+      useSafeArea: true,
+      backgroundColor: Colors.white,
+      builder: (context) {
+        return Container(
+          padding: EdgeInsets.all(16.w),
+          width: 1.sw,
+          child: Column(
+            spacing: 8.h,
+            children: [
+              Text(
+                title,
+                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+              ),
+
+              columnList,
+
+              // Column(
+              //   spacing: 8.h,
+              //   children: [
+              //     ItemDetailTransaction(title: "Permit Date", value: formatDateReq(DateTime.parse(item.permitDate!))),
+              //     ItemDetailTransaction(title: "Permit Type", value: item.permitTypeName ?? "-"),
+              //     ItemDetailTransaction(title: "Reason Name", value: item.reasonName ?? "-"),
+              //     ItemDetailTransaction(title: "Start Time", value: item.startTime ?? "00:00"),
+              //     ItemDetailTransaction(title: "End Time", value: item.endTime ?? "00:00"),
+              //     ItemDetailTransaction(title: "Meal", value: item.meal ?? ""),
+              //     ItemDetailTransaction(title: "Note", value: item.note ?? ""),
+              //     ItemDetailTransaction(title: "Attachment", value: item.attachment ?? "-"),
+              //   ],
+              // ),
             ],
           ),
         );

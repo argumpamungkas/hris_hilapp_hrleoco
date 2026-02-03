@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../../constant/constant.dart';
 import '../../../data/models/pay_slip.dart';
-import '../../util/widgets/data_not_found.dart';
+import '../../util/widgets/data_empty.dart';
 import '../../util/widgets/shimmer_list_load_data.dart';
 import 'widgets/item_pay_slip.dart';
 

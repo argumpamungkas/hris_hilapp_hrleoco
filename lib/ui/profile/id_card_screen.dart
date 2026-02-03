@@ -97,7 +97,7 @@ class IdCardScreen extends StatelessWidget {
                             Padding(
                               padding: EdgeInsets.symmetric(horizontal: 16.w),
                               child: Text(
-                                prov.employee?.address ?? "",
+                                provPref.configModel?.address ?? "",
                                 textAlign: TextAlign.center,
                                 style: TextStyle(fontSize: 12.sp, color: Colors.black),
                               ),

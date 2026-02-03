@@ -4,10 +4,13 @@ import 'package:easy_hris/constant/routes.dart';
 import 'package:easy_hris/providers/permits/permit_provider.dart';
 import 'package:easy_hris/ui/permit/widgets/action_button_custom.dart';
 import 'package:easy_hris/ui/util/widgets/app_bar_custom.dart';
-import 'package:easy_hris/ui/util/widgets/data_not_found.dart';
+import 'package:easy_hris/ui/util/widgets/bottom_sheet_helpers.dart';
+import 'package:easy_hris/ui/util/widgets/data_empty.dart';
+import 'package:easy_hris/ui/util/widgets/item_detail_transaction.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../util/utils.dart';
 
@@ -135,7 +138,25 @@ class PermitScreen extends StatelessWidget {
                               padding: EdgeInsets.symmetric(vertical: 2.h),
                               child: InkWell(
                                 onTap: () {
-                                  Navigator.pushNamed(context, Routes.permitDetailScreen, arguments: item);
+                                  // Navigator.pushNamed(context, Routes.permitDetailScreen, arguments: item);
+
+                                  BottomSheetHelper.showModalDetail(
+                                    context,
+                                    title: "Permit Detail",
+                                    columnList: Column(
+                                      spacing: 8.h,
+                                      children: [
+                                        ItemDetailTransaction(title: "Permit Date", value: formatDateReq(DateTime.parse(item.permitDate!))),
+                                        ItemDetailTransaction(title: "Permit Type", value: item.permitTypeName ?? "-"),
+                                        ItemDetailTransaction(title: "Reason Name", value: item.reasonName ?? "-"),
+                                        ItemDetailTransaction(title: "Start Time", value: item.startTime ?? "00:00"),
+                                        ItemDetailTransaction(title: "End Time", value: item.endTime ?? "00:00"),
+                                        ItemDetailTransaction(title: "Meal", value: item.meal ?? ""),
+                                        ItemDetailTransaction(title: "Note", value: item.note ?? ""),
+                                        ItemDetailTransaction(title: "Attachment", value: item.attachment ?? "-"),
+                                      ],
+                                    ),
+                                  );
                                 },
                                 child: Card(
                                   surfaceTintColor: Colors.white,

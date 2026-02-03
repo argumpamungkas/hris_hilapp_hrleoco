@@ -1,10 +1,8 @@
 import 'dart:io';
 
-import 'package:camera/camera.dart';
 import 'package:easy_hris/data/models/response/permit_model.dart';
-import 'package:easy_hris/providers/attendances/attendance_history_provider.dart';
 import 'package:easy_hris/ui/attendance/attendance_history_screen.dart';
-import 'package:easy_hris/ui/attendance/camera_face_detection_screen.dart';
+import 'package:easy_hris/ui/attendance/attendance_summary_screen.dart';
 import 'package:easy_hris/ui/employee/add/add_career_screen.dart';
 import 'package:easy_hris/ui/employee/add/add_education_screen.dart';
 import 'package:easy_hris/ui/employee/add/add_experience_screen.dart';
@@ -17,18 +15,14 @@ import 'package:easy_hris/ui/profile/id_card_screen.dart';
 import 'package:easy_hris/ui/util/widgets/view_image.dart';
 import 'package:easy_hris/ui/util/widgets/view_image_network.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 
 import '../data/models/attendance_summary.dart';
 import '../data/models/change_days.dart';
 import '../data/models/notifications/notification_response.dart';
 import '../data/models/overtime.dart';
 import '../data/models/pay_slip.dart';
-import '../data/models/permit.dart';
-import '../ui/attendance/attendance_screen.dart';
 import '../ui/attendance/camera_screen.dart';
 import '../ui/attendance/picture_preview.dart';
-import '../ui/attendance_summary/attendance_summary_screen.dart';
 import '../ui/attendance_team/attendance_team_screen.dart';
 import '../ui/auth/forgot_password_screen.dart';
 import '../ui/auth/sign_in_screen.dart';
@@ -163,7 +157,6 @@ class Routes {
 
     teamsDetailScreen: (context) => TeamsDetailScreen(dataEmployee: ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>),
 
-    AttendanceScreen.routeName: (context) => AttendanceScreen(locOffice: ModalRoute.of(context)!.settings.arguments as String),
     ChangeDayScreen.routeName: (context) => const ChangeDayScreen(),
     ChangeDayDetailScreen.routeName: (context) =>
         ChangeDayDetailScreen(resultsChangeDays: ModalRoute.of(context)!.settings.arguments as ResultsChangeDays),

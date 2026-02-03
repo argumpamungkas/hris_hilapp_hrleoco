@@ -44,7 +44,7 @@ class ConstantSharedPref {
 
 class ConstantMessage {
   static const String errMsg = "Request to server is failed.";
-  static const String errMsgNoInternet = "Disconnect. You data connection Inactive.";
+  static const String errMsgNoInternet = "Disconnect. Your data connection Inactive.";
   static const String errMsgTimeOut = "The connection is bad. Request to server is failed.";
 
   static const String loremIpsumText =

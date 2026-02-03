@@ -35,13 +35,13 @@ class AttendanceWidget extends StatelessWidget {
               child: CardInfo(
                 iconData: Iconsax.info_circle_outline,
                 colorIcon: Colors.red,
-                title: "Employee",
+                title: "Attendance Today",
                 description: homeProv.message,
                 onPressed: () {
                   homeProv.init();
                   homeProv.fetchCurrentLocation(provPref.configModel!);
                 },
-                titleButton: "Re-Login",
+                titleButton: "Refresh",
                 colorTitle: Colors.red,
                 buttonStyle: ElevatedButton.styleFrom(backgroundColor: ConstantColor.colorBlueDark, foregroundColor: Colors.white),
               ),

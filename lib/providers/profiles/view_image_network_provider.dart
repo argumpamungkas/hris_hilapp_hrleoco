@@ -63,25 +63,6 @@ class ViewImageNetworkProvider extends ChangeNotifier {
             final progress = (count / total * 100).floor();
 
             await _notifService.showNotificationProgressDownload(notificationId, progress);
-            // await flutterLocalNotificationsPlugin.show(
-            //   notificationId,
-            //   "Downloading Image",
-            //   "$progress%",
-            //   NotificationDetails(
-            //     android: AndroidNotificationDetails(
-            //       'download_channel',
-            //       'Download',
-            //       channelDescription: 'Image download progress',
-            //       importance: Importance.low,
-            //       priority: Priority.low,
-            //       showProgress: true,
-            //       maxProgress: 100,
-            //       progress: progress,
-            //       ongoing: true,
-            //       onlyAlertOnce: true,
-            //     ),
-            //   ),
-            // );
           }
         },
       );
@@ -92,22 +73,6 @@ class ViewImageNetworkProvider extends ChangeNotifier {
       // await Future.delayed(Duration(milliseconds: 1500));
 
       await _notifService.showNotificationSuccessDownloadPicture(filePath, notificationId);
-      // Notifikasi sukses
-      // await flutterLocalNotificationsPlugin.show(
-      //   notificationId,
-      //   "Download Selesai",
-      //   "Gambar berhasil diunduh",
-      //   const NotificationDetails(
-      //     android: AndroidNotificationDetails(
-      //       'download_channel',
-      //       'Download',
-      //       importance: Importance.high,
-      //       priority: Priority.high,
-      //       ongoing: false,
-      //       showProgress: false,
-      //     ),
-      //   ),
-      // );
 
       print("file tersimpan $filePath");
 

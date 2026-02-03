@@ -6,7 +6,7 @@ import '../../constant/constant.dart';
 import '../../data/models/change_days.dart';
 import '../../providers/change_days/change_days_provider.dart';
 import 'change_day_adding_screen.dart';
-import '../util/widgets/data_not_found.dart';
+import '../util/widgets/data_empty.dart';
 import '../util/widgets/shimmer_list_load_data.dart';
 
 class ChangeDayScreen extends StatefulWidget {

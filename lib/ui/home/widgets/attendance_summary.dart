@@ -1,5 +1,6 @@
 import 'package:easy_hris/providers/home_provider.dart';
 import 'package:easy_hris/ui/home/widgets/card_home_custom.dart';
+import 'package:easy_hris/ui/home/widgets/error_home_custom.dart';
 import 'package:easy_hris/ui/util/widgets/loading_shimmer_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -22,16 +23,29 @@ class AttendanceSummaryContainer extends StatelessWidget {
           subtitle: "Tracking individual presence for the current month",
           widget: Consumer<HomeProvider>(
             builder: (context, homeProv, _) {
-              switch (homeProv.resultStatusAttendanceToday) {
+              switch (homeProv.resultStatusAttendanceSummary) {
                 case ResultStatus.loading:
                   return LoadingShimmerCard();
+                case ResultStatus.error:
+                  return ErrorHomeCustom(
+                    message: homeProv.messageAttendanceSummary,
+                    onPressed: () {
+                      homeProv.fetchAttendanceSummary();
+                    },
+                  );
                 case ResultStatus.hasData:
                   return Column(
                     children: [
                       Padding(
                         padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 4.h),
                         child: PieChart(
-                          dataMap: {'Not Yet': 3, 'Absence': 2, 'Permit': 1, 'Working': 12, 'Late': 1},
+                          dataMap: {
+                            'Not Yet': homeProv.attendanceSummaryModel!.notyet?.toDouble() ?? 0,
+                            'Absence': homeProv.attendanceSummaryModel!.absence?.toDouble() ?? 0,
+                            'Permit': homeProv.attendanceSummaryModel!.permit?.toDouble() ?? 0,
+                            'Working': homeProv.attendanceSummaryModel!.working?.toDouble() ?? 0,
+                            'Late': homeProv.attendanceSummaryModel!.late?.toDouble() ?? 0,
+                          },
                           colorList: [Colors.grey.shade200, Colors.red, Colors.blueAccent.shade100, Colors.green.shade300, Colors.orangeAccent],
                           animationDuration: const Duration(milliseconds: 800),
                           chartLegendSpacing: 100.w,
