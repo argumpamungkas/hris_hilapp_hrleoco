@@ -23,7 +23,7 @@ class DashboardProvider extends ChangeNotifier {
   final List<BottomNavigationBarItem> _bottomNavBarLead = [
     const BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
     // const BottomNavigationBarItem(icon: Icon(Icons.history_outlined), label: "Attendance History"),
-    const BottomNavigationBarItem(icon: Icon(Icons.newspaper), label: "News"),
+    const BottomNavigationBarItem(icon: Icon(Icons.approval_outlined), label: "Approval"),
     const BottomNavigationBarItem(icon: Icon(Icons.people_outline_outlined), label: "Team"),
     const BottomNavigationBarItem(icon: Icon(Icons.person_2_outlined), label: "Profile"),
   ];

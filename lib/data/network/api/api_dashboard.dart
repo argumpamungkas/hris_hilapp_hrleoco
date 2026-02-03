@@ -174,37 +174,6 @@ class ApiDashboard {
     }
   }
 
-  Future<Map<String, dynamic>> fetchTeamAttendancePerson({required String requestDate, required String employee_id}) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    late String link;
-    late String apiKey;
-    if (prefs.getString(ConstantSharedPref.apiKey) != null && prefs.getString(ConstantSharedPref.linkServer) != null) {
-      link = prefs.getString(ConstantSharedPref.linkServer)!;
-      apiKey = prefs.getString(ConstantSharedPref.apiKey)!;
-    }
-
-    Uri url = Uri.parse("${link}api/teams/attendanceSummaryTeamPerson/$apiKey");
-
-    try {
-      var response = await http.post(url, body: {"request_date": requestDate, "employee_id": employee_id}).timeout(const Duration(seconds: 30));
-      var responseBody = jsonDecode(response.body);
-
-      // print("RESPONSE $responseBody");
-
-      if (response.statusCode == 200) {
-        if (responseBody["theme"] == "success") {
-          return responseBody;
-        } else {
-          return responseBody;
-        }
-      } else {
-        return responseBody;
-      }
-    } catch (e) {
-      throw errMessage;
-    }
-  }
-
   Future<Map<String, dynamic>> fetchUserProfile() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     late String link;

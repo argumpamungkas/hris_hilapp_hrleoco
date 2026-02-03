@@ -46,7 +46,6 @@ import '../ui/profile/profile_change_password_screen.dart';
 import '../ui/profile/profile_personal_data_screen.dart';
 import '../ui/settings/settings_screen.dart';
 import '../ui/splash/splash_screen.dart';
-import '../ui/team/teams_detail_screen.dart';
 import '../ui/util/widgets/foto_screen.dart';
 
 class Routes {
@@ -154,8 +153,6 @@ class Routes {
     permitScreen: (context) => const PermitScreen(),
     permitAddScreen: (context) => const PermitAddScreen(),
     permitDetailScreen: (context) => PermitDetailScreen(resultPermit: ModalRoute.of(context)?.settings.arguments as ResultPermitModel),
-
-    teamsDetailScreen: (context) => TeamsDetailScreen(dataEmployee: ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>),
 
     ChangeDayScreen.routeName: (context) => const ChangeDayScreen(),
     ChangeDayDetailScreen.routeName: (context) =>

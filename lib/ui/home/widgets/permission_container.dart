@@ -50,7 +50,7 @@ class PermissionContainer extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         CardEmployeeCustom(
-                          imageUrl: homeProv.shiftUserModel?.imageProfile != null && homeProv.shiftUserModel!.imageProfile!.isNotEmpty
+                          imageUrl: item.imageProfile != null && item.imageProfile!.isNotEmpty
                               ? "${provPref.baseUrl}/${Constant.urlProfileImage}/${item.imageProfile}"
                               : "${provPref.baseUrl}/${Constant.urlDefaultImage}",
                           title: item.name ?? '',

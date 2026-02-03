@@ -7,6 +7,7 @@ import 'package:easy_hris/data/models/response/api_response.dart';
 import 'package:easy_hris/data/models/response/attendance_summary_model.dart';
 import 'package:easy_hris/data/models/response/permit_today_model.dart';
 import 'package:easy_hris/data/models/response/shift_user_model.dart';
+import 'package:easy_hris/data/models/response/team_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -120,6 +121,27 @@ class ApiHome {
       Map<String, dynamic> result = jsonDecode(response.body);
 
       return ApiResponse.fromJson(result, onDataSerialized: (_) => null, onDataDeserialized: (json) => AnnouncementModel.fromJsonList(json));
+    } on TimeoutException catch (_) {
+      throw Exception(ConstantMessage.errMsgTimeOut);
+    } on SocketException catch (_) {
+      throw Exception(ConstantMessage.errMsgNoInternet);
+    } catch (e, trace) {
+      // print("TRACE $trace");
+      throw Exception("${ConstantMessage.errMsg} $e");
+    }
+  }
+
+  Future<ApiResponse<List<TeamModel>>> fetchTeam(String number) async {
+    final baseUrl = await _urlService.getUrlModel();
+
+    Uri url = Uri.parse("${baseUrl?.link}/api/teams/reads?number=$number");
+
+    try {
+      var response = await http.get(url);
+
+      Map<String, dynamic> result = jsonDecode(response.body);
+
+      return ApiResponse.fromJson(result, onDataSerialized: (_) => null, onDataDeserialized: (json) => TeamModel.fromJsonList(json));
     } on TimeoutException catch (_) {
       throw Exception(ConstantMessage.errMsgTimeOut);
     } on SocketException catch (_) {
