@@ -9,6 +9,7 @@ import '../../../constant/exports.dart';
 import '../../../constant/routes.dart';
 import '../../../providers/auth/profile_provider.dart';
 import '../../../providers/preferences_provider.dart';
+import '../../pay_slip_page/pay_slip/pay_slip_screen.dart';
 
 class MenuHome extends StatelessWidget {
   const MenuHome({super.key});
@@ -35,9 +36,9 @@ class MenuHome extends StatelessWidget {
                   // SizedBox(width: 8),
                   itemMenu(
                     context,
-                    // onTap: () => Navigator.pushNamed(context, Routes.overtimeScreen),
-                    onTap: () => showInfoSnackbar(context, "Feature on Progress"),
-                    // assetImage: "assets/images/clock.png",
+                    onTap: () {
+                      Navigator.pushNamed(context, Routes.overtimeScreen);
+                    },
                     icon: Icons.access_time_filled_sharp,
                     titleMenu: "Overtime",
                   ),
@@ -64,8 +65,8 @@ class MenuHome extends StatelessWidget {
                   // SizedBox(width: 8),
                   itemMenu(
                     context,
-                    // onTap: () => Navigator.pushNamed(context, PaySlipScreen.routeName),
-                    onTap: () => showInfoSnackbar(context, "Feature on Progress"),
+                    onTap: () => Navigator.pushNamed(context, PaySlipScreen.routeName),
+                    // onTap: () => showInfoSnackbar(context, "Feature on Progress"),
                     icon: Iconsax.card_bold,
                     titleMenu: "Pay Slip",
                   ),

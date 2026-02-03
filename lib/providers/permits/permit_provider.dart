@@ -6,10 +6,8 @@ import 'package:easy_hris/data/models/response/permit_model.dart';
 import 'package:flutter/material.dart';
 
 import '../../constant/constant.dart';
-import '../../data/models/permit.dart';
 import '../../data/network/api/api_permit.dart';
 import '../../injection.dart';
-import '../../ui/util/utils.dart';
 
 class PermitProvider extends ChangeNotifier {
   ApiPermit api = ApiPermit();

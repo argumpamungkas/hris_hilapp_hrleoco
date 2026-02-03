@@ -17,14 +17,16 @@ class ActionButtonCustom extends StatelessWidget {
       builder: (context, prov, _) {
         return InkWell(
           onTap: onTap,
-          child: Container(
-            padding: EdgeInsets.all(8.w),
-            decoration: BoxDecoration(
-              color: prov.isDarkTheme ? Colors.black : Colors.white,
-              borderRadius: BorderRadius.circular(8.w),
-              border: Border.all(color: prov.isDarkTheme ? ConstantColor.colorBlue : Colors.transparent),
+          child: Card(
+            child: Container(
+              padding: EdgeInsets.all(8.w),
+              decoration: BoxDecoration(
+                // color: prov.isDarkTheme ? Colors.black : Colors.white,
+                borderRadius: BorderRadius.circular(8.w),
+                border: Border.all(color: prov.isDarkTheme ? ConstantColor.colorBlue : Colors.transparent),
+              ),
+              child: Icon(iconData, size: 20.sp, color: prov.isDarkTheme ? Colors.white : Colors.black),
             ),
-            child: Icon(iconData, size: 20.sp, color: prov.isDarkTheme ? Colors.white : Colors.black),
           ),
         );
       },

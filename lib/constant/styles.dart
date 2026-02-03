@@ -8,8 +8,8 @@ final ThemeData lightTheme = ThemeData(
   textTheme: ThemeData.light().textTheme.apply(fontFamily: 'Poppins'),
   colorScheme: ThemeData.light().colorScheme.copyWith(secondary: ConstantColor.colorBlue, onPrimary: Colors.black),
   visualDensity: VisualDensity.adaptivePlatformDensity,
-  // scaffoldBackgroundColor: Colors.grey[50],
-  scaffoldBackgroundColor: Colors.white,
+  scaffoldBackgroundColor: Colors.grey[50],
+  // scaffoldBackgroundColor: Colors.grey.shade100,
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: Colors.white,
     selectedItemColor: ConstantColor.colorBlue,

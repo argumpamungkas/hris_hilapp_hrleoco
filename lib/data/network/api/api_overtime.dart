@@ -1,39 +1,35 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:easy_hris/data/models/response/overtime_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../constant/constant.dart';
+import '../../../injection.dart';
+import '../../services/url_services.dart';
 
 class ApiOvertime {
-  Future<Map<String, dynamic>> fetchOvertime(int year) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    late String link;
-    late String apiKey;
-    if (prefs.getString(ConstantSharedPref.apiKey) != null && prefs.getString(ConstantSharedPref.linkServer) != null) {
-      link = prefs.getString(ConstantSharedPref.linkServer)!;
-      apiKey = prefs.getString(ConstantSharedPref.apiKey)!;
-    }
+  final _urlService = sl<UrlServices>();
 
-    // Uri url = Uri.parse("${link}api/overtimes/reads/$apiKey");
-    Uri url = Uri.parse("${link}api/overtimes/list/$apiKey/$year");
-    // print("URL $url");
+  Future<OvertimeModel> fetchOvertime(String number, int year) async {
+    final baseUrl = await _urlService.getUrlModel();
+
+    Uri url = Uri.parse("${baseUrl!.link}/api/overtimes/reads?number=$number&year=$year");
 
     try {
       var response = await http.get(url);
-      var responseBody = jsonDecode(response.body);
-      if (response.statusCode == 200) {
-        if (responseBody["theme"] == "success") {
-          return responseBody;
-        } else {
-          return responseBody;
-        }
-      } else {
-        return responseBody;
-      }
-    } catch (e) {
-      throw errMessage;
+
+      Map<String, dynamic> result = jsonDecode(response.body);
+
+      return OvertimeModel.fromJson(result);
+    } on TimeoutException catch (_) {
+      throw Exception(ConstantMessage.errMsgTimeOut);
+    } on SocketException catch (_) {
+      throw Exception(ConstantMessage.errMsgNoInternet);
+    } catch (e, trace) {
+      throw Exception("${ConstantMessage.errMsg} $e");
     }
   }
 

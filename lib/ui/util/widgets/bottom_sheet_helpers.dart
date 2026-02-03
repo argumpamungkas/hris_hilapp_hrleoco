@@ -66,36 +66,30 @@ class BottomSheetHelper {
     return showModalBottomSheet(
       context: context,
       useSafeArea: true,
+      isScrollControlled: true,
       backgroundColor: Colors.white,
       builder: (context) {
-        return Container(
-          padding: EdgeInsets.all(16.w),
-          width: 1.sw,
-          child: Column(
-            spacing: 8.h,
-            children: [
-              Text(
-                title,
-                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+        return DraggableScrollableSheet(
+          expand: false,
+          builder: (context, scrollController) {
+            return Container(
+              padding: EdgeInsets.all(16.w),
+              width: 1.sw,
+              child: Column(
+                spacing: 8.h,
+                children: [
+                  Text(
+                    title,
+                    style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+                  ),
+
+                  Expanded(
+                    child: SingleChildScrollView(controller: scrollController, child: columnList),
+                  ),
+                ],
               ),
-
-              columnList,
-
-              // Column(
-              //   spacing: 8.h,
-              //   children: [
-              //     ItemDetailTransaction(title: "Permit Date", value: formatDateReq(DateTime.parse(item.permitDate!))),
-              //     ItemDetailTransaction(title: "Permit Type", value: item.permitTypeName ?? "-"),
-              //     ItemDetailTransaction(title: "Reason Name", value: item.reasonName ?? "-"),
-              //     ItemDetailTransaction(title: "Start Time", value: item.startTime ?? "00:00"),
-              //     ItemDetailTransaction(title: "End Time", value: item.endTime ?? "00:00"),
-              //     ItemDetailTransaction(title: "Meal", value: item.meal ?? ""),
-              //     ItemDetailTransaction(title: "Note", value: item.note ?? ""),
-              //     ItemDetailTransaction(title: "Attachment", value: item.attachment ?? "-"),
-              //   ],
-              // ),
-            ],
-          ),
+            );
+          },
         );
       },
     );

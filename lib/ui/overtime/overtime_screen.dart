@@ -1,157 +1,202 @@
-import 'package:animate_do/animate_do.dart';
-import 'package:easy_hris/ui/overtime/widgets/item_overtime.dart';
+import 'package:easy_hris/constant/constant.dart';
+import 'package:easy_hris/constant/exports.dart';
+import 'package:easy_hris/constant/routes.dart';
+import 'package:easy_hris/providers/overtimes/overtime_provider.dart';
+import 'package:easy_hris/providers/permits/permit_provider.dart';
+import 'package:easy_hris/ui/permit/widgets/action_button_custom.dart';
+import 'package:easy_hris/ui/util/widgets/app_bar_custom.dart';
+import 'package:easy_hris/ui/util/widgets/bottom_sheet_helpers.dart';
+import 'package:easy_hris/ui/util/widgets/card_item_transaction.dart';
+import 'package:easy_hris/ui/util/widgets/data_empty.dart';
+import 'package:easy_hris/ui/util/widgets/item_detail_transaction.dart';
+import 'package:easy_hris/ui/util/widgets/item_info_transaction.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:icons_plus/icons_plus.dart';
-import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-import '../../constant/constant.dart';
-import '../../constant/routes.dart';
-import '../../data/models/overtime.dart';
-import '../../providers/overtimes/overtime_provider.dart';
-import '../../providers/preferences_provider.dart';
 import '../util/utils.dart';
-import '../util/widgets/app_bar_custom.dart';
-import '../util/widgets/card_info.dart';
-import '../util/widgets/data_empty.dart';
-import '../util/widgets/shimmer_list_load_data.dart';
-import '../util/widgets/show_dialog_picker_year.dart';
 
-class OvertimeScreen extends StatefulWidget {
+class OvertimeScreen extends StatelessWidget {
   const OvertimeScreen({super.key});
 
   @override
-  State<OvertimeScreen> createState() => _OvertimeScreenState();
-}
-
-class _OvertimeScreenState extends State<OvertimeScreen> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      final date = Provider.of<OvertimeProvider>(context, listen: false).initDate;
-      Provider.of<OvertimeProvider>(context, listen: false).fetchOvertime(date.year);
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppbarCustom.appbar(
-        context,
-        title: "Overtime",
-        leadingBack: true,
-        action: [
-          Consumer2<OvertimeProvider, PreferencesProvider>(
-            builder: (context, provOvertime, provPref, _) {
-              return Padding(
-                padding: EdgeInsets.only(right: 8.w),
-                child: Material(
-                  color: provPref.isDarkTheme ? Colors.black : Colors.grey.shade100,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16),
-                    side: BorderSide(color: provPref.isDarkTheme ? ConstantColor.colorPurpleAccent : Colors.grey.shade100),
-                  ),
-                  child: provOvertime.resultStatus == ResultStatus.loading
-                      ? Container()
-                      : Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
-                          child: InkWell(
-                            onTap: () async {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return ShowDialogPickerYear(
-                                    selectDate: provOvertime.initDate,
-                                    onChanged: (value) async {
-                                      provOvertime.onChangeYear(value).then((value) async {
-                                        if (!context.mounted) return;
-                                        Navigator.pop(context);
-                                        await provOvertime.fetchOvertime(provOvertime.initDate.year);
-                                      });
-                                    },
+    return ChangeNotifierProvider(
+      create: (context) => OvertimeProvider(),
+      child: Scaffold(
+        appBar: AppbarCustom.appbar(
+          context,
+          title: "Overtimes",
+          leadingBack: true,
+          action: [
+            Consumer<OvertimeProvider>(
+              builder: (context, prov, _) {
+                if (prov.resultStatus == ResultStatus.hasData || prov.resultStatus == ResultStatus.noData) {
+                  return IconButton(
+                    onPressed: () {
+                      // Navigator.pushNamed(context, Routes.permitAddScreen).then((value) {
+                      //   prov.fetchOvertime(prov.year);
+                      // });
+                    },
+                    icon: Icon(Icons.add_box_rounded),
+                  );
+                } else {
+                  return SizedBox.shrink();
+                }
+              },
+            ),
+          ],
+        ),
+        body: SafeArea(
+          child: Column(
+            children: [
+              Consumer<OvertimeProvider>(
+                builder: (context, prov, _) {
+                  return Padding(
+                    padding: EdgeInsets.all(12.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ActionButtonCustom(
+                          onTap: () {
+                            prov.onChangeYear(false);
+                          },
+                          iconData: Icons.arrow_back_ios_new,
+                        ),
+                        Text(
+                          prov.year.toString(),
+                          style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
+                        ),
+                        ActionButtonCustom(
+                          onTap: () {
+                            prov.onChangeYear(true);
+                          },
+                          iconData: Icons.arrow_forward_ios,
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
+
+              // Remaining
+              Consumer<OvertimeProvider>(
+                builder: (context, prov, _) {
+                  return Container(
+                    margin: EdgeInsets.symmetric(horizontal: 16.w),
+                    padding: EdgeInsets.all(10.w),
+                    decoration: BoxDecoration(color: ConstantColor.bgIcon, borderRadius: BorderRadius.circular(8.w)),
+                    child: Column(
+                      spacing: 4.h,
+                      children: [
+                        ItemInfoTransaction(title: "Total Duration", value: "${prov.totalDuration} Hour"),
+                        ItemInfoTransaction(title: "Total Amount", value: formatIDR(prov.totalAmount)),
+                      ],
+                    ),
+                  );
+                },
+              ),
+
+              SizedBox(height: 8.h),
+
+              // List
+              Expanded(
+                child: Consumer<OvertimeProvider>(
+                  builder: (context, prov, _) {
+                    switch (prov.resultStatus) {
+                      case ResultStatus.loading:
+                        return Center(child: CupertinoActivityIndicator());
+                      case ResultStatus.noData:
+                        return Center(child: DataEmpty(dataName: "Overtimes"));
+                      case ResultStatus.error:
+                        return Center(child: Text(prov.message));
+                      case ResultStatus.hasData:
+                        return ListView.builder(
+                          padding: EdgeInsets.all(10.w),
+                          itemCount: prov.listOvertime.length,
+                          itemBuilder: (context, index) {
+                            final item = prov.listOvertime[index];
+                            return Padding(
+                              padding: EdgeInsets.symmetric(vertical: 2.h),
+                              child: InkWell(
+                                onTap: () {
+                                  // Navigator.pushNamed(context, Routes.permitDetailScreen, arguments: item);
+
+                                  BottomSheetHelper.showModalDetail(
+                                    context,
+                                    title: "Overtimes Detail",
+                                    columnList: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      spacing: 8.h,
+                                      children: [
+                                        ItemDetailTransaction(title: "Request No", value: item.requestCode ?? ''),
+                                        ItemDetailTransaction(title: "Request Date", value: formatDateReq(DateTime.parse(item.transDate!))),
+                                        ItemDetailTransaction(title: "Requested Minute", value: item.duration ?? "-"),
+                                        ItemDetailTransaction(title: "Breaktime", value: item.overtimeModelBreak ?? "-"),
+                                        ItemDetailTransaction(title: "Start Time", value: item.start ?? "00:00"),
+                                        ItemDetailTransaction(title: "End Time", value: item.end ?? "00:00"),
+                                        ItemDetailTransaction(title: "Meal", value: item.meal ?? ""),
+                                        ItemDetailTransaction(title: "Plan Amount", value: item.plan ?? ""),
+                                        Container(
+                                          padding: EdgeInsets.all(6.w),
+                                          decoration: BoxDecoration(
+                                            border: Border.all(color: Colors.grey),
+                                            borderRadius: BorderRadius.circular(8.w),
+                                          ),
+                                          child: Text(
+                                            "Attendance",
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                        ItemDetailTransaction(title: "Overtime Minute", value: item.attendanceDuration ?? "-"),
+                                        ItemDetailTransaction(title: "Start Time", value: item.attendanceIn ?? "-"),
+                                        ItemDetailTransaction(title: "End Time", value: item.attendanceOut ?? "-"),
+                                        ItemDetailTransaction(title: "Amount", value: formatIDR(int.parse(item.amount!) ?? 0)),
+                                        ItemDetailTransaction(title: "Meal", value: item.overtimeMeal ?? "-"),
+                                        Divider(),
+                                        ItemDetailTransaction(title: "Plan Output", value: item.plan ?? "-"),
+                                        ItemDetailTransaction(title: "Actual Output", value: item.actual ?? "-"),
+                                        ItemDetailTransaction(title: "Work Description", value: item.remarks ?? "-"),
+                                      ],
+                                    ),
                                   );
                                 },
-                              );
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                Text(provOvertime.initDate.year.toString(), style: TextStyle(fontSize: 9.sp)),
-                                SizedBox(width: 4.w),
-                                Icon(Iconsax.calendar_1_outline, size: 12.w),
-                              ],
-                            ),
-                          ),
-                        ),
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-      body: Consumer<OvertimeProvider>(
-        builder: (context, prov, child) {
-          switch (prov.resultStatus) {
-            case ResultStatus.loading:
-              return const ShimmerListLoadData();
-            case ResultStatus.noData:
-              return const DataEmpty(dataName: "Overtime");
-            case ResultStatus.error:
-              return FadeInUp(
-                child: Center(
-                  child: CardInfo(
-                    iconData: Iconsax.info_circle_outline,
-                    colorIcon: Colors.red,
-                    title: "Error",
-                    description: prov.message,
-                    onPressed: () {
-                      prov.fetchOvertime(prov.initDate.year);
-                    },
-                    titleButton: "Refresh",
-                    colorTitle: Colors.red,
-                    buttonStyle: ElevatedButton.styleFrom(backgroundColor: ConstantColor.colorBlueDark, foregroundColor: Colors.white),
-                  ),
-                ),
-              );
-            case ResultStatus.hasData:
-              return RefreshIndicator(
-                onRefresh: () => prov.fetchOvertime(prov.initDate.year),
-                child: ListView.builder(
-                  padding: EdgeInsets.symmetric(horizontal: 4.w, vertical: 4.h),
-                  itemCount: prov.listOvertime.length,
-                  itemBuilder: (context, index) {
-                    ResultsOvertime resultOvertime = prov.listOvertime[index];
+                                child: CardItemTransaction(
+                                  title: item.requestCode ?? '',
+                                  subtitle: formatDateReq(DateTime.parse(item.transDate!)),
+                                  trailing: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        item.status == '0' ? "CHECKING" : "APPROVED",
+                                        style: TextStyle(
+                                          fontSize: 12.sp,
+                                          color: item.status!.toUpperCase() == "0" ? Colors.red : Colors.green,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        item.status!.toUpperCase() == "0" ? item.approvedTo! : item.approvedBy!,
+                                        style: TextStyle(fontSize: 10.sp, color: Colors.black),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        );
 
-                    String overtimeDate = '';
-                    if (resultOvertime.transDate != null) {
-                      var dateFormatDefault = DateFormat("yyyy-MM-dd").parse(resultOvertime.transDate!);
-                      overtimeDate = formatDateWithNameMonth(dateFormatDefault);
+                      default:
+                        return SizedBox.shrink();
                     }
-
-                    return ItemOvertime(resultOvertime: resultOvertime, overtimeDate: overtimeDate);
                   },
                 ),
-              );
-            default:
-              return Container();
-          }
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(50),
-          side: BorderSide(color: Colors.grey.shade100),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        onPressed: () => Navigator.pushNamed(context, Routes.overtimeAddedScreen),
-        child: Container(
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            shape: BoxShape.circle,
-            image: DecorationImage(image: AssetImage("assets/images/plus.png")),
+              ),
+            ],
           ),
         ),
       ),

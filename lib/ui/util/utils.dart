@@ -4,6 +4,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constant/constant.dart';
 
+import 'package:intl/intl.dart';
+
+String formatIDR(int value) {
+  final format = NumberFormat.currency(locale: 'id_ID', symbol: 'Rp. ', decimalDigits: 0);
+  return format.format(value);
+}
+
 String formatRp(int value) => NumberFormat('#,###').format(value);
 
 NumberFormat idrFormat = NumberFormat.currency(locale: 'id', symbol: '', decimalDigits: 0);

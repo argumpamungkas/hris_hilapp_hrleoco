@@ -1,4 +1,5 @@
 import 'package:easy_hris/providers/payslip/payslip_provider.dart';
+import 'package:easy_hris/ui/util/widgets/card_item_transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -69,16 +70,10 @@ class _PaySlipScreenState extends State<PaySlipScreen> {
               return ListView.builder(
                 keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                itemCount: prov.listPaySlip.length,
+                itemCount: 10,
                 itemBuilder: (context, index) {
                   ResultsPaySlip paySlip = prov.listPaySlip[index];
-                  return Column(
-                    children: [
-                      ItemPaySlip(paySlip: paySlip),
-                      Divider(thickness: 1, height: 0, color: Colors.grey.shade300),
-                      const SizedBox(height: 8),
-                    ],
-                  );
+                  return CardItemTransaction(title: "A", subtitle: "b");
                 },
               );
             default:

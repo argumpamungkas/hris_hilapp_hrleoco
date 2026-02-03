@@ -305,11 +305,11 @@ class FormOvertimeAdded extends StatelessWidget {
                               await provOvertimeAdded.addOvertime(context).then((value) async {
                                 if (value.theme == "success") {
                                   if (!context.mounted) return;
-                                  await provOvertime.fetchOvertime(provOvertime.initDate.year).then((_) {
-                                    if (!context.mounted) return;
-                                    Navigator.pop(context);
-                                    Navigator.pop(context);
-                                  });
+                                  // await provOvertime.fetchOvertime(provOvertime.initDate.year).then((_) {
+                                  //   if (!context.mounted) return;
+                                  //   Navigator.pop(context);
+                                  //   Navigator.pop(context);
+                                  // });
                                 } else {
                                   if (!context.mounted) return;
                                   Navigator.pop(context);
@@ -322,11 +322,11 @@ class FormOvertimeAdded extends StatelessWidget {
                                 // print("VALUE $value");
                                 if (value.theme == "success") {
                                   if (!context.mounted) return;
-                                  await provOvertime.fetchOvertime(provOvertime.initDate.year).then((_) {
-                                    if (!context.mounted) return;
-                                    Navigator.pop(context);
-                                    Navigator.pop(context);
-                                  });
+                                  // await provOvertime.fetchOvertime(provOvertime.initDate.year).then((_) {
+                                  //   if (!context.mounted) return;
+                                  //   Navigator.pop(context);
+                                  //   Navigator.pop(context);
+                                  // });
                                 } else {
                                   if (!context.mounted) return;
                                   Navigator.pop(context);

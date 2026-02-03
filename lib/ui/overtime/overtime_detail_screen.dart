@@ -67,62 +67,62 @@ class OvertimeDetailScreen extends StatelessWidget {
                   titleItem: "Remarks",
                   dataItem: resultOvertime.remarks != null || resultOvertime.remarks! != "-" ? resultOvertime.remarks! : "-",
                 ),
-                resultOvertime.attachment != null
-                    ? Column(
-                        children: [
-                          SizedBox(height: 26.h),
-                          GestureDetector(
-                            onTap: () => Navigator.pushNamed(
-                              context,
-                              FotoScreen.routeName,
-                              arguments: "${provOvertime.linkServer}/${resultOvertime.attachmentLink!}",
-                            ),
-                            child: Hero(
-                              tag: "${provOvertime.linkServer}/${resultOvertime.attachmentLink!}",
-                              child: Image.network("${provOvertime.linkServer}/${resultOvertime.attachmentLink!}", height: 200.h),
-                            ),
-                          ),
-                        ],
-                      )
-                    : Container(),
-                SizedBox(height: 16.h),
-                ElevatedButtonCustom(
-                  onPressed: resultOvertime.approvedTo == null || resultOvertime.approvedTo == ""
-                      ? null
-                      : () {
-                          showConfirmDialog(
-                            context,
-                            titleConfirm: "Confirm",
-                            descriptionConfirm: "Are you sure for cancel request?",
-                            action: [
-                              TextButton(onPressed: () => Navigator.pop(context), child: const Text("Cancel")),
-                              TextButton(
-                                onPressed: () async {
-                                  if (!context.mounted) return;
-                                  Navigator.pop(context);
-                                  showLoadingDialog(context);
-                                  await provOvertimeDetail.cancelRequestOvertime(resultOvertime.id!).then((value) async {
-                                    // print("VALUE $value");
-                                    if (value) {
-                                      await provOvertime.fetchOvertime(provOvertime.initDate.year);
-                                      if (!context.mounted) return;
-                                      showInfoSnackbar(context, provOvertimeDetail.message);
-                                      Navigator.pop(context);
-                                      Navigator.pop(context);
-                                    } else {
-                                      if (!context.mounted) return;
-                                      Navigator.pop(context);
-                                      showFailedDialog(context, titleFailed: "Failed", descriptionFailed: provOvertimeDetail.message);
-                                    }
-                                  });
-                                },
-                                child: const Text("Yes"),
-                              ),
-                            ],
-                          );
-                        },
-                  title: "Cancel Request",
-                ),
+                // resultOvertime.attachment != null
+                //     ? Column(
+                //         children: [
+                //           SizedBox(height: 26.h),
+                //           GestureDetector(
+                //             onTap: () => Navigator.pushNamed(
+                //               context,
+                //               FotoScreen.routeName,
+                //               arguments: "${provOvertime.linkServer}/${resultOvertime.attachmentLink!}",
+                //             ),
+                //             child: Hero(
+                //               tag: "${provOvertime.linkServer}/${resultOvertime.attachmentLink!}",
+                //               child: Image.network("${provOvertime.linkServer}/${resultOvertime.attachmentLink!}", height: 200.h),
+                //             ),
+                //           ),
+                //         ],
+                //       )
+                //     : Container(),
+                // SizedBox(height: 16.h),
+                // ElevatedButtonCustom(
+                //   onPressed: resultOvertime.approvedTo == null || resultOvertime.approvedTo == ""
+                //       ? null
+                //       : () {
+                //           showConfirmDialog(
+                //             context,
+                //             titleConfirm: "Confirm",
+                //             descriptionConfirm: "Are you sure for cancel request?",
+                //             action: [
+                //               TextButton(onPressed: () => Navigator.pop(context), child: const Text("Cancel")),
+                //               TextButton(
+                //                 onPressed: () async {
+                //                   if (!context.mounted) return;
+                //                   Navigator.pop(context);
+                //                   showLoadingDialog(context);
+                //                   await provOvertimeDetail.cancelRequestOvertime(resultOvertime.id!).then((value) async {
+                //                     // print("VALUE $value");
+                //                     if (value) {
+                //                       await provOvertime.fetchOvertime(provOvertime.initDate.year);
+                //                       if (!context.mounted) return;
+                //                       showInfoSnackbar(context, provOvertimeDetail.message);
+                //                       Navigator.pop(context);
+                //                       Navigator.pop(context);
+                //                     } else {
+                //                       if (!context.mounted) return;
+                //                       Navigator.pop(context);
+                //                       showFailedDialog(context, titleFailed: "Failed", descriptionFailed: provOvertimeDetail.message);
+                //                     }
+                //                   });
+                //                 },
+                //                 child: const Text("Yes"),
+                //               ),
+                //             ],
+                //           );
+                //         },
+                //   title: "Cancel Request",
+                // ),
               ],
             );
           },

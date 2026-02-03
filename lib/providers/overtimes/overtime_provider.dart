@@ -1,77 +1,92 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:easy_hris/data/models/response/overtime_model.dart';
 import 'package:flutter/material.dart';
 
 import '../../constant/constant.dart';
-import '../../data/models/overtime.dart';
+import '../../constant/exports.dart';
 import '../../data/network/api/api_overtime.dart';
-import '../../ui/util/utils.dart';
+import '../../injection.dart';
 
 class OvertimeProvider extends ChangeNotifier {
   final ApiOvertime _api = ApiOvertime();
+  final _prefs = sl<SharedPreferences>();
 
-  OvertimeProvider() {
-    _getLinkServer();
-  }
+  // final DateTime _dateNow = DateTime.now().toLocal();
+  int _year = DateTime.now().toLocal().year;
 
-  DateTime _initDate = DateTime.now();
-  List<ResultsOvertime> _listOvertime = [];
+  List<ResultOvertimeModel> _listOvertime = [];
+  // int _remaining = 0;
+  int _totalDuration = 0;
+  int _totalAmount = 0;
   ResultStatus _resultStatus = ResultStatus.init;
 
-  DateTime get initDate => _initDate;
-  late String _linkServer;
-  late String _message;
+  String _message = '';
 
-  List<ResultsOvertime> get listOvertime => _listOvertime;
+  List<ResultOvertimeModel> get listOvertime => _listOvertime;
 
   ResultStatus get resultStatus => _resultStatus;
 
-  String get linkServer => _linkServer;
-
   String get message => _message;
 
-  void _getLinkServer() async {
-    _linkServer = await getLink();
+  int get totalDuration => _totalDuration;
+  int get totalAmount => _totalAmount;
+
+  int get year => _year;
+
+  OvertimeProvider() {
+    // _year = _dateNow.year.toString();
+    fetchOvertime(_year);
   }
 
-  Future<dynamic> fetchOvertime(int year) async {
+  Future<void> fetchOvertime(int year) async {
+    _listOvertime.clear();
     _resultStatus = ResultStatus.loading;
-    _linkServer = await getLink();
     notifyListeners();
     try {
-      Map<String, dynamic> response = await _api.fetchOvertime(year);
-      Overtime overtime = Overtime.fromJson(response);
-      _listOvertime = overtime.results;
-      if (_listOvertime.isEmpty) {
-        _resultStatus = ResultStatus.noData;
-        notifyListeners();
-        return [];
+      final number = _prefs.getString(ConstantSharedPref.numberUser);
+      final response = await _api.fetchOvertime(number!, year);
+      if (response.theme == 'success') {
+        if (response.result!.isEmpty) {
+          _resultStatus = ResultStatus.noData;
+          notifyListeners();
+          return;
+        } else {
+          _totalAmount = response.totalAmount ?? 0;
+          _totalDuration = response.totalDuration ?? 0;
+          _listOvertime = response.result!;
+          _resultStatus = ResultStatus.hasData;
+          notifyListeners();
+          return;
+        }
       } else {
-        _resultStatus = ResultStatus.hasData;
+        _resultStatus = ResultStatus.error;
+        _message = response.message!;
         notifyListeners();
-        return _listOvertime;
       }
-    } on TimeoutException catch (_) {
-      _resultStatus = ResultStatus.error;
-      _message = errTimeOutMsg;
-      notifyListeners();
-      return false;
-    } on SocketException catch (_) {
-      _resultStatus = ResultStatus.error;
-      _message = errMessageNoInternet;
-      notifyListeners();
-      return false;
     } catch (e) {
       _resultStatus = ResultStatus.error;
-      _message = errMessage;
+      _message = e.toString();
       notifyListeners();
-      return false;
+      return;
     }
   }
 
-  Future<void> onChangeYear(DateTime value) async {
-    _initDate = value;
+  void sumInfo() {
+    for (var item in _listOvertime) {
+      _totalDuration += int.parse(item.duration ?? '0') ?? 0;
+      _totalAmount += item.overtimeAmount ?? 0;
+    }
+  }
+
+  Future<void> onChangeYear(bool isAdd) async {
+    if (isAdd) {
+      _year = _year + 1;
+    } else {
+      _year = _year - 1;
+    }
+    fetchOvertime(_year);
     notifyListeners();
   }
 }

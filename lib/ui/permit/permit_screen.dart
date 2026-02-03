@@ -5,6 +5,7 @@ import 'package:easy_hris/providers/permits/permit_provider.dart';
 import 'package:easy_hris/ui/permit/widgets/action_button_custom.dart';
 import 'package:easy_hris/ui/util/widgets/app_bar_custom.dart';
 import 'package:easy_hris/ui/util/widgets/bottom_sheet_helpers.dart';
+import 'package:easy_hris/ui/util/widgets/card_item_transaction.dart';
 import 'package:easy_hris/ui/util/widgets/data_empty.dart';
 import 'package:easy_hris/ui/util/widgets/item_detail_transaction.dart';
 import 'package:flutter/cupertino.dart';
@@ -158,48 +159,26 @@ class PermitScreen extends StatelessWidget {
                                     ),
                                   );
                                 },
-                                child: Card(
-                                  surfaceTintColor: Colors.white,
-                                  color: Colors.white,
-                                  child: ListTile(
-                                    leading: Container(
-                                      padding: EdgeInsets.all(4.w),
-                                      decoration: BoxDecoration(color: ConstantColor.bgIcon, borderRadius: BorderRadius.circular(8.w)),
-                                      child: Icon(Icons.file_present_outlined),
-                                    ),
-                                    title: Column(
-                                      spacing: 3.h,
-                                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                                      children: [
-                                        Text(
-                                          item.permitTypeName ?? "",
-                                          style: TextStyle(fontSize: 14.sp, color: Colors.black),
+                                child: CardItemTransaction(
+                                  title: item.permitTypeName ?? '',
+                                  subtitle: formatDateReq(DateTime.parse(item.permitDate!)),
+                                  trailing: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        item.status == '0' ? "CHECKING" : "APPROVED",
+                                        style: TextStyle(
+                                          fontSize: 12.sp,
+                                          color: item.status!.toUpperCase() == "0" ? Colors.red : Colors.green,
+                                          fontWeight: FontWeight.bold,
                                         ),
-                                        Text(
-                                          formatDateReq(DateTime.parse(item.permitDate!)),
-                                          style: TextStyle(fontSize: 10.sp, color: Colors.black, fontWeight: FontWeight.normal),
-                                        ),
-                                      ],
-                                    ),
-                                    // subtitle: Text("30 December 2026"),
-                                    trailing: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      crossAxisAlignment: CrossAxisAlignment.end,
-                                      children: [
-                                        Text(
-                                          item.status == '0' ? "CHECKING" : "APPROVED",
-                                          style: TextStyle(
-                                            fontSize: 12.sp,
-                                            color: item.status!.toUpperCase() == "0" ? Colors.red : Colors.green,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                        Text(
-                                          item.status!.toUpperCase() == "0" ? item.approvedTo! : item.approvedBy!,
-                                          style: TextStyle(fontSize: 10.sp, color: Colors.black),
-                                        ),
-                                      ],
-                                    ),
+                                      ),
+                                      Text(
+                                        item.status!.toUpperCase() == "0" ? item.approvedTo! : item.approvedBy!,
+                                        style: TextStyle(fontSize: 10.sp, color: Colors.black),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ),
