@@ -1,103 +1,158 @@
-import 'package:easy_hris/ui/change_day/widgets/item_change_days.dart';
+import 'package:easy_hris/constant/constant.dart';
+import 'package:easy_hris/constant/exports.dart';
+import 'package:easy_hris/constant/routes.dart';
+import 'package:easy_hris/providers/change_days/change_day_provider.dart';
+import 'package:easy_hris/providers/overtimes/overtime_provider.dart';
+import 'package:easy_hris/providers/permits/permit_provider.dart';
+import 'package:easy_hris/ui/permit/widgets/action_button_custom.dart';
+import 'package:easy_hris/ui/util/widgets/app_bar_custom.dart';
+import 'package:easy_hris/ui/util/widgets/bottom_sheet_helpers.dart';
+import 'package:easy_hris/ui/util/widgets/card_item_transaction.dart';
+import 'package:easy_hris/ui/util/widgets/data_empty.dart';
+import 'package:easy_hris/ui/util/widgets/item_detail_transaction.dart';
+import 'package:easy_hris/ui/util/widgets/item_info_transaction.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
-import '../../constant/constant.dart';
-import '../../data/models/change_days.dart';
-import '../../providers/change_days/change_days_provider.dart';
-import 'change_day_adding_screen.dart';
-import '../util/widgets/data_empty.dart';
+import '../util/utils.dart';
 import '../util/widgets/shimmer_list_load_data.dart';
 
-class ChangeDayScreen extends StatefulWidget {
-  static const routeName = "/change_day_screen";
-
+class ChangeDayScreen extends StatelessWidget {
   const ChangeDayScreen({super.key});
 
   @override
-  State<ChangeDayScreen> createState() => _ChangeDayScreenState();
-}
-
-class _ChangeDayScreenState extends State<ChangeDayScreen> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<ChangeDaysProvider>(context, listen: false).fetchChangeDays(context);
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text(
-          "Change Day",
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
+    return ChangeNotifierProvider(
+      create: (context) => ChangeDayProvider(),
+      child: Scaffold(
+        appBar: AppbarCustom.appbar(
+          context,
+          title: "Change Day",
+          leadingBack: true,
+          action: [
+            Consumer<ChangeDayProvider>(
+              builder: (context, prov, _) {
+                if (prov.resultStatus == ResultStatus.hasData || prov.resultStatus == ResultStatus.noData) {
+                  return IconButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, Routes.changeDayAddScreen).then((value) {
+                        prov.fetchChangeDay(prov.year);
+                      });
+                    },
+                    icon: Icon(Icons.add_box_rounded),
+                  );
+                } else {
+                  return SizedBox.shrink();
+                }
+              },
+            ),
+          ],
         ),
-        leading: IconButton(
-          onPressed: () {
-            Navigator.pop(context);
-          },
-          icon: const Icon(Icons.arrow_back_ios_new),
-        ),
-      ),
-      body: Consumer<ChangeDaysProvider>(
-        builder: (context, prov, child) {
-          switch (prov.resultStatus) {
-            case ResultStatus.loading:
-              return const ShimmerListLoadData();
-            case ResultStatus.noData:
-              return const DataEmpty(dataName: "Change Days");
-            case ResultStatus.error:
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(prov.message),
-                    const SizedBox(height: 8),
-                    ElevatedButton(
-                      onPressed: () {
-                        prov.fetchChangeDays(context);
-                      },
-                      child: const Text("Refresh"),
-                    ),
-                  ],
-                ),
-              );
-            case ResultStatus.hasData:
-              return RefreshIndicator(
-                onRefresh: () => prov.fetchChangeDays(context),
-                child: ListView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                  itemCount: prov.listChangeDays.length,
-                  itemBuilder: (context, index) {
-                    ResultsChangeDays resultsChangeDays = prov.listChangeDays[index];
-                    return Column(
+        body: SafeArea(
+          child: Column(
+            children: [
+              Consumer<ChangeDayProvider>(
+                builder: (context, prov, _) {
+                  return Padding(
+                    padding: EdgeInsets.all(12.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        ItemChangeDays(resultsChangeDays: resultsChangeDays),
-                        Divider(thickness: 1, height: 0, color: Colors.grey.shade300),
+                        ActionButtonCustom(
+                          onTap: () {
+                            prov.onChangeYear(false);
+                          },
+                          iconData: Icons.arrow_back_ios_new,
+                        ),
+                        Text(
+                          prov.year.toString(),
+                          style: TextStyle(fontSize: 24.sp, fontWeight: FontWeight.bold),
+                        ),
+                        ActionButtonCustom(
+                          onTap: () {
+                            prov.onChangeYear(true);
+                          },
+                          iconData: Icons.arrow_forward_ios,
+                        ),
                       ],
-                    );
+                    ),
+                  );
+                },
+              ),
+
+              // List
+              Expanded(
+                child: Consumer<ChangeDayProvider>(
+                  builder: (context, prov, _) {
+                    switch (prov.resultStatus) {
+                      case ResultStatus.loading:
+                        return ShimmerListLoadData();
+                      case ResultStatus.noData:
+                        return Center(child: DataEmpty(dataName: "Change Day"));
+                      case ResultStatus.error:
+                        return Center(child: Text(prov.message));
+                      case ResultStatus.hasData:
+                        return ListView.builder(
+                          padding: EdgeInsets.all(10.w),
+                          itemCount: prov.listChangeDay.length,
+                          itemBuilder: (context, index) {
+                            final item = prov.listChangeDay[index];
+                            return Padding(
+                              padding: EdgeInsets.symmetric(vertical: 2.h),
+                              child: InkWell(
+                                onTap: () {
+                                  // Navigator.pushNamed(context, Routes.permitDetailScreen, arguments: item);
+
+                                  BottomSheetHelper.showModalDetail(
+                                    context,
+                                    title: "Change Day Detail",
+                                    columnList: Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      spacing: 8.h,
+                                      children: [
+                                        ItemDetailTransaction(title: "Day From", value: formatDateReq(DateTime.parse(item.start!))),
+                                        ItemDetailTransaction(title: "Replace To", value: formatDateReq(DateTime.parse(item.end!))),
+                                        ItemDetailTransaction(title: "Note", value: item.remarks ?? "-"),
+                                      ],
+                                    ),
+                                  );
+                                },
+                                child: CardItemTransaction(
+                                  title: formatDateReq(DateTime.parse(item.start!)),
+                                  subtitle: item.remarks ?? '',
+                                  trailing: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    crossAxisAlignment: CrossAxisAlignment.end,
+                                    children: [
+                                      // Text(
+                                      //   item.status == '0' ? "CHECKING" : "APPROVED",
+                                      //   style: TextStyle(
+                                      //     fontSize: 12.sp,
+                                      //     color: item.status!.toUpperCase() == "0" ? Colors.red : Colors.green,
+                                      //     fontWeight: FontWeight.bold,
+                                      //   ),
+                                      // ),
+                                      // Text(
+                                      //   item.status!.toUpperCase() == "0" ? item.approvedTo! : item.approvedBy!,
+                                      //   style: TextStyle(fontSize: 10.sp, color: Colors.black),
+                                      // ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        );
+
+                      default:
+                        return SizedBox.shrink();
+                    }
                   },
                 ),
-              );
-            default:
-              return Container();
-          }
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        onPressed: () => Navigator.pushNamed(context, ChangeDayAddingScreen.routeName),
-        child: Container(
-          decoration: const BoxDecoration(
-            color: Colors.white,
-            shape: BoxShape.circle,
-            image: DecorationImage(image: AssetImage("assets/images/plus.png")),
+              ),
+            ],
           ),
         ),
       ),

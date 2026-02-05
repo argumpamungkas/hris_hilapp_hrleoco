@@ -21,7 +21,7 @@ class ShimmerListLoadData extends StatelessWidget {
             padding: EdgeInsets.symmetric(vertical: 4.h, horizontal: 16.w),
             child: Card(
               color: prov.isDarkTheme ? Colors.black87 : Colors.white,
-              child: Container(height: 80.h),
+              child: Container(height: 50.h),
             ),
           );
         },

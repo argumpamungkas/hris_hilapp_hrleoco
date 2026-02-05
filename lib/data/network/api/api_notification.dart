@@ -1,32 +1,40 @@
+import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:easy_hris/data/models/response/notification_model.dart';
+import 'package:easy_hris/data/services/url_services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 import '../../../constant/constant.dart';
+import '../../../injection.dart';
+import '../../models/response/api_response.dart';
+import '../../models/response/permit_type_model.dart';
 
 class ApiNotification {
-  Future<Map<String, dynamic>> fetchNotification() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    late String link;
-    late String apiKey;
-    if (prefs.getString("apiKey") != null && prefs.getString("linkServer") != null) {
-      link = prefs.getString("linkServer")!;
-      apiKey = prefs.getString("apiKey")!;
-    }
+  final _urlService = sl<UrlServices>();
 
-    Uri url = Uri.parse("${link}api/notifications/approvalList/$apiKey");
+  Future<ApiResponse<List<NotificationModel>>> fetchNotification(String number) async {
+    final baseUrl = await _urlService.getUrlModel();
+
+    Uri url = Uri.parse("${baseUrl!.link}/api/notifications/reads?number=$number");
 
     try {
       var response = await http.get(url);
-      var responseBody = jsonDecode(response.body);
-      if (response.statusCode == 200) {
-        return responseBody;
-      } else {
-        return responseBody;
-      }
-    } catch (e) {
-      throw errMessage;
+
+      Map<String, dynamic> result = jsonDecode(response.body);
+
+      // print("result => $result");
+
+      return ApiResponse.fromJson(result, onDataSerialized: (_) => null, onDataDeserialized: (json) => NotificationModel.fromJsonList(json));
+    } on TimeoutException catch (_) {
+      throw Exception(ConstantMessage.errMsgTimeOut);
+    } on SocketException catch (_) {
+      throw Exception(ConstantMessage.errMsgNoInternet);
+    } catch (e, trace) {
+      print("traceee $trace");
+      throw Exception("${ConstantMessage.errMsg} $e");
     }
   }
 

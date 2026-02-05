@@ -42,7 +42,7 @@ class TeamScreen extends StatelessWidget {
                     builder: (context, prov, provPref, _) {
                       switch (prov.resultStatus) {
                         case ResultStatus.loading:
-                          return Center(child: CupertinoActivityIndicator());
+                          return const ShimmerListLoadData();
 
                         case ResultStatus.error:
                           return ErrorHomeCustom(

@@ -17,6 +17,7 @@ class Constant {
   static const String versionApp = "v1.0.0";
 
   static const String logo = "assets/images/logo.png";
+  static const String homeBg = "assets/images/home_bg.jpg";
 
   // static const String appVersion = "v1.1.0";
   static const String appVersion = "v1.1.1";

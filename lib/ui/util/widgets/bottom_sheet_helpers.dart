@@ -76,7 +76,7 @@ class BottomSheetHelper {
               padding: EdgeInsets.all(16.w),
               width: 1.sw,
               child: Column(
-                spacing: 8.h,
+                spacing: 10.h,
                 children: [
                   Text(
                     title,

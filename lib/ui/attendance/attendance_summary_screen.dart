@@ -68,11 +68,12 @@ class AttendanceSummaryScreen extends StatelessWidget {
               case ResultStatus.error:
                 return Center(child: Text("Error ${provAttendance.message}"));
               case ResultStatus.hasData:
-                return ResultAttendanceSummaryWidget(
-                  date: provAttendance.initDate,
-                  attendanceSummary: provAttendance.attendanceSummary,
-                  listAttendanceSummary: provAttendance.listAttendanceSummary,
-                );
+                return SizedBox();
+              // return ResultAttendanceSummaryWidget(
+              //   date: provAttendance.initDate,
+              //   attendanceSummary: provAttendance.attendanceSummary,
+              //   listAttendanceSummary: provAttendance.listAttendanceSummary,
+              // );
               default:
                 return SizedBox.shrink();
             }

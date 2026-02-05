@@ -33,27 +33,27 @@ class NotificationWidget extends StatelessWidget {
             children: [
               IconButton(
                 onPressed: () async {
-                  // Navigator.pushNamed(context, Routes.notificationScreen);
-                  showInfoSnackbar(context, "Feature on Progress");
+                  Navigator.pushNamed(context, Routes.notificationScreen);
+                  // showInfoSnackbar(context, "Feature on Progress");
                 },
                 icon: const Icon(Icons.notifications_none_outlined),
                 color: Colors.white,
                 iconSize: 22.w.h,
               ),
-              Consumer<NotificationProvider>(
-                builder: (context, prov, _) {
-                  switch (prov.resultStatus) {
-                    case ResultStatus.loading:
-                      return Container();
-                    case ResultStatus.noData:
-                      return valueNotification(prov.total);
-                    case ResultStatus.hasData:
-                      return valueNotification(prov.total);
-                    default:
-                      return Container();
-                  }
-                },
-              ),
+              // Consumer<NotificationProvider>(
+              //   builder: (context, prov, _) {
+              //     switch (prov.resultStatus) {
+              //       case ResultStatus.loading:
+              //         return Container();
+              //       case ResultStatus.noData:
+              //       // return valueNotification(prov.total);
+              //       case ResultStatus.hasData:
+              //       // return valueNotification(prov.total);
+              //       default:
+              //         return Container();
+              //     }
+              //   },
+              // ),
             ],
           ),
         ],

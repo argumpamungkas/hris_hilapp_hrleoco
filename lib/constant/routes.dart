@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:easy_hris/data/models/response/notification_model.dart';
 import 'package:easy_hris/data/models/response/permit_model.dart';
 import 'package:easy_hris/ui/attendance/attendance_history_screen.dart';
 import 'package:easy_hris/ui/attendance/attendance_summary_screen.dart';
+import 'package:easy_hris/ui/change_day/change_day_add_screen.dart';
 import 'package:easy_hris/ui/employee/add/add_career_screen.dart';
 import 'package:easy_hris/ui/employee/add/add_education_screen.dart';
 import 'package:easy_hris/ui/employee/add/add_experience_screen.dart';
@@ -17,7 +19,6 @@ import 'package:easy_hris/ui/util/widgets/view_image_network.dart';
 import 'package:flutter/material.dart';
 
 import '../data/models/attendance_summary.dart';
-import '../data/models/change_days.dart';
 import '../data/models/notifications/notification_response.dart';
 import '../data/models/overtime.dart';
 import '../data/models/pay_slip.dart';
@@ -28,8 +29,6 @@ import '../ui/auth/forgot_password_screen.dart';
 import '../ui/auth/sign_in_screen.dart';
 import '../ui/auth/sign_up_screen.dart';
 import '../ui/change_day/change_day_screen.dart';
-import '../ui/change_day/change_day_adding_screen.dart';
-import '../ui/change_day/change_day_detail_screen.dart';
 import '../ui/dashboard/dashboard_screen.dart';
 import '../ui/news/news_screen_detail.dart';
 import '../ui/notification/notification_screen.dart';
@@ -99,6 +98,11 @@ class Routes {
   static const permitAddScreen = "/permit_add_screen";
   static const permitDetailScreen = "/permit_detail";
 
+  // CHANGE DAY
+  static const changeDayScreen = '/change_day_screen';
+  static const changeDayAddScreen = '/change_day_add_screen';
+  static const changeDayDetailScreen = '/change_day_detail_screen';
+
   // Privacy policy
   static const privacyPolicyScreen = "/privacy_policy_screen";
   static const helpCenterScreen = "/help_center_screen";
@@ -124,7 +128,7 @@ class Routes {
 
     // Notification
     notificationScreen: (context) => const NotificationScreen(),
-    notificationDetailScreen: (context) => NotificationDetail(dataNotif: ModalRoute.of(context)?.settings.arguments as ResultNotif),
+    notificationDetailScreen: (context) => NotificationDetail(item: ModalRoute.of(context)?.settings.arguments as NotificationModel),
 
     /// EMPLOYEE
     employeeScreen: (context) => const EmployeeScreen(),
@@ -154,10 +158,10 @@ class Routes {
     permitAddScreen: (context) => const PermitAddScreen(),
     permitDetailScreen: (context) => PermitDetailScreen(resultPermit: ModalRoute.of(context)?.settings.arguments as ResultPermitModel),
 
-    ChangeDayScreen.routeName: (context) => const ChangeDayScreen(),
-    ChangeDayDetailScreen.routeName: (context) =>
-        ChangeDayDetailScreen(resultsChangeDays: ModalRoute.of(context)!.settings.arguments as ResultsChangeDays),
-    ChangeDayAddingScreen.routeName: (context) => const ChangeDayAddingScreen(),
+    /// Change Day
+    changeDayScreen: (context) => const ChangeDayScreen(),
+    changeDayAddScreen: (context) => const ChangeDayAddScreen(),
+
     FotoScreen.routeName: (context) => FotoScreen(imgUrl: ModalRoute.of(context)?.settings.arguments as String),
     PaySlipScreen.routeName: (context) => const PaySlipScreen(),
     PaySlipDetailScreen.routeName: (context) => PaySlipDetailScreen(resultsPaySlip: ModalRoute.of(context)?.settings.arguments as ResultsPaySlip),

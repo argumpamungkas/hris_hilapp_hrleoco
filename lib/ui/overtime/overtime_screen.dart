@@ -16,6 +16,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../util/utils.dart';
+import '../util/widgets/shimmer_list_load_data.dart';
 
 class OvertimeScreen extends StatelessWidget {
   const OvertimeScreen({super.key});
@@ -106,7 +107,7 @@ class OvertimeScreen extends StatelessWidget {
                   builder: (context, prov, _) {
                     switch (prov.resultStatus) {
                       case ResultStatus.loading:
-                        return Center(child: CupertinoActivityIndicator());
+                        return ShimmerListLoadData();
                       case ResultStatus.noData:
                         return Center(child: DataEmpty(dataName: "Overtimes"));
                       case ResultStatus.error:

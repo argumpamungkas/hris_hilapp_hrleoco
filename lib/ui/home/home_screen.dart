@@ -31,9 +31,9 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      Provider.of<NotificationProvider>(context, listen: false).fetchNotification();
-    });
+    // WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+    //   Provider.of<NotificationProvider>(context, listen: false).fetchNotification();
+    // });
   }
 
   @override

@@ -8,6 +8,7 @@ import 'package:easy_hris/ui/util/widgets/bottom_sheet_helpers.dart';
 import 'package:easy_hris/ui/util/widgets/card_item_transaction.dart';
 import 'package:easy_hris/ui/util/widgets/data_empty.dart';
 import 'package:easy_hris/ui/util/widgets/item_detail_transaction.dart';
+import 'package:easy_hris/ui/util/widgets/shimmer_list_load_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -124,7 +125,7 @@ class PermitScreen extends StatelessWidget {
                   builder: (context, prov, _) {
                     switch (prov.resultStatus) {
                       case ResultStatus.loading:
-                        return Center(child: CupertinoActivityIndicator());
+                        return ShimmerListLoadData();
                       case ResultStatus.noData:
                         return Center(child: DataEmpty(dataName: "Permit"));
                       case ResultStatus.error:

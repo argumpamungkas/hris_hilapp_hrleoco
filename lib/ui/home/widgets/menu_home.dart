@@ -26,14 +26,7 @@ class MenuHome extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  itemMenu(
-                    context,
-                    onTap: () => Navigator.pushNamed(context, Routes.employeeScreen),
-                    // assetImage: "assets/images/employee_icon.png",
-                    icon: Icons.person,
-                    titleMenu: "Employee",
-                  ),
-                  // SizedBox(width: 8),
+                  itemMenu(context, onTap: () => Navigator.pushNamed(context, Routes.employeeScreen), icon: Icons.person, titleMenu: "Employee"),
                   itemMenu(
                     context,
                     onTap: () {
@@ -42,31 +35,23 @@ class MenuHome extends StatelessWidget {
                     icon: Icons.access_time_filled_sharp,
                     titleMenu: "Overtime",
                   ),
-                  // SizedBox(width: 8),
                   itemMenu(
                     context,
-                    // onTap: () => Navigator.pushNamed(context, ChangeDayScreen.routeName),
-                    onTap: () => showInfoSnackbar(context, "Feature on Progress"),
-                    // assetImage: "assets/images/timetable.png",
+                    onTap: () => Navigator.pushNamed(context, Routes.changeDayScreen),
                     icon: Iconsax.calendar_bold,
                     titleMenu: "Change Day",
                   ),
-                  // SizedBox(width: 8),
                   itemMenu(
                     context,
-                    // onTap: () => Navigator.pushNamed(context, Routes.permitScreen),
                     onTap: () {
                       Navigator.pushNamed(context, Routes.permitScreen);
                     },
-                    // assetImage: "assets/images/pen.png",
                     icon: Iconsax.logout_1_outline,
                     titleMenu: "Permit",
                   ),
-                  // SizedBox(width: 8),
                   itemMenu(
                     context,
                     onTap: () => Navigator.pushNamed(context, PaySlipScreen.routeName),
-                    // onTap: () => showInfoSnackbar(context, "Feature on Progress"),
                     icon: Iconsax.card_bold,
                     titleMenu: "Pay Slip",
                   ),

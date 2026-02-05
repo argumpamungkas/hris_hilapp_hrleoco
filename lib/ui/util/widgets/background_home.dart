@@ -12,7 +12,8 @@ class BackgroundHome extends StatelessWidget {
       width: 1.sw,
       height: 0.3.sh,
       decoration: BoxDecoration(
-        color: ConstantColor.colorBlue,
+        // color: ConstantColor.colorBlue,
+        image: DecorationImage(image: AssetImage(Constant.homeBg), fit: BoxFit.cover),
         // borderRadius: BorderRadius.vertical(bottom: Radius.circular(50)),
       ),
     );

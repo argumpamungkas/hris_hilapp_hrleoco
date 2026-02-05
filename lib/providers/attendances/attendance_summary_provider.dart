@@ -1,69 +1,53 @@
 import 'dart:async';
-import 'dart:io';
 
+import 'package:easy_hris/constant/exports.dart';
+import 'package:easy_hris/data/network/api/api_home.dart';
 import 'package:flutter/material.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
 
 import '../../constant/constant.dart';
-import '../../data/models/attendance_summary.dart';
-import '../../data/network/api/api_dashboard.dart';
-import '../../ui/util/utils.dart';
+import '../../data/models/response/attendance_summary_model.dart';
+import '../../injection.dart';
 
 class AttendanceSummaryProvider extends ChangeNotifier {
-  final ApiDashboard _api = ApiDashboard();
+  final ApiHome _api = ApiHome();
+  final _prefs = sl<SharedPreferences>();
 
-  AttendanceSummary? _attendanceSummary;
-  List<ResultAttendanceSummary> _listAttendanceSummary = [];
+  DateTime _initDate = DateTime.now().toLocal();
+  AttendanceSummaryModel? _attendanceSummaryModel;
   ResultStatus _resultStatus = ResultStatus.init;
   String _message = '';
-  DateTime _initDate = DateTime.now();
-
-  AttendanceSummary? get attendanceSummary => _attendanceSummary;
-
-  List<ResultAttendanceSummary> get listAttendanceSummary => _listAttendanceSummary;
-
-  ResultStatus get resultStatus => _resultStatus;
-
-  String get message => _message;
 
   DateTime get initDate => _initDate;
+  ResultStatus get resultStatus => _resultStatus;
+  AttendanceSummaryModel? get attendanceSummaryModel => _attendanceSummaryModel;
+  String get message => _message;
 
   AttendanceSummaryProvider() {
-    fetchAttendancePerson(_initDate);
+    fetchAttendanceSummary(_initDate);
   }
 
-  Future<void> fetchAttendancePerson(DateTime date) async {
+  Future<void> fetchAttendanceSummary(DateTime date) async {
     _resultStatus = ResultStatus.loading;
     notifyListeners();
-    // _linkServer = await getLink();
     try {
-      final dateFormat = formatDateYearMont(date);
-      Map<String, dynamic> respTeams = await _api.fetchAttendanceSummaryByDate(requestDate: dateFormat);
-      _attendanceSummary = AttendanceSummary.fromJson(respTeams);
-      print(_attendanceSummary?.toJson());
-      _listAttendanceSummary = _attendanceSummary!.details;
-      print(_listAttendanceSummary.length);
-      if (_listAttendanceSummary.isEmpty) {
-        _resultStatus = ResultStatus.noData;
-        notifyListeners();
-        return;
-      } else {
+      final number = _prefs.getString(ConstantSharedPref.numberUser);
+      final result = await _api.fetchAttendanceSummary(number ?? "", date.month, date.year);
+
+      if (result.theme == 'success') {
+        _attendanceSummaryModel = result.result;
         _resultStatus = ResultStatus.hasData;
         notifyListeners();
-        return;
+      } else {
+        _resultStatus = ResultStatus.error;
+        _message = result.message!;
+        notifyListeners();
       }
-    } on TimeoutException catch (_) {
-      _resultStatus = ResultStatus.error;
-      _message = ConstantMessage.errMsgTimeOut;
-      notifyListeners();
-    } on SocketException catch (_) {
-      _resultStatus = ResultStatus.error;
-      _message = ConstantMessage.errMsgNoInternet;
-      notifyListeners();
     } catch (e) {
       _resultStatus = ResultStatus.error;
-      _message = '${ConstantMessage.errMsg} $e';
+      _message = e.toString();
       notifyListeners();
+      return;
     }
   }
 
@@ -80,7 +64,7 @@ class AttendanceSummaryProvider extends ChangeNotifier {
 
     if (selected == null) return;
     _initDate = selected;
-    fetchAttendancePerson(selected);
+    fetchAttendanceSummary(selected);
     notifyListeners();
   }
 }
