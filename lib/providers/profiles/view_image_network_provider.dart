@@ -74,28 +74,10 @@ class ViewImageNetworkProvider extends ChangeNotifier {
 
       await _notifService.showNotificationSuccessDownloadPicture(filePath, notificationId);
 
-      print("file tersimpan $filePath");
-
-      // print("DOWNLOAD BERHASIL => ${file.path}");
       return true;
     } catch (e, trace) {
-      // print("Error $e");
-      // print("trace $trace");
+      ;
       return false;
     }
-
-    // try {
-    //   print(localPath);
-    //   var file = File("$_localPath/$name");
-    //   await dio.download(_url.toString(), "$_localPath/$name");
-    //   print("DOWNLOAD PRINT BERHASIL");
-    //   // if (!context.mounted) return;
-    //   await _notifService.showNotificationDownload(file.path, name);
-    //   print("PATH ${file.path}");
-    // } catch (e) {
-    //   print("Error $e");
-    //   // if (!context.mounted) return;
-    //   // snackBarFailed(description: "Download Gagal");
-    // }
   }
 }

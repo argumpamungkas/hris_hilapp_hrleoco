@@ -7,8 +7,10 @@ import 'package:easy_hris/ui/util/widgets/app_bar_custom.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
 
+import '../util/utils.dart';
 import '../util/widgets/show_dialog_picker_year.dart';
 
 class AttendanceHistoryScreen extends StatelessWidget {
@@ -64,7 +66,7 @@ class AttendanceHistoryScreen extends StatelessWidget {
                       spacing: 4.w,
                       children: [
                         Text(
-                          prov.dateMonth,
+                          formatTimeMonth(prov.date),
                           style: TextStyle(fontSize: 12.sp, color: provPref.isDarkTheme ? Colors.white : Colors.black),
                         ),
                         Icon(Icons.calendar_month, size: 12.w, color: provPref.isDarkTheme ? Colors.white : Colors.black),
@@ -84,7 +86,7 @@ class AttendanceHistoryScreen extends StatelessWidget {
                 case ResultStatus.loading:
                   return Center(child: CupertinoActivityIndicator());
                 case ResultStatus.noData:
-                  return Center(child: Text("History in ${prov.dateMonth} is Empty"));
+                  return Center(child: Text("History in ${formatDatePeriod(prov.date)} is Empty"));
                 case ResultStatus.error:
                   return Center(
                     child: Column(
@@ -92,7 +94,7 @@ class AttendanceHistoryScreen extends StatelessWidget {
                         Text(prov.message),
                         TextButton(
                           onPressed: () {
-                            // prov.fetchAttendanceHistory(from: prov.dateFrom.text, to: prov.dateTo.text);
+                            prov.fetchAttendanceHistory(month: prov.date.month, year: prov.date.year);
                           },
                           child: Text("Refresh"),
                         ),

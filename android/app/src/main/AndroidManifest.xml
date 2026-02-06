@@ -16,7 +16,7 @@
 <!--    <uses-permission android:name="android.permission.WAKE_LOCK"/>-->
 
     <application
-        android:label="Easy HRIS"
+        android:label="Great Talent HR"
         android:name="${applicationName}"
         android:requestLegacyExternalStorage="true"
         android:icon="@mipmap/launcher_icon">

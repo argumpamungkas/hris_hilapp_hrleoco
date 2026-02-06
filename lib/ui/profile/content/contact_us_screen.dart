@@ -1,3 +1,6 @@
+import 'package:easy_hris/constant/exports.dart';
+import 'package:easy_hris/providers/preferences_provider.dart';
+import 'package:easy_hris/ui/util/widgets/item_detail_transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -6,28 +9,27 @@ class ContactUsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Card(
-            child: ExpansionTile(
-              shape: const Border(), // saat expanded
-              collapsedShape: const Border(), // saat collapsed
-              tilePadding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 8.h),
-              title: Text(
-                "Contact Us",
-                style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.bold),
-              ),
-              childrenPadding: EdgeInsets.symmetric(horizontal: 8.w),
-              children: [
-                Text("Only people who are registered as employees of the company can register an account to login in the GreatTalent"),
-                SizedBox(height: 16.h),
-              ],
-            ),
+    return Consumer<PreferencesProvider>(
+      builder: (context, prov, _) {
+        return Expanded(
+          child: Column(
+            spacing: 4.h,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ItemDetailTransaction(title: "Number", value: prov.configModel!.number!),
+              ItemDetailTransaction(title: "Name", value: prov.configModel!.name!),
+              ItemDetailTransaction(title: "Description", value: prov.configModel!.description!),
+              ItemDetailTransaction(title: "Address", value: prov.configModel!.address!),
+              ItemDetailTransaction(title: "City", value: prov.configModel!.city!),
+              ItemDetailTransaction(title: "Postal Code", value: prov.configModel!.postalCode ?? ''),
+              ItemDetailTransaction(title: "Telephone", value: prov.configModel!.telp ?? ''),
+              ItemDetailTransaction(title: "Fax", value: prov.configModel!.fax ?? ''),
+              ItemDetailTransaction(title: "Email", value: prov.configModel!.email ?? ''),
+              ItemDetailTransaction(title: "Website", value: prov.configModel!.website ?? ''),
+            ],
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

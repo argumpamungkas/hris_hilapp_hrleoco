@@ -144,7 +144,7 @@ class Routes {
     cameraScreen: (context) => CameraScreen(args: ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>),
     // cameraFaceDetectionScreen: (context) => CameraFaceDetectionScreen(),
     picturePreviewScreen: (context) => PicturePreview(args: ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>),
-    attendanceSummaryScreen: (context) => AttendanceSummaryScreen(result: ModalRoute.of(context)?.settings.arguments as AttendanceSummary),
+    attendanceSummaryScreen: (context) => AttendanceSummaryScreen(),
     attendanceTeamScreen: (context) => const AttendanceTeam(),
     attendanceHistory: (context) => const AttendanceHistoryScreen(),
 

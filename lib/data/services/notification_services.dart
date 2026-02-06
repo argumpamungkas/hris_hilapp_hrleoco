@@ -112,7 +112,7 @@ class NotificationServices {
 
     var platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics, iOS: iOSPlatformChannelSpecifics);
 
-    await _notificationPlugin.show(notificationId, 'Download Image', "$progress%", platformChannelSpecifics);
+    await _notificationPlugin.show(notificationId, 'Download Process', "$progress%", platformChannelSpecifics);
   }
 
   Future<void> showNotificationSuccessDownloadPicture(String pathFile, int notificationId) async {
@@ -135,6 +135,23 @@ class NotificationServices {
       platformChannelSpecifics,
       payload: pathFile,
     );
+  }
+
+  Future<void> showNotificationSuccessDownload(int notificationId, String pathFile, String description) async {
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      "download_channel",
+      "Download",
+      channelDescription: "File Download Success",
+      importance: Importance.max,
+      priority: Priority.high,
+      ticker: 'ticker',
+    );
+
+    var iOSPlatformChannelSpecifics = const DarwinNotificationDetails();
+
+    var platformChannelSpecifics = NotificationDetails(android: androidPlatformChannelSpecifics, iOS: iOSPlatformChannelSpecifics);
+
+    await _notificationPlugin.show(notificationId, 'Download Success', description, platformChannelSpecifics, payload: pathFile);
   }
 
   Future<void> showNotificationSuccessDownloading(String pathFile, String description) async {

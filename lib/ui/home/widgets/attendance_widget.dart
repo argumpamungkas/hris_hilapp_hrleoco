@@ -145,7 +145,8 @@ class AttendanceWidget extends StatelessWidget {
                             children: [
                               _informationAttendance(
                                 title: "Check In",
-                                time: homeProv.checkIn.substring(0, 5),
+                                // time: homeProv.checkIn.substring(0, 5),
+                                time: homeProv.checkIn,
                                 colorIcon: Colors.green,
                                 colorBackground: Colors.green.shade50,
                               ),
@@ -154,7 +155,8 @@ class AttendanceWidget extends StatelessWidget {
 
                               _informationAttendance(
                                 title: "Check Out",
-                                time: homeProv.checkOut.substring(0, 5),
+                                // time: homeProv.checkOut.substring(0, 5),
+                                time: homeProv.checkOut,
                                 colorIcon: Colors.red,
                                 colorBackground: Colors.red.shade50,
                               ),
@@ -175,7 +177,7 @@ class AttendanceWidget extends StatelessWidget {
                                   title: "Check In",
                                   icon: Icons.arrow_circle_down,
                                   background: Colors.green,
-                                  onPressed: homeProv.checkIn == "00:00"
+                                  onPressed: homeProv.checkIn == "00:00:00"
                                       ? () async {
                                           DialogHelper.showLoadingDialog(context, message: "Loading validate location...");
                                           final checkAttendance = await homeProv.fetchCurrentLocation(provPref.configModel!);
@@ -219,7 +221,7 @@ class AttendanceWidget extends StatelessWidget {
                                   title: "Check Out",
                                   icon: Icons.arrow_circle_up,
                                   background: Colors.red,
-                                  onPressed: homeProv.checkIn != "00:00" && homeProv.checkOut == "00:00"
+                                  onPressed: homeProv.checkIn != "00:00:00" && homeProv.checkOut == "00:00:00"
                                       ? () async {
                                           DialogHelper.showLoadingDialog(context, message: "Loading validate location...");
                                           final checkAttendance = await homeProv.fetchCurrentLocation(provPref.configModel!);

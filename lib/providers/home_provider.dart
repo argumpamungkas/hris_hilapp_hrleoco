@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:device_info_plus/device_info_plus.dart';
+import 'package:dio/dio.dart';
 import 'package:easy_hris/constant/exports.dart';
 import 'package:easy_hris/data/models/response/announcement_model.dart';
 import 'package:easy_hris/data/models/response/attendance_model.dart';
@@ -11,6 +13,8 @@ import 'package:easy_hris/data/models/response/permit_today_model.dart';
 import 'package:flutter/widgets.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:intl/intl.dart';
+import 'package:path_provider/path_provider.dart';
 
 import '../constant/constant.dart';
 import '../data/models/attendance.dart';
@@ -18,12 +22,14 @@ import '../data/models/attendance_summary.dart';
 import '../data/models/news.dart';
 import '../data/models/response/shift_user_model.dart';
 import '../data/network/api/api_home.dart';
+import '../data/services/notification_services.dart';
 import '../injection.dart';
 import '../ui/util/utils.dart';
 
 class HomeProvider extends ChangeNotifier {
   final ApiHome _api = ApiHome();
   final _prefs = sl<SharedPreferences>();
+  final _notifService = NotificationServices();
 
   // ResultStatus _resultStatus = ResultStatus.init;
   ResultStatus _resultStatus = ResultStatus.hasData;
@@ -45,8 +51,8 @@ class HomeProvider extends ChangeNotifier {
 
   // Attendance Today
   ShiftUserModel? _shiftUserModel;
-  String _checkIn = '00:00';
-  String _checkOut = '00:00';
+  String _checkIn = '00:00:00';
+  String _checkOut = '00:00:00';
 
   // AttendanceSummary
   AttendanceSummaryModel? _attendanceSummaryModel;
@@ -89,6 +95,7 @@ class HomeProvider extends ChangeNotifier {
 
   // TODO : Call ALl Function
   Future<void> fetching(ConfigModel configModel) async {
+    print("object");
     init();
     fetchCurrentLocation(configModel);
     fetchAttendanceSummary();
@@ -98,6 +105,7 @@ class HomeProvider extends ChangeNotifier {
 
   // TODO : Shift dan attendance Today jadi kesatuan
   Future<void> init() async {
+    print("callll");
     _resultStatusAttendanceToday = ResultStatus.loading;
     notifyListeners();
 
@@ -135,7 +143,7 @@ class HomeProvider extends ChangeNotifier {
     try {
       final number = _prefs.getString(ConstantSharedPref.numberUser);
       final transDate = "${now.year}-${now.month}-${now.day}";
-      final result = await _api.fetchAttendanceData(number ?? "", transDate, transDate);
+      final result = await _api.fetchAttendanceToday(number ?? "", transDate);
       final data = result.result;
 
       if (data!.isNotEmpty) {
@@ -195,6 +203,12 @@ class HomeProvider extends ChangeNotifier {
       //
       // final p = place.first;
       // _address = [p.street, p.subLocality, p.locality, p.administrativeArea, p.postalCode, p.country].where((e) => e != null).join(', ');
+
+      if (location.isMocked) {
+        _message = "Fake GPS detected!";
+        notifyListeners();
+        return false;
+      }
 
       final distance = Geolocator.distanceBetween(location.latitude, location.longitude, latCompany!, longCompany!);
 
@@ -321,6 +335,64 @@ class HomeProvider extends ChangeNotifier {
       _messageAnnouncement = e.toString();
       notifyListeners();
       return;
+    }
+  }
+
+  Future<bool> prepareSaveDir(AnnouncementModel announcement, int index) async {
+    String localPath = '';
+    Dio dio = Dio();
+    final typeFile = announcement.attachment?.split('.').last;
+    print("type file $typeFile");
+    String name = "${announcement.title}.$typeFile";
+    String nameFile = name.replaceAll(' ', '_');
+
+    if (Platform.isAndroid) {
+      var infoDevice = await DeviceInfoPlugin().androidInfo;
+      if (infoDevice.version.sdkInt > 28) {
+        localPath = Directory("/storage/emulated/0/Download").path;
+      } else {
+        localPath = '/storage/emulated/0/Download';
+      }
+    } else {
+      final directory = await getApplicationDocumentsDirectory();
+      localPath = directory.path;
+    }
+
+    final savedDir = Directory(localPath);
+    bool hasExisted = await savedDir.exists();
+    if (!hasExisted) {
+      savedDir.create(recursive: true);
+    }
+
+    try {
+      final filePath = "$localPath/$nameFile";
+      // int notificationId = int.parse(dateNotifId);
+      int notificationId = index;
+
+      await dio.download(
+        announcement.attachment!,
+        filePath,
+        onReceiveProgress: (count, total) async {
+          if (total != -1) {
+            final progress = (count / total * 100).floor();
+
+            await _notifService.showNotificationProgressDownload(notificationId, progress);
+          }
+        },
+      );
+      await Future.delayed(Duration(milliseconds: 1500));
+
+      await _notifService.notificationCancel(notificationId);
+
+      await Future.delayed(Duration(milliseconds: 1000));
+
+      await _notifService.showNotificationSuccessDownload(notificationId, filePath, nameFile);
+
+      return true;
+    } catch (e, trace) {
+      print("Error $e");
+      print("Trace $trace");
+      return false;
     }
   }
 }

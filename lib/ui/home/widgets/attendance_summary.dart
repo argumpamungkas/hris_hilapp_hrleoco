@@ -1,3 +1,4 @@
+import 'package:easy_hris/constant/routes.dart';
 import 'package:easy_hris/providers/home_provider.dart';
 import 'package:easy_hris/ui/home/widgets/card_home_custom.dart';
 import 'package:easy_hris/ui/home/widgets/error_home_custom.dart';
@@ -46,7 +47,7 @@ class AttendanceSummaryContainer extends StatelessWidget {
                             'Working': homeProv.attendanceSummaryModel!.working?.toDouble() ?? 0,
                             'Late': homeProv.attendanceSummaryModel!.late?.toDouble() ?? 0,
                           },
-                          colorList: [Colors.grey.shade200, Colors.red, Colors.blueAccent.shade100, Colors.green.shade300, Colors.orangeAccent],
+                          colorList: [Colors.grey, Colors.red, Colors.blueAccent.shade100, Colors.green.shade300, Colors.orangeAccent],
                           animationDuration: const Duration(milliseconds: 800),
                           chartLegendSpacing: 100.w,
                           chartType: ChartType.ring,
@@ -66,7 +67,9 @@ class AttendanceSummaryContainer extends StatelessWidget {
                       Align(
                         alignment: Alignment.centerRight,
                         child: ElevatedButton.icon(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.pushNamed(context, Routes.attendanceSummaryScreen);
+                          },
                           label: Text("View Detail"),
                           icon: Icon(Icons.file_present_rounded),
                           style: ElevatedButton.styleFrom(

@@ -85,7 +85,7 @@ class TeamScreen extends StatelessWidget {
                                 child: ListView.builder(
                                   itemCount: prov.isFilter ? prov.listTeamFilter.length : prov.listTeam.length,
                                   itemBuilder: (context, index) {
-                                    final item = prov.listTeam[index];
+                                    final item = prov.isFilter ? prov.listTeamFilter[index] : prov.listTeam[index];
 
                                     return Card(
                                       child: Padding(

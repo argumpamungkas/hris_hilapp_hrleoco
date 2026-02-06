@@ -53,23 +53,23 @@ class ProfileScreen extends StatelessWidget {
                               title: "ID Card",
                               onTap: () => Navigator.pushNamed(context, Routes.idCardScreen),
                             ),
-                            ItemListTile(
-                              iconLeading: Icons.notifications,
-                              title: "Notification",
-                              // onTap: () => Navigator.pushNamed(context, Routes.profileChangePasswordScreen),
-                              onTap: () {},
-                            ),
+                            // ItemListTile(
+                            //   iconLeading: Icons.notifications,
+                            //   title: "Notification",
+                            //   // onTap: () => Navigator.pushNamed(context, Routes.profileChangePasswordScreen),
+                            //   onTap: () {},
+                            // ),
                             ItemListTile(
                               iconLeading: Icons.lock,
                               title: "Security",
                               onTap: () => Navigator.pushNamed(context, Routes.profileChangePasswordScreen),
                             ),
-                            ItemListTile(
-                              iconLeading: Icons.settings,
-                              title: "Language",
-                              // onTap: () => Navigator.pushNamed(context, Routes.profileChangePasswordScreen),
-                              onTap: () {},
-                            ),
+                            // ItemListTile(
+                            //   iconLeading: Icons.settings,
+                            //   title: "Language",
+                            //   // onTap: () => Navigator.pushNamed(context, Routes.profileChangePasswordScreen),
+                            //   onTap: () {},
+                            // ),
                             ItemListTile(
                               iconLeading: Icons.privacy_tip,
                               title: "Privacy Policy",
@@ -131,24 +131,24 @@ class ProfileScreen extends StatelessWidget {
             },
           ),
 
-          Consumer<PreferencesProvider>(
-            builder: (context, prov, _) {
-              return SafeArea(
-                child: Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
-                  child: Align(
-                    alignment: Alignment.topRight,
-                    child: IconButton(
-                      onPressed: () {
-                        prov.enableDarkTheme();
-                      },
-                      icon: Icon(prov.isDarkTheme ? Icons.wb_sunny_outlined : Icons.dark_mode_outlined, color: Colors.white),
-                    ),
-                  ),
-                ),
-              );
-            },
-          ),
+          // Consumer<PreferencesProvider>(
+          //   builder: (context, prov, _) {
+          //     return SafeArea(
+          //       child: Padding(
+          //         padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
+          //         child: Align(
+          //           alignment: Alignment.topRight,
+          //           child: IconButton(
+          //             onPressed: () {
+          //               prov.enableDarkTheme();
+          //             },
+          //             icon: Icon(prov.isDarkTheme ? Icons.wb_sunny_outlined : Icons.dark_mode_outlined, color: Colors.white),
+          //           ),
+          //         ),
+          //       ),
+          //     );
+          //   },
+          // ),
         ],
       ),
     );

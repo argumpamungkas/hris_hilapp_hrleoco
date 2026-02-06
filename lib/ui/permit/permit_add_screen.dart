@@ -160,9 +160,37 @@ class PermitAddScreen extends StatelessWidget {
                                       crossAxisAlignment: CrossAxisAlignment.stretch,
                                       children: [
                                         SizedBox(height: 16.h),
-                                        TextFieldCustom(controller: prov.startTimeController, label: "Start Time", hint: "Start Time"),
+                                        TextFieldCustom(
+                                          controller: prov.startTimeController,
+                                          label: "Start Time",
+                                          hint: "Start Time",
+                                          readOnly: true,
+                                          onTap: () async {
+                                            final now = TimeOfDay.now();
+
+                                            TimeOfDay? selected = await showTimePicker(context: context, initialTime: now);
+
+                                            if (selected != null) {
+                                              prov.openChangeStart(selected);
+                                            }
+                                          },
+                                        ),
                                         SizedBox(height: 16.h),
-                                        TextFieldCustom(controller: prov.endTimeController, label: "End Time", hint: "End Time"),
+                                        TextFieldCustom(
+                                          controller: prov.endTimeController,
+                                          label: "End Time",
+                                          hint: "End Time",
+                                          readOnly: true,
+                                          onTap: () async {
+                                            final now = TimeOfDay.now();
+
+                                            TimeOfDay? selected = await showTimePicker(context: context, initialTime: now);
+
+                                            if (selected != null) {
+                                              prov.openChangeEnd(selected);
+                                            }
+                                          },
+                                        ),
                                       ],
                                     )
                                   : SizedBox.shrink(),

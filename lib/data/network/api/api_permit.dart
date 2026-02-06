@@ -113,8 +113,12 @@ class ApiPermit {
         request.fields['attachment'] = "";
       }
 
+      print("REQUEST ${request}");
+
       final response = await request.send();
       final responseBody = await response.stream.bytesToString();
+
+      print("response body $responseBody");
 
       // decode JSON
       final Map<String, dynamic> result = jsonDecode(responseBody);
@@ -125,7 +129,8 @@ class ApiPermit {
     } on SocketException catch (_) {
       throw Exception(ConstantMessage.errMsgNoInternet);
     } catch (e, trace) {
-      // print("trace $trace");
+      debugPrint("trace $trace");
+      debugPrint("trace $e");
       throw Exception("${ConstantMessage.errMsg} $e");
     }
   }

@@ -17,13 +17,13 @@ class AttendanceHistoryProvider extends ChangeNotifier {
   ResultStatus _resultStatus = ResultStatus.init;
   String _message = '';
   String _baseUrl = '';
-  String _dateMonth = '';
+  DateTime _date = DateTime.now().toLocal();
 
   List<AttendanceModel> get listAttendance => _listAttendance;
   ResultStatus get resultStatus => _resultStatus;
   String get message => _message;
   String get baseUrl => _baseUrl;
-  String get dateMonth => _dateMonth;
+  DateTime get date => _date;
 
   AttendanceHistoryProvider() {
     init();
@@ -37,21 +37,8 @@ class AttendanceHistoryProvider extends ChangeNotifier {
 
   Future<void> init() async {
     getUrl();
-    final now = DateTime.now().toLocal();
-
-    final firstOfMonth = DateTime(now.year, now.month, 1);
-    final lastOfMonth = DateTime(now.year, now.month, 31);
-    final initFrom = DateFormat('yyyy-MM-dd').format(firstOfMonth);
-    final initTo = DateFormat('yyyy-MM-dd').format(lastOfMonth);
-
-    _dateMonth = DateFormat('MMM yyyy').format(now);
-
-    // _dateFrom.text = initFrom;
-    // _dateTo.text = initTo;
-    notifyListeners();
-
     try {
-      await fetchAttendanceHistory(from: initFrom, to: initTo);
+      await fetchAttendanceHistory(month: _date.month, year: _date.year);
     } catch (e) {
       _message = e.toString();
       _resultStatus = ResultStatus.error;
@@ -59,7 +46,7 @@ class AttendanceHistoryProvider extends ChangeNotifier {
     }
   }
 
-  Future<void> fetchAttendanceHistory({required String from, required String to}) async {
+  Future<void> fetchAttendanceHistory({required int month, required int year}) async {
     _listAttendance.clear();
     _resultStatus = ResultStatus.loading;
     notifyListeners();
@@ -67,7 +54,7 @@ class AttendanceHistoryProvider extends ChangeNotifier {
     final number = _prefs.getString(ConstantSharedPref.numberUser);
 
     try {
-      final result = await _api.fetchAttendanceData(number ?? "", from, to);
+      final result = await _api.fetchAttendanceData(number ?? "", month.toString(), year.toString());
       final listData = result.result;
 
       if (result.theme == 'success') {
@@ -86,7 +73,10 @@ class AttendanceHistoryProvider extends ChangeNotifier {
         notifyListeners();
         return;
       }
-    } catch (e) {
+    } catch (e, trace) {
+      print("error $e");
+      print("error $trace");
+
       _message = e.toString();
       _resultStatus = ResultStatus.error;
       notifyListeners();
@@ -94,16 +84,18 @@ class AttendanceHistoryProvider extends ChangeNotifier {
   }
 
   Future<void> onChangeMonth(DateTime value) async {
-    final date = value.toLocal();
+    // final date = value.toLocal();
+    //
+    // final firstOfMonth = DateTime(value.year, value.month, 1);
+    // final lastOfMonth = DateTime(value.year, value.month, 31);
+    // final initFrom = DateFormat('yyyy-MM-dd').format(firstOfMonth);
+    // final initTo = DateFormat('yyyy-MM-dd').format(lastOfMonth);
+    //
+    // _dateMonth = DateFormat('MMM yyyy').format(date);
+    // notifyListeners();
 
-    final firstOfMonth = DateTime(value.year, value.month, 1);
-    final lastOfMonth = DateTime(value.year, value.month, 31);
-    final initFrom = DateFormat('yyyy-MM-dd').format(firstOfMonth);
-    final initTo = DateFormat('yyyy-MM-dd').format(lastOfMonth);
+    _date = value;
 
-    _dateMonth = DateFormat('MMM yyyy').format(date);
-    notifyListeners();
-
-    fetchAttendanceHistory(from: initFrom, to: initTo);
+    fetchAttendanceHistory(month: value.month, year: value.year);
   }
 }

@@ -14,13 +14,13 @@ class Constant {
   static const String baseUrlMaster = "https://app.hris-server.com";
   static const String fontSpaceAge = "Space Age";
   static const String tokenFcm = "";
-  static const String versionApp = "v1.0.0";
+  // static const String versionApp = "v1.0.0";
 
   static const String logo = "assets/images/logo.png";
   static const String homeBg = "assets/images/home_bg.jpg";
 
   // static const String appVersion = "v1.1.0";
-  static const String appVersion = "v1.1.1";
+  static const String appVersion = "v1.2.1";
 
   // static const String baseUrl = "https://hrleoco.hris-server.com";
   static const String urlILogo = "assets/image/config/logo";
@@ -29,6 +29,7 @@ class Constant {
   static const String urlProfileNpwp = "assets/image/employee/npwp";
   static const String urlProfileKk = "assets/image/employee/kk";
   static const String urlProfileKtp = "assets/image/employee/id";
+  static const String urlPermits = "assets/document/permit";
   static const String bgIdCard = "assets/image/idcard_front.png";
   static const String urlAttendance = "assets/image/attandance";
 }

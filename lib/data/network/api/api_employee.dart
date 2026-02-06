@@ -144,10 +144,10 @@ class ApiEmployee {
 
   Future<ApiResponse> updatePersonalData({
     required PersonalDataUpdateRequest requestUser,
-    required File fileNationalID,
-    required File fileKK,
-    required File fileTax,
-    required File fileImageProfile,
+    required File? fileNationalID,
+    required File? fileKK,
+    required File? fileTax,
+    required File? fileImageProfile,
   }) async {
     final baseUrl = await _urlService.getUrlModel();
 
@@ -160,24 +160,29 @@ class ApiEmployee {
 
       request.fields.addAll(req);
 
-      // print("ktp => ${fileNationalID.path}");
-      // print("kk => ${fileKK.path}");
-      // print("tax => ${fileTax.path}");
-      // print("pr => ${fileImageProfile.path}");
+      if (fileNationalID == null) {
+        request.fields['image_id'] = "";
+      } else {
+        request.files.add(await http.MultipartFile.fromPath('image_id', fileNationalID.path));
+      }
 
-      request.files.add(await http.MultipartFile.fromPath('image_id', fileNationalID.path));
-      request.files.add(await http.MultipartFile.fromPath('image_kk', fileKK.path));
-      request.files.add(await http.MultipartFile.fromPath('image_npwp', fileTax.path));
-      request.files.add(await http.MultipartFile.fromPath('image_profile', fileImageProfile.path));
+      if (fileKK == null) {
+        request.fields['image_kk'] = "";
+      } else {
+        request.files.add(await http.MultipartFile.fromPath('image_kk', fileKK.path));
+      }
 
-      // var response = await http.post(url, body: request.toJson());
-      //
-      // print("response $response");
-      // print("response ${response.body}");
-      //
-      // Map<String, dynamic> result = jsonDecode(response.body);
-      //
-      // debugPrint("result add educ => $result");
+      if (fileTax == null) {
+        request.fields['image_npwp'] = "";
+      } else {
+        request.files.add(await http.MultipartFile.fromPath('image_npwp', fileTax.path));
+      }
+
+      if (fileImageProfile == null) {
+        request.fields['image_profile'] = "";
+      } else {
+        request.files.add(await http.MultipartFile.fromPath('image_profile', fileImageProfile.path));
+      }
 
       final response = await request.send();
 

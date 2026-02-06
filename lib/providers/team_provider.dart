@@ -78,19 +78,23 @@ class TeamProvider with ChangeNotifier {
   }
 
   void onSearch(String value) {
-    if (value.isNotEmpty) {
+    final query = value.toLowerCase().trim();
+
+    if (query.isNotEmpty) {
+      _isFilter = true;
+
+      final keywords = query.split(' ');
+
       _listTeamsFilter = _listTeams.where((e) {
-        /// ambil query yang disearch
-        final keywords = value.toLowerCase().trim().split(' ');
+        final searchable = '${e.name} ${e.positionName}'.toLowerCase();
 
-        /// multiple search
-        final searchable = [e.name, e.number, e.positionName].join(" ").toLowerCase();
-
-        /// kembalikan nilai sesuai search
-        return keywords.every((k) => searchable.contains(k.toLowerCase()));
+        return keywords.every((k) => searchable.contains(k));
       }).toList();
     } else {
       _isFilter = false;
+
+      // kembalikan ke full list
+      _listTeamsFilter = List.from(_listTeams);
     }
 
     notifyListeners();

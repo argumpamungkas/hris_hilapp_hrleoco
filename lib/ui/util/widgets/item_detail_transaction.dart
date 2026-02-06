@@ -49,6 +49,8 @@ class ItemDetailTransaction extends StatelessWidget {
                                 url = "${prov.baseUrl}/${Constant.urlProfileNpwp}/$value";
                               } else if (itemName.contains('profile')) {
                                 url = "${prov.baseUrl}/${Constant.urlProfileImage}/$value";
+                              } else if (itemName.toLowerCase().contains('attachment')) {
+                                url = "${prov.baseUrl}/${Constant.urlPermits}/$value";
                               } else {
                                 url = "${prov.baseUrl}/${Constant.urlProfileKtp}/$value";
                               }

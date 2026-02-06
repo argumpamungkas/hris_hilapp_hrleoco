@@ -26,6 +26,7 @@ class PermitAddProvider extends ChangeNotifier {
   ResultStatus _resultStatus = ResultStatus.init;
   String _title = '';
   String _message = '';
+  final _timeNow = TimeOfDay.now();
 
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _permitDateController = TextEditingController();
@@ -206,4 +207,39 @@ class PermitAddProvider extends ChangeNotifier {
       return false;
     }
   }
+
+  void openChangeStart(TimeOfDay selected) async {
+    final h = selected.hour.toString().padLeft(2, '0');
+    final m = selected.minute.toString().padLeft(2, '0');
+
+    print("Selected $selected");
+
+    _startTimeController.text = "$h:$m:00";
+    notifyListeners();
+  }
+
+  void openChangeEnd(TimeOfDay selected) async {
+    final h = selected.hour.toString().padLeft(2, '0');
+    final m = selected.minute.toString().padLeft(2, '0');
+
+    print("Selected $selected");
+
+    _endTimeController.text = "$h:$m:00";
+    notifyListeners();
+  }
+
+  // void onChangeEnd(TimeOfDay selected) async {
+  //   TimeOfDay? selected = await showTimePicker(context: context, initialTime: _timeNow);
+  //
+  //   if (selected != null) {
+  //     if (!context.mounted) return;
+  //     final h = selected.hour.toString().padLeft(2, '0');
+  //     final m = selected.minute.toString().padLeft(2, '0');
+  //
+  //     print("Selected $selected");
+  //
+  //     _startTimeController.text = "$h:$m";
+  //     notifyListeners();
+  //   }
+  // }
 }

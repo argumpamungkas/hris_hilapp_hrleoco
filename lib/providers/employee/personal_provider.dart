@@ -69,6 +69,11 @@ class PersonalEmployeeProvider extends ChangeNotifier {
   File? _fileFamilyCard;
   File? _fileTaxNoNPWP;
 
+  bool _onChangeImageProfile = false;
+  bool _onChangeNationalId = false;
+  bool _onChangeFamilyCard = false;
+  bool _onChangeTaxNoNpwp = false;
+
   /// IMG
 
   /// LIST DATA
@@ -216,6 +221,7 @@ class PersonalEmployeeProvider extends ChangeNotifier {
     _fileNationalId = file;
     _fileNationalIdBase64.text = base64;
     _fileNationalIdName.text = "natId_${_number}_$format";
+    _onChangeNationalId = true;
     notifyListeners();
   }
 
@@ -225,6 +231,7 @@ class PersonalEmployeeProvider extends ChangeNotifier {
     _fileFamilyCard = file;
     _fileFamilyCardBase64.text = base64;
     _fileFamilyCardName.text = "kk_${_number}_$format";
+    _onChangeFamilyCard = true;
     notifyListeners();
   }
 
@@ -234,6 +241,7 @@ class PersonalEmployeeProvider extends ChangeNotifier {
     _fileTaxNoNPWP = file;
     _fileTaxNoNPWPBase64.text = base64;
     _fileTaxNoNPWPName.text = "tax_${_number}_$format";
+    _onChangeTaxNoNpwp = true;
     notifyListeners();
   }
 
@@ -243,6 +251,7 @@ class PersonalEmployeeProvider extends ChangeNotifier {
     _fileImageProfile = file;
     _filePhotoProfileBase64.text = base64;
     _filePhotoProfileName.text = "profile_${_number}_$format";
+    _onChangeImageProfile = true;
     notifyListeners();
   }
 
@@ -476,10 +485,10 @@ class PersonalEmployeeProvider extends ChangeNotifier {
     try {
       final result = await _api.updatePersonalData(
         requestUser: request,
-        fileNationalID: _fileNationalId!,
-        fileKK: _fileFamilyCard!,
-        fileTax: _fileTaxNoNPWP!,
-        fileImageProfile: _fileImageProfile!,
+        fileNationalID: _onChangeNationalId ? _fileNationalId! : null,
+        fileKK: _onChangeFamilyCard ? _fileFamilyCard! : null,
+        fileTax: _onChangeTaxNoNpwp ? _fileTaxNoNPWP! : null,
+        fileImageProfile: _onChangeImageProfile ? _fileImageProfile! : null,
       );
 
       if (result.theme == 'success') {

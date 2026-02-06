@@ -13,11 +13,9 @@ class OvertimeProvider extends ChangeNotifier {
   final ApiOvertime _api = ApiOvertime();
   final _prefs = sl<SharedPreferences>();
 
-  // final DateTime _dateNow = DateTime.now().toLocal();
   int _year = DateTime.now().toLocal().year;
 
   List<ResultOvertimeModel> _listOvertime = [];
-  // int _remaining = 0;
   int _totalDuration = 0;
   int _totalAmount = 0;
   ResultStatus _resultStatus = ResultStatus.init;
@@ -41,6 +39,8 @@ class OvertimeProvider extends ChangeNotifier {
   }
 
   Future<void> fetchOvertime(int year) async {
+    _totalDuration = 0;
+    _totalAmount = 0;
     _listOvertime.clear();
     _resultStatus = ResultStatus.loading;
     notifyListeners();

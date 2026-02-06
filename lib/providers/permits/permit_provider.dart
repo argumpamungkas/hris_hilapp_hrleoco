@@ -33,7 +33,6 @@ class PermitProvider extends ChangeNotifier {
   int get year => _year;
 
   PermitProvider() {
-    // _year = _dateNow.year.toString();
     fetchPermit(_year);
   }
 

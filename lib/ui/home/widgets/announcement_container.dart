@@ -1,6 +1,7 @@
 import 'package:easy_hris/providers/preferences_provider.dart';
 import 'package:easy_hris/ui/home/widgets/card_home_custom.dart';
 import 'package:easy_hris/ui/home/widgets/error_home_custom.dart';
+import 'package:easy_hris/ui/util/utils.dart';
 import 'package:easy_hris/ui/util/widgets/loading_shimmer_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -60,8 +61,8 @@ class AnnouncementContainer extends StatelessWidget {
                               child: ClipOval(
                                 child: ImageNetworkCustom(
                                   isFit: true,
-                                  url: homeProv.shiftUserModel?.imageProfile != null && homeProv.shiftUserModel!.imageProfile!.isNotEmpty
-                                      ? "${provPref.baseUrl}/${Constant.urlProfileImage}/${homeProv.shiftUserModel!.imageProfile}"
+                                  url: item?.imageProfile != null && item.imageProfile!.isNotEmpty
+                                      ? "${provPref.baseUrl}/${Constant.urlProfileImage}/${item.imageProfile}"
                                       : "${provPref.baseUrl}/${Constant.urlDefaultImage}",
                                 ),
                               ),
@@ -91,12 +92,6 @@ class AnnouncementContainer extends StatelessWidget {
                         ),
                         SizedBox(height: 4.h),
 
-                        // Text(
-                        //   item.description ?? '',
-                        //   maxLines: 3,
-                        //   overflow: TextOverflow.ellipsis,
-                        //   style: TextStyle(fontSize: 12.sp),
-                        // ),
                         Html(
                           data: item.description ?? '',
                           style: {
@@ -112,17 +107,26 @@ class AnnouncementContainer extends StatelessWidget {
 
                         SizedBox(height: 8.h),
 
-                        Container(
-                          padding: EdgeInsets.all(8.w),
-                          decoration: BoxDecoration(color: ConstantColor.bgIcon, borderRadius: BorderRadius.circular(8.w)),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            mainAxisSize: MainAxisSize.min,
-                            spacing: 4.w,
-                            children: [
-                              Icon(Icons.file_present, size: 14.w),
-                              Text("Attachment", style: TextStyle(fontSize: 10.sp)),
-                            ],
+                        Visibility(
+                          visible: item.attachment!.isEmpty ? false : true,
+                          child: InkWell(
+                            onTap: () {
+                              showInfoSnackbar(context, "Download on progress");
+                              homeProv.prepareSaveDir(item, index);
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(8.w),
+                              decoration: BoxDecoration(color: ConstantColor.bgIcon, borderRadius: BorderRadius.circular(8.w)),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                mainAxisSize: MainAxisSize.min,
+                                spacing: 4.w,
+                                children: [
+                                  Icon(Icons.file_present, size: 14.w),
+                                  Text("Attachment", style: TextStyle(fontSize: 10.sp)),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                         Divider(),

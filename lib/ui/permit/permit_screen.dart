@@ -155,7 +155,11 @@ class PermitScreen extends StatelessWidget {
                                         ItemDetailTransaction(title: "End Time", value: item.endTime ?? "00:00"),
                                         ItemDetailTransaction(title: "Meal", value: item.meal ?? ""),
                                         ItemDetailTransaction(title: "Note", value: item.note ?? ""),
-                                        ItemDetailTransaction(title: "Attachment", value: item.attachment ?? "-"),
+                                        ItemDetailTransaction(
+                                          title: "Attachment",
+                                          value: item.attachment!.isEmpty ? 'No Data Attachment' : item.attachment!,
+                                          isFIle: item.attachment!.isEmpty ? false : true,
+                                        ),
                                       ],
                                     ),
                                   );
